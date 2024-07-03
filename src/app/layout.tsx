@@ -73,7 +73,7 @@ export default function RootLayout({
                         edit: "/employeeRoles/edit/:id",
                         show: "/employeeRoles/show/:id",
                         meta: {
-                          canDelete: true,
+                          canDelete: false,
                           idName: "roleId",
                           resources: "employeeRoles"
                         },

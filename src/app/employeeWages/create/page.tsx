@@ -4,6 +4,9 @@ import { Autocomplete, Box, MenuItem, Select, TextField } from "@mui/material";
 import { Create, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 export default function EmployeeWageCreate() {
   const {
@@ -41,7 +44,7 @@ export default function EmployeeWageCreate() {
               {...employeeAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.CategoryId);
+                field.onChange(value.EmployeeId);
               }} 
               getOptionLabel={(item) => {
                 return (
@@ -131,70 +134,65 @@ export default function EmployeeWageCreate() {
             />
           )}
         />
-
-
-
-
-
-        <TextField
-          {...register("FarmWorkDesc", {
-            required: "This field is required",
-          })}
-          error={!!(errors as any)?.FarmWorkDesc}
-          helperText={(errors as any)?.FarmWorkDesc?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label={"Description"}
-          name="FarmWorkDesc"
-        />
         <Controller
           control={control}
-          name={"CategoryId"}
+          name={"startDate"}
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
           render={({ field }) => (
-            <Autocomplete
-              {...categoryAutocompleteProps}
-              {...field}
-              onChange={(_, value) => {
-                field.onChange(value.id);
-              }}
-              getOptionLabel={(item) => {
-                return (
-                  categoryAutocompleteProps?.options?.find((p) => {
-                    const itemId =
-                      typeof item === "object"
-                        ? item?.CategoryId?.toString()
-                        : item?.toString();
-                    const pId = p?.CategoryId?.toString();
-                    return itemId === pId;
-                  })?.CategoryDesc ?? ""
-                );
-              }}
-              isOptionEqualToValue={(option, value) => {
-                const optionId = option?.id?.toString();
-                const valueId =
-                  typeof value === "object"
-                    ? value?.CategoryId?.toString()
-                    : value?.toString();
-                return value === undefined || optionId === valueId;
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label={"Category"}
-                  margin="normal"
-                  variant="outlined"
-                  error={!!(errors as any)?.CategoryId}
-                  helperText={(errors as any)?.CategoryId?.message}
-                  required
-                />
-              )}
-            />
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                {...field}
+                label="StartDate"
+                onChange={(value) => {
+                  field.onChange(value);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label={"StartDate"} 
+                    margin="normal"
+                    variant="outlined" 
+                    error={!!(errors as any)?.startDate} 
+                    helperText={(errors as any)?.startDate?.message}
+                    required
+                  />
+                )}
+                inputFormat="MM/dd/yyyy"
+              />
+            </LocalizationProvider>
           )}
+        />
+        <TextField
+          {...register("wage", {
+            required: "This field is required",
+          })}
+          error={!!(errors as any)?.wage}
+          helperText={(errors as any)?.wage?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="text"
+          label={"Wage"}
+          name="wage"
+        />
+        <Controller
+          name="wageUnit"
+          control={control}
+          render={({ field }) => {
+            return (
+              <Select
+                {...field}
+                value={field?.value || "draft"}
+                label={"Wage Unit"}
+              >
+                <MenuItem value="draft">Draft</MenuItem>
+                <MenuItem value="published">Published</MenuItem>
+                <MenuItem value="rejected">Rejected</MenuItem>
+              </Select>
+            );
+          }}
         />
       </Box>
     </Create>

@@ -5,8 +5,12 @@ import MenuItem from "@mui/material/MenuItem";
 import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { USStates } from "@app/employees/us-states";
 
-export default function FarmWorkEdit() {
+export default function EmployeeEdit() {
   const {
     saveButtonProps,
     refineCore: { queryResult, formLoading, onFinish },
@@ -16,11 +20,8 @@ export default function FarmWorkEdit() {
     formState: { errors },
   } = useForm({});
 
-  const farmWorksData = queryResult?.data?.data;
-
-  const { autocompleteProps: categoryAutocompleteProps } = useAutocomplete({
-    resource: "farmworksCategory",
-    defaultValue: farmWorksData?.CategoryId,
+  const { autocompleteProps: roleAutocompleteProps } = useAutocomplete({
+    resource: "employeeRole",
   });
 
   return (
@@ -31,59 +32,271 @@ export default function FarmWorkEdit() {
         autoComplete="off"
       >
         <TextField
-          {...register("FarmWorkDesc", {
+          {...register("firstName", {
             required: "This field is required",
           })}
-          error={!!(errors as any)?.FarmWorkDesc}
-          helperText={(errors as any)?.FarmWorkDesc?.message}
+          error={!!(errors as any)?.firstName}
+          helperText={(errors as any)?.firstName?.message}
           margin="normal"
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="text"
-          label={"Description"}
-          name="FarmWorkDesc"
+          label={"First Name"}
+          name="firstName"
+        />
+        <TextField
+          {...register("lastName", {
+            required: "This field is required",
+          })}
+          error={!!(errors as any)?.lastName}
+          helperText={(errors as any)?.lastName?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="text"
+          label={"Last Name"}
+          name="lastName"
+        />
+        <TextField
+          {...register("email", {
+            required: "This field is required",
+          })}
+          error={!!(errors as any)?.email}
+          helperText={(errors as any)?.email?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="text"
+          label={"Email"}
+          name="email"
+        />
+        <TextField
+          {...register("mobile", {
+            required: "This field is required",
+          })}
+          error={!!(errors as any)?.mobile}
+          helperText={(errors as any)?.mobile?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="text"
+          label={"Mobile"}
+          name="mobile"
         />
         <Controller
           control={control}
-          name={"CategoryId"}
+          name={"dob"}
+          rules={{ required: "This field is required" }}
+          // eslint-disable-next-line
+          defaultValue={null as any}
+          render={({ field }) => (
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                {...field}
+                onChange={(value) => {
+                  field.onChange(value);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Date of Birth"
+                    margin="normal"
+                    variant="outlined" 
+                    error={!!(errors as any)?.dob} 
+                    helperText={(errors as any)?.dob?.message}
+                    required
+                  />
+                )}
+                inputFormat="MM/dd/yyyy"
+              />
+            </LocalizationProvider>
+          )}
+        />
+        <TextField
+          {...register("street", {
+            required: "This field is required",
+          })}
+          error={!!(errors as any)?.street}
+          helperText={(errors as any)?.street?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="text"
+          label={"Street"}
+          name="street"
+        />
+        <TextField
+          {...register("city", {
+            required: "This field is required",
+          })}
+          error={!!(errors as any)?.city}
+          helperText={(errors as any)?.city?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="text"
+          label={"City"}
+          name="city"
+        />
+        <Controller
+          control={control}
+          name={"state"}
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
           render={({ field }) => (
             <Autocomplete
-              {...categoryAutocompleteProps}
               {...field}
+              options={USStates}
               onChange={(_, value) => {
-                field.onChange(value.id);
+                field.onChange(value?.value);
+              }}
+              isOptionEqualToValue={(option, value) => {
+                const optionId = option?.value?.toString();
+                const valueId = 
+                  typeof value === "object"   
+                    ? value?.value?.toString()
+                    : value?.toString();
+                return value === undefined || optionId === valueId;
               }}
               getOptionLabel={(item) => {
                 return (
-                  categoryAutocompleteProps?.options?.find((p) => {
+                  USStates?.find((p) => {
                     const itemId =
                       typeof item === "object"
-                        ? item?.id?.toString()         
+                        ? item?.value?.toString()
                         : item?.toString();
-                    const pId = p?.id?.toString();
+                    const pId = p?.value?.toString();
                     return itemId === pId;
-                  })?.title ?? ""
+                  })?.label ?? ""
+                );
+              }}
+              renderInput={(params) => 
+                <TextField 
+                  {...params} 
+                  label="Select a state" 
+                  margin="normal"
+                  variant="outlined"
+                  error={!!(errors as any)?.state} 
+                  helperText={(errors as any)?.state?.message}
+                  required
+                />}
+            />
+          )}
+        />
+        <TextField
+          {...register("zip", {
+            required: "This field is required",
+          })}
+          error={!!(errors as any)?.zip}
+          helperText={(errors as any)?.zip?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="text"
+          label={"Zip"}
+          name="zip"
+        />
+        <Controller
+          control={control}
+          name={"startDate"}
+          rules={{ required: "This field is required" }}
+          // eslint-disable-next-line
+          defaultValue={null as any}
+          render={({ field }) => (
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                {...field}
+                onChange={(value) => {
+                  field.onChange(value);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label={"StartDate"} 
+                    margin="normal"
+                    variant="outlined" 
+                    error={!!(errors as any)?.startDate} 
+                    helperText={(errors as any)?.startDate?.message}
+                    required
+                  />
+                )}
+                inputFormat="MM/dd/yyyy"
+              />
+            </LocalizationProvider>
+          )}
+        />
+        <Controller
+          control={control}
+          name={"endDate"}
+          rules={{ required: "This field is required" }}
+          // eslint-disable-next-line
+          defaultValue={null as any}
+          render={({ field }) => (
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                {...field}
+                label="End Date"
+                onChange={(value) => {
+                  field.onChange(value);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label={"End Date"} 
+                    margin="normal"
+                    variant="outlined" 
+                    error={!!(errors as any)?.endDate} 
+                    helperText={(errors as any)?.endDate?.message}
+                    required
+                  />
+                )}
+                inputFormat="MM/dd/yyyy"
+              />
+            </LocalizationProvider>
+          )}
+        />
+        <Controller
+          control={control}
+          name={"roleId"}
+          rules={{ required: "This field is required" }}
+          // eslint-disable-next-line
+          defaultValue={null as any}
+          render={({ field }) => (
+            <Autocomplete
+              {...roleAutocompleteProps}
+              {...field}
+              onChange={(_, value) => {
+                field.onChange(value.RoleID);
+              }} 
+              getOptionLabel={(item) => {
+                return (
+                  roleAutocompleteProps?.options?.find((p) => {
+                    const itemId =
+                      typeof item === "object"
+                        ? item?.RoleID?.toString()
+                        : item?.toString();
+                    const pId = p?.RoleID?.toString();
+                    return itemId === pId;
+                  })?.RoleDesc ?? ""
                 );
               }}
               isOptionEqualToValue={(option, value) => {
-                const optionId = option?.id?.toString();
+                const optionId = option?.RoleID?.toString();
                 const valueId =
-                  typeof value === "object"
-                    ? value?.id?.toString()
+                  typeof value === "object"   
+                    ? value?.RoleID?.toString()
                     : value?.toString();
                 return value === undefined || optionId === valueId;
               }}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label={"Category"}
+                  label={"Role"}
                   margin="normal"
-                  variant="outlined"
-                  error={!!(errors as any)?.CategoryId}
-                  helperText={(errors as any)?.CategoryId?.message}
+                  variant="outlined" 
+                  error={!!(errors as any)?.roleId} 
+                  helperText={(errors as any)?.roleId?.message}
                   required
                 />
               )}

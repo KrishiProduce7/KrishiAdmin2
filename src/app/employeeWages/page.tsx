@@ -101,7 +101,6 @@ export default function EmployeeList() {
           return (
             <>
               <EditButton hideText recordItemId={row.FarmWorkID} />
-              <ShowButton hideText recordItemId={row.FarmWorkID} />
               <DeleteButton hideText recordItemId={row.FarmWorkID} />
             </>
           );
@@ -123,3 +122,7 @@ export default function EmployeeList() {
     </List>
   );
 }
+
+// Removed this
+// If needed copy the below line between <EditButton> and <DeleteButton>
+// <ShowButton hideText recordItemId={row.RoleID} />

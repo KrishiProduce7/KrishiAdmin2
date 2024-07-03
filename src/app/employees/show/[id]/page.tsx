@@ -18,8 +18,8 @@ export default function FarmWorkShow() {
   const record = data?.data;
 
   const { data: categoryData, isLoading: categoryIsLoading } = useOne({
-    resource: "farmworkCategory",
-    id: record?.CategoryId || "",
+    resource: "employeeRole",
+    id: record?.RoleId || "",
     queryOptions: {
       enabled: !!record,
     },
@@ -31,7 +31,7 @@ export default function FarmWorkShow() {
         <Typography variant="body1" fontWeight="bold">
           {"ID"}
         </Typography>
-        <TextField value={record?.FarmWorkID} />
+        <TextField value={record?.EmployeeID} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Title"}

@@ -7,65 +7,7 @@ import { Controller } from "react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
- 
-
-interface StateOption {
-  label: string;
-  value: string;
-}
-
-const states: StateOption[] = [
-  { label: 'Alabama', value: 'AL' },
-  { label: 'Alaska', value: 'AK' },
-  { label: 'Arizona', value: 'AZ' },
-  { label: 'Arkansas', value: 'AR' },
-  { label: 'California', value: 'CA' },
-  { label: 'Colorado', value: 'CO' },
-  { label: 'Connecticut', value: 'CT' },
-  { label: 'Delaware', value: 'DE' },
-  { label: 'Florida', value: 'FL' },
-  { label: 'Georgia', value: 'GA' },
-  { label: 'Hawaii', value: 'HI' },
-  { label: 'Idaho', value: 'ID' },
-  { label: 'Illinois', value: 'IL' },
-  { label: 'Indiana', value: 'IN' },
-  { label: 'Iowa', value: 'IA' },
-  { label: 'Kansas', value: 'KS' },
-  { label: 'Kentucky', value: 'KY' },
-  { label: 'Louisiana', value: 'LA' },
-  { label: 'Maine', value: 'ME' },
-  { label: 'Maryland', value: 'MD' },
-  { label: 'Massachusetts', value: 'MA' },
-  { label: 'Michigan', value: 'MI' },
-  { label: 'Minnesota', value: 'MN' },
-  { label: 'Mississippi', value: 'MS' },
-  { label: 'Missouri', value: 'MO' },
-  { label: 'Montana', value: 'MT' },
-  { label: 'Nebraska', value: 'NE' },
-  { label: 'Nevada', value: 'NV' },
-  { label: 'New Hampshire', value: 'NH' },
-  { label: 'New Jersey', value: 'NJ' },
-  { label: 'New Mexico', value: 'NM' },
-  { label: 'New York', value: 'NY' },
-  { label: 'North Carolina', value: 'NC' },
-  { label: 'North Dakota', value: 'ND' },
-  { label: 'Ohio', value: 'OH' },
-  { label: 'Oklahoma', value: 'OK' },
-  { label: 'Oregon', value: 'OR' },
-  { label: 'Pennsylvania', value: 'PA' },
-  { label: 'Rhode Island', value: 'RI' },
-  { label: 'South Carolina', value: 'SC' },
-  { label: 'South Dakota', value: 'SD' },
-  { label: 'Tennessee', value: 'TN' },
-  { label: 'Texas', value: 'TX' },
-  { label: 'Utah', value: 'UT' },
-  { label: 'Vermont', value: 'VT' },
-  { label: 'Virginia', value: 'VA' },
-  { label: 'Washington', value: 'WA' },
-  { label: 'West Virginia', value: 'WV' },
-  { label: 'Wisconsin', value: 'WI' },
-  { label: 'Wyoming', value: 'WY' },
-];
+import { USStates } from "../us-states";
 
 export default function EmployeeCreate() {
   const { 
@@ -207,40 +149,40 @@ export default function EmployeeCreate() {
           render={({ field }) => (
             <Autocomplete
               {...field}
+              options={USStates}
               onChange={(_, value) => {
-                field.onChange(value.value);
-              }} 
-              getOptionLabel={(item) => {
-                return (
-                  states.find((p) => {
-                    const stateCode =
-                      typeof item === "object"
-                        ? item?.value?.toString()
-                        : item?.toString();
-                    const pStateCode = p?.State?.toString();
-                    return stateCode === pStateCode;
-                  })?.label ?? ""
-                );
+                field.onChange(value?.value);
               }}
               isOptionEqualToValue={(option, value) => {
                 const optionId = option?.value?.toString();
-                const valueId =
-                  typeof value === "object"
+                const valueId = 
+                  typeof value === "object"   
                     ? value?.value?.toString()
                     : value?.toString();
                 return value === undefined || optionId === valueId;
               }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label={"State"}
+              getOptionLabel={(item) => {
+                return (
+                  USStates?.find((p) => {
+                    const itemId =
+                      typeof item === "object"
+                        ? item?.value?.toString()
+                        : item?.toString();
+                    const pId = p?.value?.toString();
+                    return itemId === pId;
+                  })?.label ?? ""
+                );
+              }}
+              renderInput={(params) => 
+                <TextField 
+                  {...params} 
+                  label="Select a state" 
                   margin="normal"
-                  variant="outlined"  
+                  variant="outlined"
                   error={!!(errors as any)?.state} 
                   helperText={(errors as any)?.state?.message}
                   required
-                />
-              )}
+                />}
             />
           )}
         />
@@ -256,6 +198,66 @@ export default function EmployeeCreate() {
           type="text"
           label={"Zip"}
           name="zip"
+        />
+        <Controller
+          control={control}
+          name={"startDate"}
+          rules={{ required: "This field is required" }}
+          // eslint-disable-next-line
+          defaultValue={null as any}
+          render={({ field }) => (
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                {...field}
+                label="StartDate"
+                onChange={(value) => {
+                  field.onChange(value);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label={"StartDate"} 
+                    margin="normal"
+                    variant="outlined" 
+                    error={!!(errors as any)?.startDate} 
+                    helperText={(errors as any)?.startDate?.message}
+                    required
+                  />
+                )}
+                inputFormat="MM/dd/yyyy"
+              />
+            </LocalizationProvider>
+          )}
+        />
+        <Controller
+          control={control}
+          name={"endDate"}
+          rules={{ required: "This field is required" }}
+          // eslint-disable-next-line
+          defaultValue={null as any}
+          render={({ field }) => (
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                {...field}
+                label="End Date"
+                onChange={(value) => {
+                  field.onChange(value);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label={"End Date"} 
+                    margin="normal"
+                    variant="outlined" 
+                    error={!!(errors as any)?.endDate} 
+                    helperText={(errors as any)?.endDate?.message}
+                    required
+                  />
+                )}
+                inputFormat="MM/dd/yyyy"
+              />
+            </LocalizationProvider>
+          )}
         />
         <Controller
           control={control}
@@ -283,9 +285,9 @@ export default function EmployeeCreate() {
                 );
               }}
               isOptionEqualToValue={(option, value) => {
-                const optionId = option?.RoleId?.toString();
+                const optionId = option?.RoleID?.toString();
                 const valueId =
-                  typeof value === "object"
+                  typeof value === "object"   
                     ? value?.RoleID?.toString()
                     : value?.toString();
                 return value === undefined || optionId === valueId;

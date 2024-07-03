@@ -58,6 +58,8 @@ const farmWorkDataProvider = (
 
     const total = +headers["x-total-count"];
 
+    console.log(data);
+    
     return {
       data,
       total: total || data.length,

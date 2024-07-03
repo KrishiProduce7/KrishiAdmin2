@@ -14,7 +14,7 @@ import {
 import React from "react";
 
 interface IEmployee {
-  EmployeeId: number;
+  EmployeeID: number;
   FirstName: string;
   LastName: string;
   Mobile: string;
@@ -35,13 +35,13 @@ export default function EmployeeList() {
   });
  
   const { data: roleData, isLoading: roleIsLoading, isError } = useList({
-    resource: "employeeRoles",
+    resource: "employeeRole",
   });
 
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
-        field: "EmployeeId",
+        field: "EmployeeID",
         headerName: "Id",
         type: "number",
         minWidth: 50,
@@ -134,7 +134,7 @@ export default function EmployeeList() {
           return roleIsLoading ? (
             <>Loading...</>
           ) : (
-            roleData?.data?.find((item) => item.RoleID === value?.RoleID)?.RoleDesc
+            roleData?.data?.find((item) => item.RoleId === value?.RoleId)?.RoleDesc
           );
         },
       },
@@ -160,9 +160,8 @@ export default function EmployeeList() {
         renderCell: function render({ row }) {
           return (
             <>
-              <EditButton hideText recordItemId={row.EmployeeId} />
-              <ShowButton hideText recordItemId={row.EmployeeId} />
-              <DeleteButton hideText recordItemId={row.EmployeeId} />
+              <EditButton hideText recordItemId={row.EmployeeID} />
+              <DeleteButton hideText recordItemId={row.EmployeeID} />
             </>
           ); 
         },
@@ -175,7 +174,7 @@ export default function EmployeeList() {
   );
 
   // Custom getRowId
-  const getRowId: GridRowIdGetter<IEmployee> = (row) => row.EmployeeId.toString();
+  const getRowId: GridRowIdGetter<IEmployee> = (row) => row.EmployeeID.toString();
 
   return (
     <List>
@@ -183,3 +182,7 @@ export default function EmployeeList() {
     </List>
   );
 }
+
+// Removed this
+// If needed copy the below line between <EditButton> and <DeleteButton>
+// <ShowButton hideText recordItemId={row.RoleID} />

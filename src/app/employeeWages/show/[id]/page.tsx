@@ -17,9 +17,17 @@ export default function EmployeeWageShow() {
 
   const record = data?.data;
 
-  const { data: categoryData, isLoading: categoryIsLoading } = useOne({
-    resource: "farmworkCategory",
-    id: record?.CategoryId || "",
+  const { data: employeeData, isLoading: employeeIsLoading } = useOne({
+    resource: "employee",
+    id: record?.EmployeeID || "",
+    queryOptions: {
+      enabled: !!record,
+    },
+  });
+
+  const { data: farmWorkData, isLoading: farmWorkIsLoading } = useOne({
+    resource: "farmwork",
+    id: record?.FarmWorkID || "",
     queryOptions: {
       enabled: !!record,
     },
@@ -31,17 +39,37 @@ export default function EmployeeWageShow() {
         <Typography variant="body1" fontWeight="bold">
           {"ID"}
         </Typography>
-        <TextField value={record?.FarmWorkID} />
+        <TextField value={record?.EmployeeWageID} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Title"}
         </Typography>
-        <TextField value={record?.FarmWorkDesc} />
+        {employeeIsLoading ? <>Loading...</> : <>{employeeData?.data?.FirstName + " " + employeeData?.data?.LastName}</>}
 
         <Typography variant="body1" fontWeight="bold">
           {"Category"}
         </Typography>
-        {categoryIsLoading ? <>Loading...</> : <>{categoryData?.data?.CategoryDesc}</>}
+        {farmWorkIsLoading ? <>Loading...</> : <>{farmWorkData?.data?.FarmWorkDesc}</>}
+
+        <Typography variant="body1" fontWeight="bold">
+          {"ID"}
+        </Typography>
+        <DateField value={record?.StartDate} />
+
+        <Typography variant="body1" fontWeight="bold">
+          {"ID"}
+        </Typography>
+        <DateField value={record?.Wage} />
+
+        <Typography variant="body1" fontWeight="bold">
+          {"ID"}
+        </Typography>
+        <TextField value={record?.Wage} />
+
+        <Typography variant="body1" fontWeight="bold">
+          {"ID"}
+        </Typography>
+        <TextField value={record?.WageUnit} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Active"}

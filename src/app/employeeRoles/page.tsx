@@ -42,7 +42,7 @@ export default function EmployeeRoleList() {
         minWidth: 150,
       },
       {
-        field: "RoleDescription",
+        field: "RoleDesc",
         flex: 1,
         headerName: "Description",
         minWidth: 150,
@@ -70,7 +70,6 @@ export default function EmployeeRoleList() {
           return (
             <>
               <EditButton hideText recordItemId={row.RoleID} />
-              <ShowButton hideText recordItemId={row.RoleID} />
               <DeleteButton hideText recordItemId={row.RoleID} />
             </>
           );
@@ -92,3 +91,7 @@ export default function EmployeeRoleList() {
     </List>
   );
 }
+
+// Removed this
+// If needed copy the below line between <EditButton> and <DeleteButton>
+// <ShowButton hideText recordItemId={row.RoleID} />

@@ -19,7 +19,7 @@ export default function FarmWorkEdit() {
   const farmWorksData = queryResult?.data?.data;
 
   const { autocompleteProps: categoryAutocompleteProps } = useAutocomplete({
-    resource: "farmworksCategory",
+    resource: "farmworkCategory",
     defaultValue: farmWorksData?.CategoryId,
   });
 

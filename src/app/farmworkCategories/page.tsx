@@ -12,6 +12,14 @@ import {
 } from "@refinedev/mui";
 import React from "react";
 
+interface IFarmWorkCategory {
+  CategoryId: number,
+  CategoryDesc: string,
+  IsActive: number,
+  UpdatedBy: string,
+  UpdatedOn: Date
+}
+
 export default function FarmworkCategoryList() {
   const { dataGridProps } = useDataGrid({
     pagination: {
@@ -65,7 +73,6 @@ export default function FarmworkCategoryList() {
           return (
             <>
               <EditButton hideText recordItemId={row.CategoryId} />
-              <ShowButton hideText recordItemId={row.CategoryId} />
               <DeleteButton hideText recordItemId={row.CategoryId} />
             </>
           );
@@ -79,7 +86,7 @@ export default function FarmworkCategoryList() {
   );
 
   // Custom getRowId
-  const getRowId: GridRowIdGetter<FarmworkCategory> = (row) => row.CategoryId.toString();
+  const getRowId: GridRowIdGetter<IFarmWorkCategory> = (row) => row.CategoryId?.toString();
 
   return (
     <List>
@@ -87,3 +94,7 @@ export default function FarmworkCategoryList() {
     </List>
   );
 }
+
+// Removed this
+// If needed copy the below line between <EditButton> and <DeleteButton>
+// <ShowButton hideText recordItemId={row.RoleID} />
