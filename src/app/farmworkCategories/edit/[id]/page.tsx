@@ -1,16 +1,16 @@
 "use client";
 
-import { Box, TextField } from "@mui/material";
+import { Box, TextField, Switch } from "@mui/material";
 import { Edit } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 
-export default function CategoryEdit() {
+export default function FarmworkCategoryEdit() {
   const {
     saveButtonProps,
     register,
     formState: { errors },
   } = useForm({});
-
+ 
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <Box
@@ -19,17 +19,17 @@ export default function CategoryEdit() {
         autoComplete="off"
       >
         <TextField
-          {...register("title", {
+          {...register("categoryDesc", {
             required: "This field is required",
           })}
-          error={!!(errors as any)?.title}
-          helperText={(errors as any)?.title?.message}
+          error={!!(errors as any)?.categoryDesc}
+          helperText={(errors as any)?.categoryDesc?.message}
           margin="normal"
-          fullWidth
+          fullWidth 
           InputLabelProps={{ shrink: true }}
           type="text"
-          label={"Title"}
-          name="title"
+          label={"Description"} 
+          name="categoryDesc"
         />
       </Box>
     </Edit>
