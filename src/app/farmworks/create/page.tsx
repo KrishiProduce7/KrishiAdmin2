@@ -41,7 +41,7 @@ export default function FarmWorkCreate() {
         />
         <Controller
           control={control}
-          name={"categoryId"}
+          name="categoryId"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -50,25 +50,25 @@ export default function FarmWorkCreate() {
               {...categoryAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.CategoryId);
+                field.onChange(value.categoryId);
               }} 
               getOptionLabel={(item) => {
                 return (
                   categoryAutocompleteProps?.options?.find((p) => {
                     const itemId =
                       typeof item === "object"
-                        ? item?.CategoryId?.toString()
+                        ? item?.categoryId?.toString()
                         : item?.toString();
-                    const pId = p?.CategoryId?.toString();
+                    const pId = p?.categoryId?.toString();
                     return itemId === pId;
-                  })?.CategoryDesc ?? ""
+                  })?.categoryDesc ?? ""
                 );
               }}
               isOptionEqualToValue={(option, value) => {
-                const optionId = option?.CategoryId?.toString();
+                const optionId = option?.categoryId?.toString();
                 const valueId =
                   typeof value === "object"
-                    ? value?.CategoryId?.toString()
+                    ? value?.categoryId?.toString()
                     : value?.toString();
                 return value === undefined || optionId === valueId;
               }}

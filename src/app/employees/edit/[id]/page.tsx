@@ -85,7 +85,7 @@ export default function EmployeeEdit() {
         />
         <Controller
           control={control}
-          name={"dob"}
+          name="dob"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -140,7 +140,7 @@ export default function EmployeeEdit() {
         />
         <Controller
           control={control}
-          name={"state"}
+          name="state"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -199,7 +199,7 @@ export default function EmployeeEdit() {
         />
         <Controller
           control={control}
-          name={"startDate"}
+          name="startDate"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -228,8 +228,7 @@ export default function EmployeeEdit() {
         />
         <Controller
           control={control}
-          name={"endDate"}
-          rules={{ required: "This field is required" }}
+          name="endDate"
           // eslint-disable-next-line
           defaultValue={null as any}
           render={({ field }) => (
@@ -248,7 +247,6 @@ export default function EmployeeEdit() {
                     variant="outlined" 
                     error={!!(errors as any)?.endDate} 
                     helperText={(errors as any)?.endDate?.message}
-                    required
                   />
                 )}
                 inputFormat="MM/dd/yyyy"
@@ -258,7 +256,7 @@ export default function EmployeeEdit() {
         />
         <Controller
           control={control}
-          name={"roleId"}
+          name="roleId"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -267,25 +265,25 @@ export default function EmployeeEdit() {
               {...roleAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.RoleId);
+                field.onChange(value.roleId);
               }} 
               getOptionLabel={(item) => {
                 return (
                   roleAutocompleteProps?.options?.find((p) => {
                     const itemId =
                       typeof item === "object"
-                        ? item?.RoleId?.toString()
+                        ? item?.roleId?.toString()
                         : item?.toString();
-                    const pId = p?.RoleId?.toString();
+                    const pId = p?.roleId?.toString();
                     return itemId === pId;
-                  })?.RoleDesc ?? ""
+                  })?.roleDesc ?? ""
                 );
               }}
               isOptionEqualToValue={(option, value) => {
-                const optionId = option?.RoleId?.toString();
+                const optionId = option?.roleId?.toString();
                 const valueId =
                   typeof value === "object"   
-                    ? value?.RoleId?.toString()
+                    ? value?.roleId?.toString()
                     : value?.toString();
                 return value === undefined || optionId === valueId;
               }}

@@ -36,7 +36,7 @@ export default function EmployeeWageEdit() {
       >
         <Controller
           control={control}
-          name={"startDate"}
+          name="startDate"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -44,14 +44,14 @@ export default function EmployeeWageEdit() {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 {...field}
-                label="StartDate"
+                label="Start Date"
                 onChange={(value) => {
                   field.onChange(value);
                 }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label={"StartDate"} 
+                    label={"Start Date"} 
                     margin="normal"
                     variant="outlined" 
                     error={!!(errors as any)?.startDate} 

@@ -19,7 +19,7 @@ export default function EmployeeWageShow() {
 
   const { data: employeeData, isLoading: employeeIsLoading } = useOne({
     resource: "employee",
-    id: record?.EmployeeId || "",
+    id: record?.employeeId || "",
     queryOptions: {
       enabled: !!record,
     },
@@ -27,7 +27,7 @@ export default function EmployeeWageShow() {
 
   const { data: farmWorkData, isLoading: farmWorkIsLoading } = useOne({
     resource: "farmwork",
-    id: record?.FarmWorkId || "",
+    id: record?.farmWorkId || "",
     queryOptions: {
       enabled: !!record,
     },
@@ -39,32 +39,32 @@ export default function EmployeeWageShow() {
         <Typography variant="body1" fontWeight="bold">
           {"ID"}
         </Typography>
-        <TextField value={record?.EmployeeWageID} />
+        <TextField value={record?.EmployeewageId} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Title"}
         </Typography>
-        {employeeIsLoading ? <>Loading...</> : <>{employeeData?.data?.FirstName + " " + employeeData?.data?.LastName}</>}
+        {employeeIsLoading ? <>Loading...</> : <>{employeeData?.data?.firstName + " " + employeeData?.data?.lastName}</>}
 
         <Typography variant="body1" fontWeight="bold">
           {"Category"}
         </Typography>
-        {farmWorkIsLoading ? <>Loading...</> : <>{farmWorkData?.data?.FarmWorkDesc}</>}
+        {farmWorkIsLoading ? <>Loading...</> : <>{farmWorkData?.data?.farmWorkDesc}</>}
 
         <Typography variant="body1" fontWeight="bold">
           {"ID"}
         </Typography>
-        <DateField value={record?.StartDate} />
+        <DateField value={record?.startDate} />
 
         <Typography variant="body1" fontWeight="bold">
           {"ID"}
         </Typography>
-        <DateField value={record?.Wage} />
+        <DateField value={record?.wage} />
 
         <Typography variant="body1" fontWeight="bold">
           {"ID"}
         </Typography>
-        <TextField value={record?.Wage} />
+        <TextField value={record?.wage} />
 
         <Typography variant="body1" fontWeight="bold">
           {"ID"}
@@ -74,17 +74,17 @@ export default function EmployeeWageShow() {
         <Typography variant="body1" fontWeight="bold">
           {"Active"}
         </Typography>
-        <BooleanField value={record?.IsActive} />
+        <BooleanField value={record?.isActive} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Status"}
         </Typography>
-        <TextField value={record?.UpdatedBy} />
+        <TextField value={record?.updatedBy} />
 
         <Typography variant="body1" fontWeight="bold">
           {"CreatedAt"}
         </Typography>
-        <DateField value={record?.UpdatedOn} />
+        <DateField value={record?.updatedOn} />
       </Stack>
     </Show>
   );

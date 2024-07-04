@@ -41,7 +41,7 @@ export default function EmployeeTimeclockEdit() {
       >
         <Controller
           control={control}
-          name={"clockIn"}
+          name="ClockIn"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -59,8 +59,8 @@ export default function EmployeeTimeclockEdit() {
                     label={"Clock In"} 
                     margin="normal"
                     variant="outlined" 
-                    error={!!(errors as any)?.clockIn} 
-                    helperText={(errors as any)?.clockIn?.message}
+                    error={!!(errors as any)?.ClockIn} 
+                    helperText={(errors as any)?.ClockIn?.message}
                     required
                   />
                 )}
@@ -71,7 +71,7 @@ export default function EmployeeTimeclockEdit() {
         />
         <Controller
           control={control}
-          name={"clockOut"}
+          name="ClockOut"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -89,8 +89,8 @@ export default function EmployeeTimeclockEdit() {
                     label={"Clock Out"} 
                     margin="normal"
                     variant="outlined" 
-                    error={!!(errors as any)?.clockOut} 
-                    helperText={(errors as any)?.clockOut?.message}
+                    error={!!(errors as any)?.ClockOut} 
+                    helperText={(errors as any)?.ClockOut?.message}
                     required
                   />
                 )}

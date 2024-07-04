@@ -17,27 +17,27 @@ export default function FarmworkCategoryShow() {
         <Typography variant="body1" fontWeight="bold">
           {"Id"}
         </Typography>
-        <TextField value={record?.CategoryId} />
+        <TextField value={record?.categoryId} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Description"}
         </Typography>
-        <TextField value={record?.CategoryDesc} />
+        <TextField value={record?.categoryDesc} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Active"}
         </Typography>
-        <BooleanField value={record?.IsActive} />
+        <BooleanField value={record?.isActive} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Updated By"}
         </Typography>
-        <TextField value={record?.UpdatedBy} />
+        <TextField value={record?.updatedBy} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Updated On"}
-        </Typography>
-        <DateField value={record?.UpdatedOn} />
+        </Typography> 
+        <DateField value={record?.updatedOn} />
       </Stack>
     </Show>
   );

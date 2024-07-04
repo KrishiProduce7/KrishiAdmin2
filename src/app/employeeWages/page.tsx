@@ -15,15 +15,15 @@ import {
 import React from "react";
 
 interface IEmployeeWage {
-  WageId: number;
-  EmployeeId: number;
-  FarmWorkId: number;
-  StartDate: Date;
-  EndDate: Date;
-  Wage: number;
-  WageUOM: string;
-  UpdatedBy: string;
-  UpdatedOn: Date;
+  wageId: number;
+  employeeId: number;
+  farmWorkId: number;
+  startDate: Date;
+  endDate: Date;
+  wage: number;
+  wageUom: string;
+  updatedBy: string;
+  updatedOn: Date;
 }
 
 export default function EmployeeList() {
@@ -45,48 +45,48 @@ export default function EmployeeList() {
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
-        field: "WageId",
+        field: "wageId",
         headerName: "Id",
         type: "number",
         minWidth: 50,
       },
       {
-        field: "EmployeeId",
+        field: "employeeId",
         flex: 1,
         headerName: "Employee",
         minWidth: 50,
         valueGetter: ({ row }) => {
-          const value = row?.EmployeeId;
+          const value = row?.employeeId;
           return value;
         },
         renderCell: function render({ value }) {
           return employeeIsLoading ? (
             <>Loading...</>
           ) : (
-            employeeData?.data?.find((item) => item.EmployeeId.toString() === value.toString())?.FirstName + " " 
-            + employeeData?.data?.find((item) => item.EmployeeId.toString() === value.toString())?.LastName
+            employeeData?.data?.find((item) => item.employeeId.toString() === value.toString())?.firstName + " " 
+            + employeeData?.data?.find((item) => item.employeeId.toString() === value.toString())?.lastName
           );
         },
       },
       {
-        field: "FarmWorkId",
+        field: "farmWorkId",
         flex: 1,      
         headerName: "Farm Work",
         minWidth: 50,
         valueGetter: ({ row }) => {
-          const value = row?.FarmWorkId;
+          const value = row?.farmWorkId;
           return value;
         },
         renderCell: function render({ value }) {
           return farmworkIsLoading ? ( 
             <>Loading...</>
           ) : (
-            farmworkData?.data?.find((item) => item.FarmWorkId.toString() === value.toString())?.FarmWorkDesc ?? ""
+            farmworkData?.data?.find((item) => item.farmWorkId.toString() === value.toString())?.farmWorkDesc ?? ""
           );
         },
       },
       {
-        field: "StartDate",
+        field: "startDate",
         flex: 1,
         headerName: "Start Date",
         minWidth: 50,
@@ -95,7 +95,7 @@ export default function EmployeeList() {
         },
       },
       {
-        field: "EndDate",
+        field: "endDate",
         flex: 1,
         headerName: "End Date",
         minWidth: 50,
@@ -104,19 +104,19 @@ export default function EmployeeList() {
         },
       },
       {
-        field: "Wage",
+        field: "wage",
         headerName: "Wage",
         type: "number",
         minWidth: 80,
       },
       {
-        field: "WageUOM",
+        field: "wageUom",
         headerName: "Wage Unit",
         type: "string",
         minWidth: 100,
       },
       {
-        field: "IsActive",
+        field: "isActive",
         flex: 1,
         headerName: "Active",
         minWidth: 50, 
@@ -125,13 +125,13 @@ export default function EmployeeList() {
         },
       },
       {
-        field: "UpdatedBy",
+        field: "updatedBy",
         flex: 1,
         headerName: "Updated By",
         minWidth: 200,
       },
       { 
-        field: "UpdatedOn",
+        field: "updatedOn",
         flex: 1,
         headerName: "Updated On",
         minWidth: 150,
@@ -146,8 +146,8 @@ export default function EmployeeList() {
         renderCell: function render({ row }) {
           return (
             <>
-              <EditButton hideText recordItemId={row.WageId} />
-              <DeleteButton hideText recordItemId={row.WageId} />
+              <EditButton hideText recordItemId={row.wageId} />
+              <DeleteButton hideText recordItemId={row.wageId} />
             </>
           );
         },
@@ -160,7 +160,7 @@ export default function EmployeeList() {
   );
 
   // Custom getRowId
-  const getRowId: GridRowIdGetter<IEmployeeWage> = (row) => row.WageId.toString();
+  const getRowId: GridRowIdGetter<IEmployeeWage> = (row) => row.wageId.toString();
 
   return (
     <List>
@@ -171,4 +171,4 @@ export default function EmployeeList() {
 
 // Removed this
 // If needed copy the below line between <EditButton> and <DeleteButton>
-// <ShowButton hideText recordItemId={row.RoleId} />
+// <ShowButton hideText recordItemId={row.roleId} />

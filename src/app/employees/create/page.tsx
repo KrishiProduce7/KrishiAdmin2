@@ -84,7 +84,7 @@ export default function EmployeeCreate() {
         />
         <Controller
           control={control}
-          name={"dob"}
+          name="dob"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -142,7 +142,7 @@ export default function EmployeeCreate() {
         />
         <Controller
           control={control}
-          name={"state"}
+          name="state"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -201,7 +201,7 @@ export default function EmployeeCreate() {
         />
         <Controller
           control={control}
-          name={"startDate"}
+          name="startDate"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -209,14 +209,14 @@ export default function EmployeeCreate() {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 {...field}
-                label="StartDate"
+                label="Start Date"
                 onChange={(value) => {
                   field.onChange(value);
                 }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label={"StartDate"} 
+                    label={"Start Date"} 
                     margin="normal"
                     variant="outlined" 
                     error={!!(errors as any)?.startDate} 
@@ -231,7 +231,7 @@ export default function EmployeeCreate() {
         />
         <Controller
           control={control}
-          name={"roleId"}
+          name="roleId"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -240,25 +240,25 @@ export default function EmployeeCreate() {
               {...roleAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.RoleId);
+                field.onChange(value.roleId);
               }} 
               getOptionLabel={(item) => {
                 return (
                   roleAutocompleteProps?.options?.find((p) => {
                     const itemId =
                       typeof item === "object"
-                        ? item?.RoleId?.toString()
+                        ? item?.roleId?.toString()
                         : item?.toString();
-                    const pId = p?.RoleId?.toString();
+                    const pId = p?.roleId?.toString();
                     return itemId === pId;
-                  })?.RoleDesc ?? ""
+                  })?.roleDesc ?? ""
                 );
               }}
               isOptionEqualToValue={(option, value) => {
-                const optionId = option?.RoleId?.toString();
+                const optionId = option?.roleId?.toString();
                 const valueId =
                   typeof value === "object"   
-                    ? value?.RoleId?.toString()
+                    ? value?.roleId?.toString()
                     : value?.toString();
                 return value === undefined || optionId === valueId;
               }}

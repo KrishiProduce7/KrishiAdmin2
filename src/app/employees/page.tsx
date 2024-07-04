@@ -15,16 +15,16 @@ import {
 import React from "react";
 
 interface IEmployee {
-  EmployeeId: number;
-  FirstName: string;
-  LastName: string;
-  Mobile: string;
-  DOB: Date;
-  StartDate: Date;
-  EndDate: Date;
-  RoleId: number;
-  UpdatedBy: string;
-  UpdatedOn: Date;
+  employeeId: number;
+  firstName: string;
+  lastName: string;
+  mobile: string;
+  dob: Date;
+  startDate: Date;
+  endDate: Date;
+  roleId: number;
+  updatedBy: string;
+  updatedOn: Date;
 }
 
 export default function EmployeeList() {
@@ -42,37 +42,37 @@ export default function EmployeeList() {
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
-        field: "EmployeeId",
+        field: "employeeId",
         headerName: "Id",
         type: "number",
         minWidth: 50,
       },
       {
-        field: "FirstName",
+        field: "firstName",
         flex: 1,
         headerName: "First Name",
         minWidth: 100,
       },
       {
-        field: "LastName",
+        field: "lastName",
         flex: 1,
         headerName: "Last Name",
         minWidth: 100,
       },
       {
-        field: "Email",
+        field: "email",
         flex: 1,
         headerName: "Email",
         minWidth: 150,
       },
       {
-        field: "Mobile",
+        field: "mobile",
         flex: 1,
         headerName: "Mobile",
         minWidth: 100,
       },
       {
-        field: "DOB",
+        field: "dob",
         flex: 1,
         headerName: "DOB",
         minWidth: 100,
@@ -81,31 +81,31 @@ export default function EmployeeList() {
         },
       },
       {
-        field: "Street",
+        field: "street",
         flex: 1,
         headerName: "Street",
         minWidth: 100,
       },
       {
-        field: "City",
+        field: "city",
         flex: 1,
         headerName: "City",
         minWidth: 100,
       },
       {
-        field: "State",
+        field: "state",
         flex: 1,
         headerName: "State",
         minWidth: 100,
       },
       {
-        field: "Zip",
+        field: "zip",
         flex: 1,
         headerName: "Zip",
         minWidth: 100,
       },
       {
-        field: "StartDate",
+        field: "startDate",
         flex: 1,
         headerName: "Start Date",
         minWidth: 100,
@@ -114,7 +114,7 @@ export default function EmployeeList() {
         },
       },
       {
-        field: "EndDate",
+        field: "endDate",
         flex: 1,
         headerName: "End Date",
         minWidth: 100,
@@ -123,27 +123,24 @@ export default function EmployeeList() {
         },
       },
       {
-        field: "RoleId",
+        field: "roleId",
         flex: 1,
         headerName: "Role",
         minWidth: 100,
         valueGetter: ({ row }) => {
-          const value = row?.RoleId;
-          console.log("employee valuegetter", value);
+          const value = row?.roleId;
           return value;
         },
         renderCell: function render({ value }) {
-          console.log("employee renderCell", value);
- 
           return roleIsLoading ? (
             <>Loading...</>
           ) : (
-            roleData?.data?.find((item) => item.RoleId?.toString() === value?.toString())?.RoleDesc ?? "" 
+            roleData?.data?.find((item) => item.roleId?.toString() === value?.toString())?.roleDesc ?? "" 
           );
         },
       },
       {
-        field: "IsActive",
+        field: "isActive",
         flex: 1,
         headerName: "Active",
         minWidth: 50, 
@@ -152,13 +149,13 @@ export default function EmployeeList() {
         },
       },
       {
-        field: "UpdatedBy",
+        field: "updatedBy",
         flex: 1,
         headerName: "Updated By",
         minWidth: 200,
       },
       {
-        field: "UpdatedOn",
+        field: "updatedOn",
         flex: 1,
         headerName: "Updated On",
         minWidth: 150,
@@ -173,8 +170,8 @@ export default function EmployeeList() {
         renderCell: function render({ row }) {
           return (
             <>
-              <EditButton hideText recordItemId={row.EmployeeId} />
-              <DeleteButton hideText recordItemId={row.EmployeeId} />
+              <EditButton hideText recordItemId={row.employeeId} />
+              <DeleteButton hideText recordItemId={row.employeeId} />
             </>
           ); 
         },
@@ -187,7 +184,7 @@ export default function EmployeeList() {
   );
 
   // Custom getRowId
-  const getRowId: GridRowIdGetter<IEmployee> = (row) => row.EmployeeId.toString();
+  const getRowId: GridRowIdGetter<IEmployee> = (row) => row.employeeId.toString();
 
   return (
     <List>
@@ -198,4 +195,4 @@ export default function EmployeeList() {
 
 // Removed this
 // If needed copy the below line between <EditButton> and <DeleteButton>
-// <ShowButton hideText recordItemId={row.RoleId} />
+// <ShowButton hideText recordItemId={row.roleId} />

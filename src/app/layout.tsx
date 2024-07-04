@@ -36,14 +36,14 @@ export default function RootLayout({
             <ColorModeContextProvider defaultMode={defaultMode}>
               <RefineSnackbarProvider>
                 <DevtoolsProvider>
-                  <Refine
+                  <Refine 
                     routerProvider={routerProvider}
                     dataProvider={dataProvider}
                     notificationProvider={notificationProvider}
                     authProvider={authProvider}
                     resources={[
                       {
-                        name: "farmworkCategory",
+                        name: "farmworkCategory",    
                         list: "/farmworkCategories",
                         create: "/farmworkCategories/create",
                         edit: "/farmworkCategories/edit/:id",
@@ -52,7 +52,7 @@ export default function RootLayout({
                           canDelete: true,
                           idName: "categoryId",
                           resources: "farmworksCategory",
-                          includeUserEmail: true,
+                          includeUseremail: true,
                         },
                       }, 
                       {
@@ -65,7 +65,7 @@ export default function RootLayout({
                           canDelete: true,
                           idName: "farmWorkId",
                           resources: "farmworks",
-                          includeUserEmail: true,
+                          includeUseremail: true,
                         },
                       },
                       {
@@ -78,7 +78,7 @@ export default function RootLayout({
                           canDelete: false,
                           idName: "roleId",
                           resources: "employeeRoles",
-                          includeUserEmail: true,
+                          includeUseremail: true,
                         },
                       },
                       {
@@ -91,7 +91,7 @@ export default function RootLayout({
                           canDelete: true,
                           idName: "employeeId",
                           resources: "employees",
-                          includeUserEmail: true,
+                          includeUseremail: true,
                         },
                       },
                       {
@@ -104,7 +104,7 @@ export default function RootLayout({
                           canDelete: true,
                           idName: "wageId",
                           resources: "employeeWages",
-                          includeUserEmail: true,
+                          includeUseremail: true,
                         },
                       },
                       {
@@ -117,7 +117,7 @@ export default function RootLayout({
                           canDelete: false,
                           idName: "timeclockId",
                           resources: "employeeTimeclocks",
-                          includeUserEmail: false,
+                          includeUseremail: false,
                         },
                       },
                     ]}

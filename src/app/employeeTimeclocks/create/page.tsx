@@ -44,7 +44,7 @@ export default function EmployeeTimeclockCreate() {
       >
         <Controller
           control={control}
-          name={"employeeId"}   
+          name="employeeId" 
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -53,32 +53,32 @@ export default function EmployeeTimeclockCreate() {
               {...employeeAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.EmployeeId);
+                field.onChange(value.employeeId);
               }}  
               getOptionLabel={(item) => {
                 return (
                   employeeAutocompleteProps?.options?.find((p) => {
                     const itemId =
                       typeof item === "object"
-                        ? item?.EmployeeId?.toString()
+                        ? item?.employeeId?.toString()
                         : item?.toString();
-                    const pId = p?.EmployeeId?.toString();
+                    const pId = p?.employeeId?.toString();
                     return itemId === pId;
-                  })?.FirstName + " " + employeeAutocompleteProps?.options?.find((p) => {
+                  })?.firstName + " " + employeeAutocompleteProps?.options?.find((p) => {
                     const itemId =
                       typeof item === "object"
-                        ? item?.EmployeeId?.toString()
+                        ? item?.employeeId?.toString()
                         : item?.toString();
-                    const pId = p?.EmployeeId?.toString();
+                    const pId = p?.employeeId?.toString();
                     return itemId === pId;
-                  })?.LastName ?? ""
+                  })?.lastName ?? ""
                 );
               }}
               isOptionEqualToValue={(option, value) => {
-                const optionId = option?.EmployeeId?.toString();
+                const optionId = option?.employeeId?.toString();
                 const valueId =
                   typeof value === "object"
-                    ? value?.EmployeeId?.toString()
+                    ? value?.employeeId?.toString()
                     : value?.toString();
                 return value === undefined || optionId === valueId;
               }}
@@ -98,7 +98,7 @@ export default function EmployeeTimeclockCreate() {
         />
         <Controller
           control={control}
-          name={"farmworkId"}
+          name="farmWorkId"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -107,25 +107,25 @@ export default function EmployeeTimeclockCreate() {
               {...farmworkAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.FarmWorkId);
+                field.onChange(value.farmWorkId);
               }} 
               getOptionLabel={(item) => {
                 return (
                   farmworkAutocompleteProps?.options?.find((p) => {
                     const itemId =
                       typeof item === "object"
-                        ? item?.FarmWorkId?.toString()
+                        ? item?.farmWorkId?.toString()
                         : item?.toString();
-                    const pId = p?.FarmWorkId?.toString();
+                    const pId = p?.farmWorkId?.toString();
                     return itemId === pId;
-                  })?.FarmWorkDesc ?? ""
+                  })?.farmWorkDesc ?? ""
                 );
               }}
               isOptionEqualToValue={(option, value) => {
-                const optionId = option?.FarmWorkId?.toString();
+                const optionId = option?.farmWorkId?.toString();
                 const valueId =
                   typeof value === "object"
-                    ? value?.FarmWorkId?.toString()
+                    ? value?.farmWorkId?.toString()
                     : value?.toString();
                 return value === undefined || optionId === valueId;
               }}
@@ -135,8 +135,8 @@ export default function EmployeeTimeclockCreate() {
                   label={"Farm Work"}
                   margin="normal"
                   variant="outlined" 
-                  error={!!(errors as any)?.farmworkId} 
-                  helperText={(errors as any)?.farmworkId?.message}
+                  error={!!(errors as any)?.farmWorkId} 
+                  helperText={(errors as any)?.farmWorkId?.message}
                   required
                 />
               )}
@@ -144,36 +144,36 @@ export default function EmployeeTimeclockCreate() {
           )}
         />
         <TextField
-          {...register("clockinGeo", {
+          {...register("clockInGeo", {
             required: "This field is required",
           })}
           value={clockInGeo?.toString()}
-          error={!!(errors as any)?.clockinGeo}
-          helperText={(errors as any)?.clockinGeo?.message}
+          error={!!(errors as any)?.clockInGeo}
+          helperText={(errors as any)?.clockInGeo?.message}
           margin="normal"
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="text"
           label={"Clock In Geolocation"}
-          name="clockinGeo"
+          name="clockInGeo"
         />
         <TextField
-          {...register("clockoutGeo", {
+          {...register("clockOutGeo", {
             required: "This field is required",
           })}
           value={clockOutGeo?.toString()}
-          error={!!(errors as any)?.clockoutGeo}
-          helperText={(errors as any)?.clockoutGeo?.message}
+          error={!!(errors as any)?.clockOutGeo}
+          helperText={(errors as any)?.clockOutGeo?.message}
           margin="normal"
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="text"
           label={"Clock Out Geolocation"}
-          name="clockoutGeo"
+          name="clockOutGeo"
         />
         <Controller
           control={control}
-          name={"clockIn"}
+          name="ClockIn"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -191,19 +191,19 @@ export default function EmployeeTimeclockCreate() {
                     label={"Clock In"} 
                     margin="normal"
                     variant="outlined" 
-                    error={!!(errors as any)?.clockIn} 
-                    helperText={(errors as any)?.clockIn?.message}
+                    error={!!(errors as any)?.ClockIn} 
+                    helperText={(errors as any)?.ClockIn?.message}
                     required
                   />
                 )}
-                inputFormat="MM/dd/yyyy hh:mm"
+                inputFormat="yyyy/MM/dd hh:mm:ss"
               />
             </LocalizationProvider>
           )}
         />
         <Controller
           control={control}
-          name={"clockOut"}
+          name="ClockOut"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -221,12 +221,12 @@ export default function EmployeeTimeclockCreate() {
                     label={"Clock Out"} 
                     margin="normal"
                     variant="outlined" 
-                    error={!!(errors as any)?.clockOut} 
-                    helperText={(errors as any)?.clockOut?.message}
+                    error={!!(errors as any)?.ClockOut} 
+                    helperText={(errors as any)?.ClockOut?.message}
                     required
                   />
                 )}
-                inputFormat="MM/dd/yyyy hh:mm"
+                inputFormat="yyyy/MM/dd hh:mm:ss"
               />
             </LocalizationProvider>
           )}

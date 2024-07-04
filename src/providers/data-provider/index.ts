@@ -10,6 +10,19 @@ type MethodTypesWithBody = "post" | "put" | "patch";
 
 const API_URL = "https://xigc25n7ga.execute-api.us-east-2.amazonaws.com/Krishi";
 
+// function convertKeysToLowercase<T>(obj: T): T {
+//   if (Array.isArray(obj)) {
+//       return obj.map(item => convertKeysToLowercase(item)) as unknown as T;
+//   } else if (obj !== null && typeof obj === 'object') {
+//       return Object.keys(obj).reduce((acc, key) => {
+//           const newKey = key.charAt(0).toLowerCase() + key.slice(1);
+//           (acc as any)[newKey] = convertKeysToLowercase((obj as any)[key]);
+//           return acc;
+//       }, {} as T);
+//   }
+//   return obj;
+// }
+   
 const farmWorkDataProvider = (
   apiUrl: string,
   httpClient: AxiosInstance = axiosInstance,
@@ -72,12 +85,15 @@ const farmWorkDataProvider = (
     const auth = Cookies.get("auth") ?? "";
     const user = JSON.parse(auth);
 
-    const params = {
+    let params = {
       ...variables,
     };
 
-    if (meta?.includeUserEmail && user?.email) {
-      params["userEmail"] = user.email;
+    if (meta?.includeUseremail && user?.email) {
+      params = {
+        ...params,
+        userEmail: user.email
+      }
     }
 
     const { headers, method } = meta ?? {};
@@ -103,14 +119,19 @@ const farmWorkDataProvider = (
     const auth = Cookies.get("auth") ?? "";
     const user = JSON.parse(auth);
 
-    const params = {   
+    let params = {
       ...variables,
     };
 
-    if (meta?.includeUserEmail && user?.email) {
-      params["userEmail"] = user.email;
+    if (meta?.includeUseremail && user?.email) {
+      params = {
+        ...params,
+        userEmail: user.email
+      }
     }
-    
+
+    console.log("value", params);
+
     const { data } = await httpClient[requestMethod](url, {}, {
       headers,
       params,

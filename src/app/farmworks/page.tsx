@@ -10,23 +10,24 @@ import {
   MarkdownField,
   ShowButton,
   useDataGrid,
+  BooleanField,
 } from "@refinedev/mui";
 import React from "react";
 
 interface IFarmWork {
-  FarmWorkId: number;
-  FarmWorkDesc: string;
-  CategoryId: number;
-  IsActive: number;
-  UpdatedBy: string;
-  UpdatedOn: Date;
+  farmWorkId: number;
+  farmWorkDesc: string;
+  categoryId: number;
+  isActive: number;
+  updatedBy: string;
+  updatedOn: Date;
 }
 
 export default function FarmWorkList() {
   const { dataGridProps } = useDataGrid({
     syncWithLocation: true,
     pagination: {
-      mode: "client",
+      mode: "client", 
     }
   });
  
@@ -37,30 +38,30 @@ export default function FarmWorkList() {
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
-        field: "FarmWorkId",
+        field: "farmWorkId",
         headerName: "Id",
         type: "number",
         minWidth: 50,
       },
       {
-        field: "CategoryId",
+        field: "categoryId",
         flex: 1,
         headerName: "Category",
         minWidth: 100,
         valueGetter: ({ row }) => {
-          const value = row?.CategoryId;
+          const value = row?.categoryId;
           return value;
         },
         renderCell: function render({ value }) {
           return categoryIsLoading ? (
             <>Loading...</>
           ) : (
-            categoryData?.data?.find((item) => item.CategoryId.toString() === value.toString())?.CategoryDesc ?? ""
+            categoryData?.data?.find((item) => item.categoryId.toString() === value.toString())?.categoryDesc ?? ""
           );
         },
       },
       {
-        field: "FarmWorkDesc",
+        field: "farmWorkDesc",
         flex: 1,
         headerName: "Description",
         minWidth: 150,
@@ -70,13 +71,22 @@ export default function FarmWorkList() {
         },
       },
       {
-        field: "UpdatedBy",
+        field: "isActive",
+        flex: 1,
+        headerName: "Active",
+        minWidth: 50, 
+        renderCell: function render({ value }) {
+          return <BooleanField value={value} />;
+        },
+      },
+      {
+        field: "updatedBy",
         flex: 1,
         headerName: "Updated By",
         minWidth: 200,
       },
       {
-        field: "UpdatedOn",
+        field: "updatedOn",
         flex: 1,
         headerName: "Updated On",
         minWidth: 150,
@@ -91,8 +101,8 @@ export default function FarmWorkList() {
         renderCell: function render({ row }) {
           return (
             <>
-              <EditButton hideText recordItemId={row.FarmWorkId} />
-              <DeleteButton hideText recordItemId={row.FarmWorkId} />
+              <EditButton hideText recordItemId={row.farmWorkId} />
+              <DeleteButton hideText recordItemId={row.farmWorkId} />
             </>
           );
         },
@@ -105,7 +115,7 @@ export default function FarmWorkList() {
   );
 
   // Custom getRowId
-  const getRowId: GridRowIdGetter<IFarmWork> = (row) => row.FarmWorkId.toString();
+  const getRowId: GridRowIdGetter<IFarmWork> = (row) => row.farmWorkId.toString();
 
   return (
     <List>
@@ -117,4 +127,4 @@ export default function FarmWorkList() {
 
 // Removed this
 // If needed copy the below line between <EditButton> and <DeleteButton>
-// <ShowButton hideText recordItemId={row.RoleId} />
+// <ShowButton hideText recordItemId={row.roleId} />

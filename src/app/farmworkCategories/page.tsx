@@ -13,11 +13,11 @@ import {
 import React from "react";
 
 interface IFarmWorkCategory {
-  CategoryId: number,
-  CategoryDesc: string,
-  IsActive: number,
-  UpdatedBy: string,
-  UpdatedOn: Date
+  categoryId: number,
+  categoryDesc: string,
+  isActive: number,
+  updatedBy: string,
+  updatedOn: Date
 }
 
 export default function FarmworkCategoryList() {
@@ -30,19 +30,19 @@ export default function FarmworkCategoryList() {
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
-        field: "CategoryId",
+        field: "categoryId",
         headerName: "Id",
         type: "number",
         minWidth: 30,
       },
       {
-        field: "CategoryDesc",
+        field: "categoryDesc",
         flex: 1,
         headerName: "Description",
         minWidth: 150,
       },
       {
-        field: "IsActive",
+        field: "isActive",
         flex: 1,
         headerName: "Active",
         minWidth: 50, 
@@ -51,13 +51,13 @@ export default function FarmworkCategoryList() {
         },
       },
       {
-        field: "UpdatedBy",
+        field: "updatedBy",
         flex: 1,
         headerName: "Updated By",
         minWidth: 200,
       },
       {
-        field: "UpdatedOn",
+        field: "updatedOn",
         flex: 1,
         headerName: "Updated On",
         minWidth: 150,
@@ -72,8 +72,8 @@ export default function FarmworkCategoryList() {
         renderCell: function render({ row }) {
           return (
             <>
-              <EditButton hideText recordItemId={row.CategoryId} />
-              <DeleteButton hideText recordItemId={row.CategoryId} />
+              <EditButton hideText recordItemId={row.categoryId} />
+              <DeleteButton hideText recordItemId={row.categoryId} />
             </>
           );
         },
@@ -86,7 +86,7 @@ export default function FarmworkCategoryList() {
   );
 
   // Custom getRowId
-  const getRowId: GridRowIdGetter<IFarmWorkCategory> = (row) => row.CategoryId?.toString();
+  const getRowId: GridRowIdGetter<IFarmWorkCategory> = (row) => row.categoryId?.toString();
 
   return (
     <List>
@@ -97,4 +97,4 @@ export default function FarmworkCategoryList() {
 
 // Removed this
 // If needed copy the below line between <EditButton> and <DeleteButton>
-// <ShowButton hideText recordItemId={row.RoleId} />
+// <ShowButton hideText recordItemId={row.roleId} />

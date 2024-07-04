@@ -14,11 +14,11 @@ import React from "react";
 
 interface IEmployeeRole
 {
-  RoleId: number;
-  RoleName: string;
+  roleId: number;
+  roleName: string;
   RoleDescription: string;
-  UpdatedBy: string;
-  UpdatedOn: string;
+  updatedBy: string;
+  updatedOn: string;
 }
 export default function EmployeeRoleList() {
   const { dataGridProps } = useDataGrid({
@@ -30,31 +30,31 @@ export default function EmployeeRoleList() {
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
-        field: "RoleId",
+        field: "roleId",
         headerName: "Id",
         type: "number",
         minWidth: 50,
       },
       {
-        field: "RoleName",
+        field: "roleName",
         flex: 1,
         headerName: "Role Name",
         minWidth: 150,
       },
       {
-        field: "RoleDesc",
+        field: "roleDesc",
         flex: 1,
         headerName: "Description",
         minWidth: 150,
       },
       {
-        field: "UpdatedBy",
+        field: "updatedBy",
         flex: 1,
         headerName: "Updated By",
         minWidth: 200,
       },
       {
-        field: "UpdatedOn",
+        field: "updatedOn",
         flex: 1,
         headerName: "Updated On",
         minWidth: 200,
@@ -69,7 +69,7 @@ export default function EmployeeRoleList() {
         renderCell: function render({ row }) {
           return (
             <>
-              <EditButton hideText recordItemId={row.RoleId} />
+              <EditButton hideText recordItemId={row.roleId} />
             </>
           );
         },
@@ -82,7 +82,7 @@ export default function EmployeeRoleList() {
   );
 
   // Custom getRowId
-  const getRowId: GridRowIdGetter<IEmployeeRole> = (row) => row.RoleId?.toString();
+  const getRowId: GridRowIdGetter<IEmployeeRole> = (row) => row.roleId?.toString();
 
   return (
     <List>
@@ -93,5 +93,5 @@ export default function EmployeeRoleList() {
 
 // Removed this
 // If needed copy the below line between <EditButton> and <DeleteButton>
-// <ShowButton hideText recordItemId={row.RoleId} />
-// <DeleteButton hideText recordItemId={row.RoleId} />
+// <ShowButton hideText recordItemId={row.roleId} />
+// <DeleteButton hideText recordItemId={row.roleId} />

@@ -35,7 +35,7 @@ export default function EmployeeWageCreate() {
       >
         <Controller
           control={control}
-          name={"employeeId"}
+          name="employeeId"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -44,32 +44,32 @@ export default function EmployeeWageCreate() {
               {...employeeAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.EmployeeId);
+                field.onChange(value.employeeId);
               }} 
               getOptionLabel={(item) => {
                 return (
                   employeeAutocompleteProps?.options?.find((p) => {
                     const itemId =
                       typeof item === "object"
-                        ? item?.EmployeeId?.toString()
+                        ? item?.employeeId?.toString()
                         : item?.toString();
-                    const pId = p?.EmployeeId?.toString();
+                    const pId = p?.employeeId?.toString();
                     return itemId === pId;
-                  })?.FirstName + " " + employeeAutocompleteProps?.options?.find((p) => {
+                  })?.firstName + " " + employeeAutocompleteProps?.options?.find((p) => {
                     const itemId =
                       typeof item === "object"
-                        ? item?.EmployeeId?.toString()
+                        ? item?.employeeId?.toString()
                         : item?.toString();
-                    const pId = p?.EmployeeId?.toString();
+                    const pId = p?.employeeId?.toString();
                     return itemId === pId;
-                  })?.LastName ?? ""
+                  })?.lastName ?? ""
                 );
               }}
               isOptionEqualToValue={(option, value) => {
-                const optionId = option?.EmployeeId?.toString();
+                const optionId = option?.employeeId?.toString();
                 const valueId =
                   typeof value === "object"
-                    ? value?.EmployeeId?.toString()
+                    ? value?.employeeId?.toString()
                     : value?.toString();
                 return value === undefined || optionId === valueId;
               }}
@@ -89,7 +89,7 @@ export default function EmployeeWageCreate() {
         />
         <Controller
           control={control}
-          name={"farmworkId"}
+          name="farmWorkId"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -98,25 +98,25 @@ export default function EmployeeWageCreate() {
               {...farmworkAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.FarmWorkId);
+                field.onChange(value.farmWorkId);
               }} 
               getOptionLabel={(item) => {
                 return (
                   farmworkAutocompleteProps.options?.find((p) => {
                     const itemId =
                       typeof item === "object"
-                        ? item?.FarmWorkId?.toString()
+                        ? item?.farmWorkId?.toString()
                         : item?.toString();
-                    const pId = p?.FarmWorkId?.toString();
+                    const pId = p?.farmWorkId?.toString();
                     return itemId === pId;
-                  })?.FarmWorkDesc ?? ""
+                  })?.farmWorkDesc ?? ""
                 );
               }}
               isOptionEqualToValue={(option, value) => {
-                const optionId = option?.FarmWorkId?.toString();
+                const optionId = option?.farmWorkId?.toString();
                 const valueId =
                   typeof value === "object"
-                    ? value?.FarmWorkId?.toString()
+                    ? value?.farmWorkId?.toString()
                     : value?.toString();
                 return value === undefined || optionId === valueId;
               }}
@@ -126,8 +126,8 @@ export default function EmployeeWageCreate() {
                   label={"FarmWork"}
                   margin="normal"
                   variant="outlined" 
-                  error={!!(errors as any)?.farmworkId} 
-                  helperText={(errors as any)?.farmworkId?.message}
+                  error={!!(errors as any)?.farmWorkId} 
+                  helperText={(errors as any)?.farmWorkId?.message}
                   required
                 />
               )}
@@ -136,7 +136,7 @@ export default function EmployeeWageCreate() {
         />
         <Controller
           control={control}
-          name={"startDate"}
+          name="startDate"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -180,8 +180,11 @@ export default function EmployeeWageCreate() {
         />
         <Controller
           name="wageUom"
+          rules={{ required: "This field is required" }}
           control={control}
+          defaultValue={null as any}
           render={({ field }) => {
+            console.log(field);
             return (
               <Select
                 {...field}

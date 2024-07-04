@@ -19,7 +19,7 @@ export default function EmployeeTimeclockShow() {
 
   const { data: categoryData, isLoading: categoryIsLoading } = useOne({
     resource: "farmworkCategory",
-    id: record?.CategoryId || "",
+    id: record?.categoryId || "",
     queryOptions: {
       enabled: !!record,
     },
@@ -31,32 +31,32 @@ export default function EmployeeTimeclockShow() {
         <Typography variant="body1" fontWeight="bold">
           {"ID"}
         </Typography>
-        <TextField value={record?.FarmWorkId} />
+        <TextField value={record?.farmWorkId} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Title"}
         </Typography>
-        <TextField value={record?.FarmWorkDesc} />
+        <TextField value={record?.farmWorkDesc} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Category"}
         </Typography>
-        {categoryIsLoading ? <>Loading...</> : <>{categoryData?.data?.CategoryDesc}</>}
+        {categoryIsLoading ? <>Loading...</> : <>{categoryData?.data?.categoryDesc}</>}
 
         <Typography variant="body1" fontWeight="bold">
           {"Active"}
         </Typography>
-        <BooleanField value={record?.IsActive} />
+        <BooleanField value={record?.isActive} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Status"}
         </Typography>
-        <TextField value={record?.UpdatedBy} />
+        <TextField value={record?.updatedBy} />
 
         <Typography variant="body1" fontWeight="bold">
           {"CreatedAt"}
         </Typography>
-        <DateField value={record?.UpdatedOn} />
+        <DateField value={record?.updatedOn} />
       </Stack>
     </Show>
   );

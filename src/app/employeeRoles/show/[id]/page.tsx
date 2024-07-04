@@ -17,27 +17,27 @@ export default function EmployeeRoleShow() {
         <Typography variant="body1" fontWeight="bold">
           {"Id"}
         </Typography>
-        <TextField value={record?.RoleId} />
+        <TextField value={record?.roleId} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Role Name"}
         </Typography>
-        <TextField value={record?.RoleName} />
+        <TextField value={record?.roleName} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Description"}
         </Typography>
-        <TextField value={record?.RoleDesc} />
+        <TextField value={record?.roleDesc} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Updated By"}
         </Typography>
-        <TextField value={record?.UpdatedBy} />
+        <TextField value={record?.updatedBy} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Updated On"}
         </Typography>
-        <DateField value={record?.UpdatedOn} />
+        <DateField value={record?.updatedOn} />
       </Stack>
     </Show>
   );
