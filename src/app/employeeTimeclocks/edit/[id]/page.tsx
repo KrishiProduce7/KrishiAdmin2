@@ -9,6 +9,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
+
 export default function EmployeeTimeclockEdit() {
   const {
     saveButtonProps,
@@ -41,7 +42,7 @@ export default function EmployeeTimeclockEdit() {
       >
         <Controller
           control={control}
-          name="ClockIn"
+          name="clockIn"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -59,19 +60,19 @@ export default function EmployeeTimeclockEdit() {
                     label={"Clock In"} 
                     margin="normal"
                     variant="outlined" 
-                    error={!!(errors as any)?.ClockIn} 
-                    helperText={(errors as any)?.ClockIn?.message}
+                    error={!!(errors as any)?.clockIn} 
+                    helperText={(errors as any)?.clockIn?.message}
                     required
                   />
                 )}
-                inputFormat="MM/dd/yyyy hh:mm"
+                inputFormat="yyyy/MM/dd hh:mm:ss"
               />
             </LocalizationProvider>
           )}
         />
         <Controller
           control={control}
-          name="ClockOut"
+          name="clockOut"
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -89,12 +90,12 @@ export default function EmployeeTimeclockEdit() {
                     label={"Clock Out"} 
                     margin="normal"
                     variant="outlined" 
-                    error={!!(errors as any)?.ClockOut} 
-                    helperText={(errors as any)?.ClockOut?.message}
+                    error={!!(errors as any)?.clockOut} 
+                    helperText={(errors as any)?.clockOut?.message}
                     required
                   />
                 )}
-                inputFormat="MM/dd/yyyy hh:mm"
+                inputFormat="yyyy/MM/dd hh:mm:ss"
               />
             </LocalizationProvider>
           )}

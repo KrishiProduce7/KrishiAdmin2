@@ -31,6 +31,7 @@ export default function FarmworkCategoryCreate() {
           type="text"
           label={"Description"}
           name="categoryDesc"
+          required  
         />
       </Box>
     </Create>

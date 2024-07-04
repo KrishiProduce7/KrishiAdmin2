@@ -31,6 +31,7 @@ export default function EmployeeRoleCreate() {
           type="text"
           label={"Role Name"}
           name="roleName"
+          required
         />
         <TextField
           {...register("roleDesc", {
@@ -44,6 +45,7 @@ export default function EmployeeRoleCreate() {
           type="text"
           label={"Description"}
           name="roleDesc"
+          required
         />
       </Box>
     </Create>

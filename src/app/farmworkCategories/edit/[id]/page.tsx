@@ -30,6 +30,7 @@ export default function FarmworkCategoryEdit() {
           type="text"
           label={"Description"} 
           name="categoryDesc"
+          required 
         />
       </Box>
     </Edit>

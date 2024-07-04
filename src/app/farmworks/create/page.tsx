@@ -38,6 +38,7 @@ export default function FarmWorkCreate() {
           type="text"
           label={"Description"}
           name="farmWorkDesc"
+          required
         />
         <Controller
           control={control}
@@ -80,6 +81,7 @@ export default function FarmWorkCreate() {
                   variant="outlined" 
                   error={!!(errors as any)?.categoryId} 
                   helperText={(errors as any)?.categoryId?.message}
+                  InputLabelProps={{ shrink: true }}
                   required
                 />
               )}

@@ -119,7 +119,7 @@ export default function EmployeeList() {
         headerName: "End Date",
         minWidth: 100,
         renderCell: function render({ value }) {
-          return <DateField value={value} />;
+          return <DateField value={value}/>;
         },
       },
       {

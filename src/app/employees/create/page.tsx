@@ -42,6 +42,7 @@ export default function EmployeeCreate() {
           type="text"
           label={"First Name"}
           name="firstName"
+          required
         />
         <TextField
           {...register("lastName", {
@@ -55,6 +56,7 @@ export default function EmployeeCreate() {
           type="text"
           label={"Last Name"}
           name="lastName"
+          required
         />
         <TextField
           {...register("email", {
@@ -68,11 +70,10 @@ export default function EmployeeCreate() {
           type="text"
           label={"Email"}
           name="email"
+          required
         />
         <TextField
-          {...register("mobile", {
-            required: "This field is required",
-          })}
+          {...register("mobile")}
           error={!!(errors as any)?.mobile}
           helperText={(errors as any)?.mobile?.message}
           margin="normal"
@@ -104,20 +105,17 @@ export default function EmployeeCreate() {
                     variant="outlined" 
                     error={!!(errors as any)?.dob} 
                     helperText={(errors as any)?.dob?.message}
+                    InputLabelProps={{shrink: true}}
                     required
                   />
                 )}
                 inputFormat="MM/dd/yyyy"
-                minDate={new Date('1900-01-01')}
-                maxDate={new Date('2023-12-31')}
               />
             </LocalizationProvider>
           )}
         />
         <TextField
-          {...register("street", {
-            required: "This field is required",
-          })}
+          {...register("street")}
           error={!!(errors as any)?.street}
           helperText={(errors as any)?.street?.message}
           margin="normal"
@@ -126,6 +124,7 @@ export default function EmployeeCreate() {
           type="text"
           label={"Street"}
           name="street"
+          required
         />
         <TextField
           {...register("city", {
@@ -139,6 +138,7 @@ export default function EmployeeCreate() {
           type="text"
           label={"City"}
           name="city"
+          required
         />
         <Controller
           control={control}
@@ -181,6 +181,7 @@ export default function EmployeeCreate() {
                   variant="outlined"
                   error={!!(errors as any)?.state} 
                   helperText={(errors as any)?.state?.message}
+                  InputLabelProps={{ shrink: true }}
                   required
                 />}
             />
@@ -198,6 +199,7 @@ export default function EmployeeCreate() {
           type="text"
           label={"Zip"}
           name="zip"
+          required
         />
         <Controller
           control={control}
@@ -221,6 +223,7 @@ export default function EmployeeCreate() {
                     variant="outlined" 
                     error={!!(errors as any)?.startDate} 
                     helperText={(errors as any)?.startDate?.message}
+                    InputLabelProps={{ shrink: true }}
                     required
                   />
                 )}
@@ -270,6 +273,7 @@ export default function EmployeeCreate() {
                   variant="outlined" 
                   error={!!(errors as any)?.roleId} 
                   helperText={(errors as any)?.roleId?.message}
+                  InputLabelProps={{shrink: true}}  
                   required
                 />
               )}

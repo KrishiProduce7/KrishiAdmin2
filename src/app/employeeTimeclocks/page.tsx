@@ -2,7 +2,10 @@
 
 import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
 import { useList } from "@refinedev/core";
+import dayjs from "dayjs";
+
 import {
+  BooleanField,
   DateField,
   DeleteButton,
   EditButton,
@@ -101,18 +104,18 @@ export default function EmployeeTimeclockList() {
         field: "ClockIn",
         flex: 1,
         headerName: "Clock In",
-        minWidth: 100,
+        minWidth: 150,
         renderCell: function render({ value }) {
-          return <DateField value={value}/>;
+          return <DateField value={value} format="YYYY/MM/DD HH:mm:ss"/>;
         },
       },
       {
         field: "ClockOut",
         flex: 1,
         headerName: "Clock Out",
-        minWidth: 100,
+        minWidth: 150,
         renderCell: function render({ value }) {
-          return <DateField value={value}/>;
+          return <DateField value={value} format="YYYY/MM/DD HH:mm:ss"/>;
         },
       },
       {
@@ -120,6 +123,15 @@ export default function EmployeeTimeclockList() {
         flex: 1,
         headerName: "Total Hours",
         minWidth: 100,
+      },
+      {
+        field: "isPaid",
+        flex: 1,
+        headerName: "Is Paid",
+        minWidth: 100,
+        renderCell: function render({ value }) {
+          return <BooleanField value={value}/>;
+        },
       },
       {
         field: "actions",

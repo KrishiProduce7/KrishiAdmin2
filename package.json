@@ -10,8 +10,8 @@
     "build": "refine build",
     "start": "refine start",
 	"export": "next export",
-    "lint": "next lint",
-    "refine": "refine",
+    "lint": "next lint", 
+    "refine": "refine"
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^6.1.12",

@@ -30,6 +30,7 @@ export default function EmployeeRoleEdit() {
           type="text"
           label={"Role Name"} 
           name="roleName"
+          required
         />
         <TextField
           {...register("roleDesc", {
@@ -43,6 +44,7 @@ export default function EmployeeRoleEdit() {
           type="text"
           label={"Description"} 
           name="roleDesc"
+          required
         />
       </Box>
     </Edit>
