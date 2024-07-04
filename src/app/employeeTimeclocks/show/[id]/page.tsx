@@ -31,7 +31,7 @@ export default function EmployeeTimeclockShow() {
         <Typography variant="body1" fontWeight="bold">
           {"ID"}
         </Typography>
-        <TextField value={record?.FarmWorkID} />
+        <TextField value={record?.FarmWorkId} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Title"}

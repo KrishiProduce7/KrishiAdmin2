@@ -3,6 +3,7 @@
 import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
 import { useList } from "@refinedev/core";
 import {
+  BooleanField,
   DateField,
   DeleteButton,
   EditButton,
@@ -14,7 +15,7 @@ import {
 import React from "react";
 
 interface IEmployee {
-  EmployeeID: number;
+  EmployeeId: number;
   FirstName: string;
   LastName: string;
   Mobile: string;
@@ -41,7 +42,7 @@ export default function EmployeeList() {
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
-        field: "EmployeeID",
+        field: "EmployeeId",
         headerName: "Id",
         type: "number",
         minWidth: 50,
@@ -127,15 +128,27 @@ export default function EmployeeList() {
         headerName: "Role",
         minWidth: 100,
         valueGetter: ({ row }) => {
-          const value = row?.RoleID;
+          const value = row?.RoleId;
+          console.log("employee valuegetter", value);
           return value;
         },
         renderCell: function render({ value }) {
+          console.log("employee renderCell", value);
+ 
           return roleIsLoading ? (
             <>Loading...</>
           ) : (
-            roleData?.data?.find((item) => item.RoleId === value?.RoleId)?.RoleDesc
+            roleData?.data?.find((item) => item.RoleId?.toString() === value?.toString())?.RoleDesc ?? "" 
           );
+        },
+      },
+      {
+        field: "IsActive",
+        flex: 1,
+        headerName: "Active",
+        minWidth: 50, 
+        renderCell: function render({ value }) {
+          return <BooleanField value={value} />;
         },
       },
       {
@@ -160,8 +173,8 @@ export default function EmployeeList() {
         renderCell: function render({ row }) {
           return (
             <>
-              <EditButton hideText recordItemId={row.EmployeeID} />
-              <DeleteButton hideText recordItemId={row.EmployeeID} />
+              <EditButton hideText recordItemId={row.EmployeeId} />
+              <DeleteButton hideText recordItemId={row.EmployeeId} />
             </>
           ); 
         },
@@ -170,11 +183,11 @@ export default function EmployeeList() {
         minWidth: 80,
       },
     ],
-    [roleData]
+    [roleIsLoading, roleData]
   );
 
   // Custom getRowId
-  const getRowId: GridRowIdGetter<IEmployee> = (row) => row.EmployeeID.toString();
+  const getRowId: GridRowIdGetter<IEmployee> = (row) => row.EmployeeId.toString();
 
   return (
     <List>
@@ -185,4 +198,4 @@ export default function EmployeeList() {
 
 // Removed this
 // If needed copy the below line between <EditButton> and <DeleteButton>
-// <ShowButton hideText recordItemId={row.RoleID} />
+// <ShowButton hideText recordItemId={row.RoleId} />

@@ -14,7 +14,7 @@ import {
 import React from "react";
 
 interface IFarmWork {
-  FarmWorkID: number;
+  FarmWorkId: number;
   FarmWorkDesc: string;
   CategoryId: number;
   IsActive: number;
@@ -37,7 +37,7 @@ export default function FarmWorkList() {
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
-        field: "FarmWorkID",
+        field: "FarmWorkId",
         headerName: "Id",
         type: "number",
         minWidth: 50,
@@ -55,7 +55,7 @@ export default function FarmWorkList() {
           return categoryIsLoading ? (
             <>Loading...</>
           ) : (
-            categoryData?.data?.find((item) => item.CategoryId === value?.CategoryId)?.CategoryDesc
+            categoryData?.data?.find((item) => item.CategoryId.toString() === value.toString())?.CategoryDesc ?? ""
           );
         },
       },
@@ -91,8 +91,8 @@ export default function FarmWorkList() {
         renderCell: function render({ row }) {
           return (
             <>
-              <EditButton hideText recordItemId={row.FarmWorkID} />
-              <DeleteButton hideText recordItemId={row.FarmWorkID} />
+              <EditButton hideText recordItemId={row.FarmWorkId} />
+              <DeleteButton hideText recordItemId={row.FarmWorkId} />
             </>
           );
         },
@@ -101,11 +101,11 @@ export default function FarmWorkList() {
         minWidth: 80,
       },
     ],
-    [categoryData]
+    [categoryIsLoading, categoryData]
   );
 
   // Custom getRowId
-  const getRowId: GridRowIdGetter<IFarmWork> = (row) => row.FarmWorkID.toString();
+  const getRowId: GridRowIdGetter<IFarmWork> = (row) => row.FarmWorkId.toString();
 
   return (
     <List>
@@ -117,4 +117,4 @@ export default function FarmWorkList() {
 
 // Removed this
 // If needed copy the below line between <EditButton> and <DeleteButton>
-// <ShowButton hideText recordItemId={row.RoleID} />
+// <ShowButton hideText recordItemId={row.RoleId} />

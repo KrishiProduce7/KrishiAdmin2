@@ -5,6 +5,9 @@ import MenuItem from "@mui/material/MenuItem";
 import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 export default function EmployeeWageEdit() {
   const {
@@ -31,107 +34,6 @@ export default function EmployeeWageEdit() {
         sx={{ display: "flex", flexDirection: "column" }}
         autoComplete="off"
       >
-        <Controller
-          control={control}
-          name={"employeeId"}
-          rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
-          defaultValue={null as any}
-          render={({ field }) => (
-            <Autocomplete
-              {...employeeAutocompleteProps}
-              {...field}
-              onChange={(_, value) => {
-                field.onChange(value.EmployeeId);
-              }} 
-              getOptionLabel={(item) => {
-                return (
-                  employeeAutocompleteProps?.options?.find((p) => {
-                    const itemId =
-                      typeof item === "object"
-                        ? item?.EmployeeId?.toString()
-                        : item?.toString();
-                    const pId = p?.EmployeeId?.toString();
-                    return itemId === pId;
-                  })?.FirstName + " " + employeeAutocompleteProps?.options?.find((p) => {
-                    const itemId =
-                      typeof item === "object"
-                        ? item?.EmployeeId?.toString()
-                        : item?.toString();
-                    const pId = p?.EmployeeId?.toString();
-                    return itemId === pId;
-                  })?.LastName ?? ""
-                );
-              }}
-              isOptionEqualToValue={(option, value) => {
-                const optionId = option?.EmployeeId?.toString();
-                const valueId =
-                  typeof value === "object"
-                    ? value?.EmployeeId?.toString()
-                    : value?.toString();
-                return value === undefined || optionId === valueId;
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label={"Employee"}
-                  margin="normal"
-                  variant="outlined" 
-                  error={!!(errors as any)?.employeeId} 
-                  helperText={(errors as any)?.employeeId?.message}
-                  required
-                />
-              )}
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name={"farmworkId"}
-          rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
-          defaultValue={null as any}
-          render={({ field }) => (
-            <Autocomplete
-              {...farmworkAutocompleteProps}
-              {...field}
-              onChange={(_, value) => {
-                field.onChange(value.farmworkId);
-              }} 
-              getOptionLabel={(item) => {
-                return (
-                  employeeAutocompleteProps?.options?.find((p) => {
-                    const itemId =
-                      typeof item === "object"
-                        ? item?.FarmWorkId?.toString()
-                        : item?.toString();
-                    const pId = p?.FarmWorkId?.toString();
-                    return itemId === pId;
-                  })?.FarmWorkDesc ?? ""
-                );
-              }}
-              isOptionEqualToValue={(option, value) => {
-                const optionId = option?.FarmWorkId?.toString();
-                const valueId =
-                  typeof value === "object"
-                    ? value?.FarmWorkId?.toString()
-                    : value?.toString();
-                return value === undefined || optionId === valueId;
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label={"FarmWork"}
-                  margin="normal"
-                  variant="outlined" 
-                  error={!!(errors as any)?.farmworkId} 
-                  helperText={(errors as any)?.farmworkId?.message}
-                  required
-                />
-              )}
-            />
-          )}
-        />
         <Controller
           control={control}
           name={"startDate"}
@@ -176,18 +78,17 @@ export default function EmployeeWageEdit() {
           name="wage"
         />
         <Controller
-          name="wageUnit"
+          name="wageUom"
           control={control}
           render={({ field }) => {
             return (
               <Select
                 {...field}
-                value={field?.value || "draft"}
+                value={field?.value || "Box"}
                 label={"Wage Unit"}
               >
-                <MenuItem value="draft">Draft</MenuItem>
-                <MenuItem value="published">Published</MenuItem>
-                <MenuItem value="rejected">Rejected</MenuItem>
+                <MenuItem value="Box">Box</MenuItem>
+                <MenuItem value="Hour">Hour</MenuItem>
               </Select>
             );
           }}

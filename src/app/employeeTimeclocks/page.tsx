@@ -17,8 +17,8 @@ interface IEmployeeTimeclock {
   TimeclockId: number;
   EmployeeId: number;
   FarmWorkId: number;
-  ClockInGeo: any;
-  ClockOutGeo: any;
+  ClockInGeo: string;
+  ClockOutGeo: string;
   ClockIn: Date;
   ClockOut: Date;
   Hours: number;
@@ -34,29 +34,68 @@ export default function EmployeeTimeclockList() {
     }
   });
  
-  const { data: roleData, isLoading: roleIsLoading, isError } = useList({
-    resource: "employeeRoles",
+  const { data: employeeData, isLoading: employeeIsLoading, isError: errorEmployeeData  } = useList({
+    resource: "employee",
+  });
+ 
+  const { data: farmworkData, isLoading: farmworkIsLoading, isError: errorFarmWorkData } = useList({
+    resource: "farmwork",
   });
 
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
-        field: "EmployeeId",
+        field: "TimeclockId",
         headerName: "Id",
         type: "number",
         minWidth: 50,
       },
       {
+        field: "EmployeeId",
+        flex: 1,
+        headerName: "Employee",
+        minWidth: 100,
+        valueGetter: ({ row }) => {
+          const value = row?.EmployeeId;
+          return value;
+        },
+        renderCell: function render({ value }) {
+          return employeeIsLoading ? (
+            <>Loading...</>
+          ) : (
+            employeeData?.data?.find((item) => item.EmployeeId.toString() === value.toString())?.FirstName + " " 
+            + employeeData?.data?.find((item) => item.EmployeeId.toString() === value.toString())?.LastName
+          );
+        },
+      },
+      {
+        field: "FarmWorkId",
+        flex: 1,
+        headerName: "Farm Work",
+        minWidth: 100,
+        valueGetter: ({ row }) => {
+          const value = row?.FarmWorkId;
+          return value;
+        },
+        renderCell: function render({ value }) {
+          return farmworkIsLoading ? (
+            <>Loading...</>
+          ) : (
+            farmworkData?.data?.find((item) => item.FarmWorkId.toString() === value.toString())?.FarmWorkDesc ?? ""
+          );
+        },
+      },
+      {
         field: "ClockInGeo",
         flex: 1,
         headerName: "Clock In Geo",
-        minWidth: 50,
+        minWidth: 150,
       },
       {
         field: "ClockOutGeo",
         flex: 1,
         headerName: "Clock Out Geo",
-        minWidth: 50,
+        minWidth: 150,
       },
       {
         field: "ClockIn",
@@ -77,25 +116,10 @@ export default function EmployeeTimeclockList() {
         },
       },
       {
-        field: "Hours",
+        field: "TotalHours",
         flex: 1,
-        headerName: "Hours",
-        minWidth: 50,
-      },
-      {
-        field: "UpdatedBy",
-        flex: 1,
-        headerName: "Updated By",
-        minWidth: 200,
-      },
-      {
-        field: "UpdatedOn",
-        flex: 1,
-        headerName: "Updated On",
-        minWidth: 150,
-        renderCell: function render({ value }) {
-          return <DateField value={value} />;
-        },
+        headerName: "Total Hours",
+        minWidth: 100,
       },
       {
         field: "actions",
@@ -104,9 +128,8 @@ export default function EmployeeTimeclockList() {
         renderCell: function render({ row }) {
           return (
             <>
-              <EditButton hideText recordItemId={row.FarmWorkID} />
-              <ShowButton hideText recordItemId={row.FarmWorkID} />
-              <DeleteButton hideText recordItemId={row.FarmWorkID} />
+              <EditButton hideText recordItemId={row.TimeclockId} />
+              <DeleteButton hideText recordItemId={row.TimeclockId} />
             </>
           );
         },
@@ -115,11 +138,11 @@ export default function EmployeeTimeclockList() {
         minWidth: 80,
       },
     ],
-    [roleData]
+    [employeeIsLoading, farmworkIsLoading, employeeData, farmworkData]
   );
 
   // Custom getRowId
-  const getRowId: GridRowIdGetter<IEmployeeTimeclock> = (row) => row.TimeclockId.toString();
+  const getRowId: GridRowIdGetter<IEmployeeTimeclock> = (row) => row.TimeclockId?.toString();
 
   return (
     <List>

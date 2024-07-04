@@ -19,7 +19,7 @@ export default function EmployeeWageShow() {
 
   const { data: employeeData, isLoading: employeeIsLoading } = useOne({
     resource: "employee",
-    id: record?.EmployeeID || "",
+    id: record?.EmployeeId || "",
     queryOptions: {
       enabled: !!record,
     },
@@ -27,7 +27,7 @@ export default function EmployeeWageShow() {
 
   const { data: farmWorkData, isLoading: farmWorkIsLoading } = useOne({
     resource: "farmwork",
-    id: record?.FarmWorkID || "",
+    id: record?.FarmWorkId || "",
     queryOptions: {
       enabled: !!record,
     },

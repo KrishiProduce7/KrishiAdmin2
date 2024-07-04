@@ -98,11 +98,11 @@ export default function EmployeeWageCreate() {
               {...farmworkAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.farmworkId);
+                field.onChange(value.FarmWorkId);
               }} 
               getOptionLabel={(item) => {
                 return (
-                  employeeAutocompleteProps?.options?.find((p) => {
+                  farmworkAutocompleteProps.options?.find((p) => {
                     const itemId =
                       typeof item === "object"
                         ? item?.FarmWorkId?.toString()
@@ -144,14 +144,14 @@ export default function EmployeeWageCreate() {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 {...field}
-                label="StartDate"
+                label="Start Date"
                 onChange={(value) => {
                   field.onChange(value);
                 }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label={"StartDate"} 
+                    label={"Start Date"} 
                     margin="normal"
                     variant="outlined" 
                     error={!!(errors as any)?.startDate} 
@@ -176,20 +176,20 @@ export default function EmployeeWageCreate() {
           type="text"
           label={"Wage"}
           name="wage"
+          required 
         />
         <Controller
-          name="wageUnit"
+          name="wageUom"
           control={control}
           render={({ field }) => {
             return (
               <Select
                 {...field}
-                value={field?.value || "draft"}
+                value={field?.value || "Box"}
                 label={"Wage Unit"}
               >
-                <MenuItem value="draft">Draft</MenuItem>
-                <MenuItem value="published">Published</MenuItem>
-                <MenuItem value="rejected">Rejected</MenuItem>
+                <MenuItem value="Box">Box</MenuItem>
+                <MenuItem value="Hour">Hour</MenuItem>
               </Select>
             );
           }}

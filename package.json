@@ -10,7 +10,9 @@
     "build": "refine build",
     "start": "refine start",
     "lint": "next lint",
-    "refine": "refine"
+    "refine": "refine",
+	"predeploy": "npm run build",
+	"deploy": "gh-pages -d .next"
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^6.1.12",
@@ -46,9 +48,11 @@
     "cross-env": "^7.0.3",
     "eslint": "^8",
     "eslint-config-next": "^14.1.0",
+    "gh-pages": "^6.1.1",
     "typescript": "^5.4.2"
   },
   "refine": {
     "projectId": "ZVSfsE-ekvuhD-I5VHNv"
-  }
+  },
+  "homepage": "https://supereact.github.io/technocrats"
 }

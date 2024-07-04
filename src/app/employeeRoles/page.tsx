@@ -14,7 +14,7 @@ import React from "react";
 
 interface IEmployeeRole
 {
-  RoleID: number;
+  RoleId: number;
   RoleName: string;
   RoleDescription: string;
   UpdatedBy: string;
@@ -30,7 +30,7 @@ export default function EmployeeRoleList() {
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
-        field: "RoleID",
+        field: "RoleId",
         headerName: "Id",
         type: "number",
         minWidth: 50,
@@ -59,7 +59,7 @@ export default function EmployeeRoleList() {
         headerName: "Updated On",
         minWidth: 200,
         renderCell: function render({ value }) {
-          return <DateField value={value} />;
+          return <DateField value={value}/>;
         },
       },
       {
@@ -69,8 +69,7 @@ export default function EmployeeRoleList() {
         renderCell: function render({ row }) {
           return (
             <>
-              <EditButton hideText recordItemId={row.RoleID} />
-              <DeleteButton hideText recordItemId={row.RoleID} />
+              <EditButton hideText recordItemId={row.RoleId} />
             </>
           );
         },
@@ -83,7 +82,7 @@ export default function EmployeeRoleList() {
   );
 
   // Custom getRowId
-  const getRowId: GridRowIdGetter<IEmployeeRole> = (row) => row.RoleID?.toString();
+  const getRowId: GridRowIdGetter<IEmployeeRole> = (row) => row.RoleId?.toString();
 
   return (
     <List>
@@ -94,4 +93,5 @@ export default function EmployeeRoleList() {
 
 // Removed this
 // If needed copy the below line between <EditButton> and <DeleteButton>
-// <ShowButton hideText recordItemId={row.RoleID} />
+// <ShowButton hideText recordItemId={row.RoleId} />
+// <DeleteButton hideText recordItemId={row.RoleId} />

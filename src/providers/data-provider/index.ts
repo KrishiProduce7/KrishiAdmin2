@@ -59,7 +59,7 @@ const farmWorkDataProvider = (
     const total = +headers["x-total-count"];
 
     console.log(data);
-    
+
     return {
       data,
       total: total || data.length,
@@ -74,19 +74,16 @@ const farmWorkDataProvider = (
 
     const params = {
       ...variables,
-      userEmail: user.email
-    }   
-   
-    // Object.keys(variables).map((val, index) => {
-    //   let key = String(val);
-    //   key = key[0].toLocaleLowerCase() + key.substring(1);
-    //   params[key] = variables[val];
-    // });
+    };
+
+    if (meta?.includeUserEmail && user?.email) {
+      params["userEmail"] = user.email;
+    }
 
     const { headers, method } = meta ?? {};
     const requestMethod = (method as MethodTypesWithBody) ?? "post";
 
-    const { data } = await httpClient[requestMethod](url, params, {
+    const { data } = await httpClient[requestMethod](url, {}, {
       headers,
       params,
     });
@@ -108,11 +105,12 @@ const farmWorkDataProvider = (
 
     const params = {   
       ...variables,
-      userEmail: user.email
-    }
-   
-    console.error(params); 
+    };
 
+    if (meta?.includeUserEmail && user?.email) {
+      params["userEmail"] = user.email;
+    }
+    
     const { data } = await httpClient[requestMethod](url, {}, {
       headers,
       params,

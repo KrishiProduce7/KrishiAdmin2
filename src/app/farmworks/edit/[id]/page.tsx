@@ -16,11 +16,11 @@ export default function FarmWorkEdit() {
     formState: { errors },
   } = useForm({});
 
-  const farmWorksData = queryResult?.data?.data;
+  const farmWorkData = queryResult?.data?.data;
 
   const { autocompleteProps: categoryAutocompleteProps } = useAutocomplete({
     resource: "farmworkCategory",
-    defaultValue: farmWorksData?.CategoryId,
+    defaultValue: farmWorkData?.CategoryId, 
   });
 
   return (
@@ -31,21 +31,21 @@ export default function FarmWorkEdit() {
         autoComplete="off"
       >
         <TextField
-          {...register("FarmWorkDesc", {
+          {...register("farmWorkDesc", {
             required: "This field is required",
           })}
-          error={!!(errors as any)?.FarmWorkDesc}
-          helperText={(errors as any)?.FarmWorkDesc?.message}
+          error={!!(errors as any)?.farmWorkDesc}
+          helperText={(errors as any)?.farmWorkDesc?.message}
           margin="normal"
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="text"
           label={"Description"}
-          name="FarmWorkDesc"
+          name="farmWorkDesc"
         />
         <Controller
           control={control}
-          name={"CategoryId"}
+          name={"categoryId"}
           rules={{ required: "This field is required" }}
           // eslint-disable-next-line
           defaultValue={null as any}
@@ -54,25 +54,25 @@ export default function FarmWorkEdit() {
               {...categoryAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.id);
+                field.onChange(value.CategoryId); 
               }}
               getOptionLabel={(item) => {
                 return (
                   categoryAutocompleteProps?.options?.find((p) => {
                     const itemId =
                       typeof item === "object"
-                        ? item?.id?.toString()         
+                        ? item?.CategoryId?.toString()         
                         : item?.toString();
-                    const pId = p?.id?.toString();
+                    const pId = p?.CategoryId?.toString();
                     return itemId === pId;
-                  })?.title ?? ""
+                  })?.CategoryDesc ?? ""
                 );
               }}
               isOptionEqualToValue={(option, value) => {
-                const optionId = option?.id?.toString();
+                const optionId = option?.CategoryId?.toString();
                 const valueId =
                   typeof value === "object"
-                    ? value?.id?.toString()
+                    ? value?.CategoryId?.toString()
                     : value?.toString();
                 return value === undefined || optionId === valueId;
               }}
@@ -82,8 +82,8 @@ export default function FarmWorkEdit() {
                   label={"Category"}
                   margin="normal"
                   variant="outlined"
-                  error={!!(errors as any)?.CategoryId}
-                  helperText={(errors as any)?.CategoryId?.message}
+                  error={!!(errors as any)?.categoryId}
+                  helperText={(errors as any)?.categoryId?.message}
                   required
                 />
               )}

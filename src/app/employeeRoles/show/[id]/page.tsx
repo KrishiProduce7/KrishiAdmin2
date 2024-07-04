@@ -17,7 +17,7 @@ export default function EmployeeRoleShow() {
         <Typography variant="body1" fontWeight="bold">
           {"Id"}
         </Typography>
-        <TextField value={record?.RoleID} />
+        <TextField value={record?.RoleId} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Role Name"}

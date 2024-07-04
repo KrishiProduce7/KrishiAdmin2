@@ -51,7 +51,8 @@ export default function RootLayout({
                         meta: { 
                           canDelete: true,
                           idName: "categoryId",
-                          resources: "farmworksCategory"
+                          resources: "farmworksCategory",
+                          includeUserEmail: true,
                         },
                       }, 
                       {
@@ -63,7 +64,8 @@ export default function RootLayout({
                         meta: {
                           canDelete: true,
                           idName: "farmWorkId",
-                          resources: "farmworks"
+                          resources: "farmworks",
+                          includeUserEmail: true,
                         },
                       },
                       {
@@ -75,7 +77,8 @@ export default function RootLayout({
                         meta: {
                           canDelete: false,
                           idName: "roleId",
-                          resources: "employeeRoles"
+                          resources: "employeeRoles",
+                          includeUserEmail: true,
                         },
                       },
                       {
@@ -87,7 +90,8 @@ export default function RootLayout({
                         meta: {
                           canDelete: true,
                           idName: "employeeId",
-                          resources: "employees"
+                          resources: "employees",
+                          includeUserEmail: true,
                         },
                       },
                       {
@@ -98,8 +102,9 @@ export default function RootLayout({
                         show: "/employeeWages/show/:id",
                         meta: {
                           canDelete: true,
-                          idName: "employeeId",
-                          resources: "employeeWages"
+                          idName: "wageId",
+                          resources: "employeeWages",
+                          includeUserEmail: true,
                         },
                       },
                       {
@@ -111,7 +116,8 @@ export default function RootLayout({
                         meta: {
                           canDelete: false,
                           idName: "timeclockId",
-                          resources: "employeeTimeclocks"
+                          resources: "employeeTimeclocks",
+                          includeUserEmail: false,
                         },
                       },
                     ]}

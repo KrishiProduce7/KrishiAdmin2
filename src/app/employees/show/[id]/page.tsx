@@ -31,7 +31,7 @@ export default function FarmWorkShow() {
         <Typography variant="body1" fontWeight="bold">
           {"ID"}
         </Typography>
-        <TextField value={record?.EmployeeID} />
+        <TextField value={record?.EmployeeId} />
 
         <Typography variant="body1" fontWeight="bold">
           {"Title"}

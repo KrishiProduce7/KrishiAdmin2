@@ -3,6 +3,7 @@
 import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
 import { useList } from "@refinedev/core";
 import {
+  BooleanField,
   DateField,
   DeleteButton,
   EditButton,
@@ -20,7 +21,7 @@ interface IEmployeeWage {
   StartDate: Date;
   EndDate: Date;
   Wage: number;
-  WageUnit: string;
+  WageUOM: string;
   UpdatedBy: string;
   UpdatedOn: Date;
 }
@@ -33,8 +34,12 @@ export default function EmployeeList() {
     }
   });
  
-  const { data: roleData, isLoading: roleIsLoading, isError } = useList({
-    resource: "employeeRoles",
+  const { data: employeeData, isLoading: employeeIsLoading, isError: errorEmployeeData  } = useList({
+    resource: "employee",
+  });
+ 
+  const { data: farmworkData, isLoading: farmworkIsLoading, isError: errorFarmWorkData } = useList({
+    resource: "farmwork",
   });
 
   const columns = React.useMemo<GridColDef[]>(
@@ -50,18 +55,50 @@ export default function EmployeeList() {
         flex: 1,
         headerName: "Employee",
         minWidth: 50,
+        valueGetter: ({ row }) => {
+          const value = row?.EmployeeId;
+          return value;
+        },
+        renderCell: function render({ value }) {
+          return employeeIsLoading ? (
+            <>Loading...</>
+          ) : (
+            employeeData?.data?.find((item) => item.EmployeeId.toString() === value.toString())?.FirstName + " " 
+            + employeeData?.data?.find((item) => item.EmployeeId.toString() === value.toString())?.LastName
+          );
+        },
       },
       {
         field: "FarmWorkId",
-        flex: 1,
-        headerName: "FarmWork",
+        flex: 1,      
+        headerName: "Farm Work",
         minWidth: 50,
+        valueGetter: ({ row }) => {
+          const value = row?.FarmWorkId;
+          return value;
+        },
+        renderCell: function render({ value }) {
+          return farmworkIsLoading ? ( 
+            <>Loading...</>
+          ) : (
+            farmworkData?.data?.find((item) => item.FarmWorkId.toString() === value.toString())?.FarmWorkDesc ?? ""
+          );
+        },
       },
       {
         field: "StartDate",
         flex: 1,
         headerName: "Start Date",
-        minWidth: 100,
+        minWidth: 50,
+        renderCell: function render({ value }) {
+          return <DateField value={value} />;
+        },
+      },
+      {
+        field: "EndDate",
+        flex: 1,
+        headerName: "End Date",
+        minWidth: 50,
         renderCell: function render({ value }) {
           return <DateField value={value} />;
         },
@@ -70,13 +107,22 @@ export default function EmployeeList() {
         field: "Wage",
         headerName: "Wage",
         type: "number",
-        minWidth: 50,
+        minWidth: 80,
       },
       {
-        field: "WageUnit",
-        headerName: "WageUnit",
+        field: "WageUOM",
+        headerName: "Wage Unit",
         type: "string",
-        minWidth: 50,
+        minWidth: 100,
+      },
+      {
+        field: "IsActive",
+        flex: 1,
+        headerName: "Active",
+        minWidth: 50, 
+        renderCell: function render({ value }) {
+          return <BooleanField value={value} />;
+        },
       },
       {
         field: "UpdatedBy",
@@ -84,7 +130,7 @@ export default function EmployeeList() {
         headerName: "Updated By",
         minWidth: 200,
       },
-      {
+      { 
         field: "UpdatedOn",
         flex: 1,
         headerName: "Updated On",
@@ -100,8 +146,8 @@ export default function EmployeeList() {
         renderCell: function render({ row }) {
           return (
             <>
-              <EditButton hideText recordItemId={row.FarmWorkID} />
-              <DeleteButton hideText recordItemId={row.FarmWorkID} />
+              <EditButton hideText recordItemId={row.WageId} />
+              <DeleteButton hideText recordItemId={row.WageId} />
             </>
           );
         },
@@ -110,7 +156,7 @@ export default function EmployeeList() {
         minWidth: 80,
       },
     ],
-    [roleData]
+    [employeeIsLoading, farmworkIsLoading, employeeData, farmworkData]
   );
 
   // Custom getRowId
@@ -125,4 +171,4 @@ export default function EmployeeList() {
 
 // Removed this
 // If needed copy the below line between <EditButton> and <DeleteButton>
-// <ShowButton hideText recordItemId={row.RoleID} />
+// <ShowButton hideText recordItemId={row.RoleId} />
