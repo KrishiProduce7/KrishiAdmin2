@@ -136,6 +136,20 @@ export default function EmployeeTaskEdit() {
             />
           )}
         />
+        <TextField
+          {...register("taskDesc", {
+            required: "This field is required",
+          })}
+          error={!!(errors as any)?.taskDesc}
+          helperText={(errors as any)?.taskDesc?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="text"
+          label={"Description"}
+          name="taskDesc"
+          required 
+        />
         <Controller
           control={control}
           name="assignedStartDateTime"
@@ -263,8 +277,14 @@ export default function EmployeeTaskEdit() {
         <TextField
           {...register("taskPercentComplete", {
             required: "This field is required",
-            min: 0,
-            max: 100
+            min: {
+              value: 0, 
+              message: "This field should be above 0"
+            },
+            max: {
+              value: 100,
+              message: "This field should be below 100"
+            }
           })}
           error={!!(errors as any)?.taskPercentComplete}
           helperText={(errors as any)?.taskPercentComplete?.message}

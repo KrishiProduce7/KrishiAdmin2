@@ -142,15 +142,6 @@ export default function EmployeeTaskList() {
         minWidth: 200,
       },
       {
-        field: "isActive",
-        flex: 1,
-        headerName: "Active",
-        minWidth: 50, 
-        renderCell: function render({ value }) {
-          return <BooleanField value={value} />;
-        },
-      },
-      {
         field: "updatedBy",
         flex: 1,
         headerName: "Updated By",

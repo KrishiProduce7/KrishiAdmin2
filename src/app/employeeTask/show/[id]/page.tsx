@@ -86,11 +86,6 @@ export default function EmployeeTaskShow() {
         <TextField value={record?.taskNotes} />
 
         <Typography variant="body1" fontWeight="bold">
-          {"Active"}
-        </Typography>
-        <BooleanField value={record?.isActive} />
-
-        <Typography variant="body1" fontWeight="bold">
           {"Updated By"}
         </Typography>
         <TextField value={record?.updatedBy} />
