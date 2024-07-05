@@ -69,16 +69,14 @@ const farmWorkDataProvider = (
       : url;
     */
     const urlWithQuery = url;
-
-    console.log(urlWithQuery);
-      
+     
     const { data, headers } = await httpClient[requestMethod](urlWithQuery, {
       headers: headersFromMeta,
     });
 
     const total = +headers["x-total-count"];
 
-    console.log(data);
+    //console.log(data);
 
     return {
       data,
@@ -103,7 +101,7 @@ const farmWorkDataProvider = (
       }
     }
 
-    console.log(params);
+    //console.log(params);
     
     const { headers, method } = meta ?? {};
     const requestMethod = (method as MethodTypesWithBody) ?? "post";
@@ -139,8 +137,6 @@ const farmWorkDataProvider = (
       }
     }
 
-    console.log("url", url, "params", params);
-
     const { data } = await httpClient[requestMethod](url, {}, {
       headers,
       params,
@@ -159,7 +155,7 @@ const farmWorkDataProvider = (
     const requestMethod = (method as MethodTypes) ?? "get";
 
     const { data } = await httpClient[requestMethod](url, { headers });
-    console.log(data);
+    //console.log(data);
 
     if (data?.length > 0) {
       return {

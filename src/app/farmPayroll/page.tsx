@@ -87,7 +87,7 @@ export default function FarmPayrollList() {
         renderCell: function render({ value }) {
           return <DateField value={value}/>;
         },
-      },      
+      },
       {
         field: "amountPaid",
         flex: 1,
