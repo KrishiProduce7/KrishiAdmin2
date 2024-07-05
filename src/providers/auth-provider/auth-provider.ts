@@ -5,8 +5,8 @@ import Cookies from "js-cookie";
 
 const mockUsers = [
   {
-    name: "John Doe",
-    email: "johndoe@mail.com",
+    name: "Benny Rodriguez",
+    email: "bennyrodrig91@gmail.com",
     roles: ["admin"],
     avatar: "https://i.pravatar.cc/150?img=1",
   },

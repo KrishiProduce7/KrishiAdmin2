@@ -31,22 +31,24 @@ const farmWorkDataProvider = (
   "createMany" | "updateMany" | "deleteMany" | "getMany"
 > => ({
   getList: async ({ resource, pagination, filters, sorters, meta }) => {
-    const resources = meta?.resources ?? resource;
-    const url = `${apiUrl}/${resources}`;
+    const idName = meta?.idName;
+    const url = `${apiUrl}/${resource}?${idName}=0`;
 
     const { current = 1, pageSize = 10, mode = "client" } = pagination ?? {};
 
     const { headers: headersFromMeta, method } = meta ?? {};
     const requestMethod = (method as MethodTypes) ?? "get";
 
+    /*
     const queryFilters = generateFilter(filters);
 
     const query: {
       _start?: number;
       _end?: number;
       _sort?: string;
-      _order?: string;
+      _order?: string;   
     } = {};
+
 
     if (mode === "server") {
       query._start = (current - 1) * pageSize;
@@ -61,10 +63,15 @@ const farmWorkDataProvider = (
     }
 
     const combinedQuery = { ...query, ...queryFilters };
+      
     const urlWithQuery = Object.keys(combinedQuery).length
       ? `${url}?${stringify(combinedQuery)}`
       : url;
+    */
+    const urlWithQuery = url;
 
+    console.log(urlWithQuery);
+      
     const { data, headers } = await httpClient[requestMethod](urlWithQuery, {
       headers: headersFromMeta,
     });
@@ -89,7 +96,7 @@ const farmWorkDataProvider = (
       ...variables,
     };
 
-    if (meta?.includeUseremail && user?.email) {
+    if (meta?.includeUserEmail && user?.email) {
       params = {
         ...params,
         userEmail: user.email
@@ -125,14 +132,14 @@ const farmWorkDataProvider = (
       ...variables,
     };
 
-    if (meta?.includeUseremail && user?.email) {
+    if (meta?.includeUserEmail && user?.email) {
       params = {
         ...params,
         userEmail: user.email
       }
     }
 
-    console.log("value", params);
+    console.log("url", url, "params", params);
 
     const { data } = await httpClient[requestMethod](url, {}, {
       headers,
