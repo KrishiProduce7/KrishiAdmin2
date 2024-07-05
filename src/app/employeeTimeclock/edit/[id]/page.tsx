@@ -106,13 +106,13 @@ export default function EmployeeTimeclockEdit() {
           {...register("totalHours", {
             required: "This field is required",
           })}
-          value="2.5"
+          defaultValue={"2.5"}
           error={!!(errors as any)?.totalHours}
           helperText={(errors as any)?.totalHours?.message}
           margin="normal"
           fullWidth
           InputLabelProps={{ shrink: true }}
-          type="text"
+          type="number"
           label={"Total Hours"}
           name="totalHours"
         />

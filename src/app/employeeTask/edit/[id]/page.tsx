@@ -7,6 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Controller } from "react-hook-form";
+import { DateTimePicker } from "@mui/x-date-pickers";
 
 export default function EmployeeTaskEdit() {
   const {
@@ -18,7 +19,7 @@ export default function EmployeeTaskEdit() {
     formState: { errors },
   } = useForm({});
  
-  const { autocompleteProps: coopAutocompleteProps } = useAutocomplete({
+  const { autocompleteProps: farmworkAutocompleteProps } = useAutocomplete({
     resource: "farmwork",
   });
 

@@ -207,6 +207,19 @@ export default function PoultryActivityCreate() {
           name="largeEggsPicked"
         />
         <TextField
+          {...register("xLargeEggsPicked", {
+            min: 0
+          })}
+          error={!!(errors as any)?.xLargeEggsPicked}
+          helperText={(errors as any)?.xLargeEggsPicked?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="number"
+          label={"Extra Large Eggs Picked"}
+          name="xLargeEggsPicked"
+        />
+        <TextField
           {...register("eggsWashed", {
             min: 0
           })}
@@ -312,16 +325,6 @@ export default function PoultryActivityCreate() {
         />
         <TextField
           {...register("xLargeEggsPacked", {
-            min: 0
-          })}
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="number"
-          label={"Extra Large Eggs Packed"}
-          name="xLargeEggsPacked"
-        />
-        <TextField
-          {...register("manureBags", {
             min: 0
           })}
           error={!!(errors as any)?.xLargeEggsPacked}

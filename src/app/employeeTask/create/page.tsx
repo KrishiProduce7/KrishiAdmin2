@@ -126,7 +126,7 @@ export default function EmployeeTaskCreate() {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label={"FarmWork"}
+                  label={"Farm Work"}
                   margin="normal"
                   variant="outlined" 
                   error={!!(errors as any)?.farmWorkId} 
@@ -281,8 +281,14 @@ export default function EmployeeTaskCreate() {
         <TextField
           {...register("taskNotes", {
             required: "This field is required",
-            min: 0,
-            max: 100
+            min: {
+              value: 0, 
+              message: "This field should be above 0"
+            },
+            max: {
+              value: 100,
+              message: "This field should be below 100"
+            }
           })}
           error={!!(errors as any)?.taskNotes}
           helperText={(errors as any)?.taskNotes?.message}
@@ -298,3 +304,4 @@ export default function EmployeeTaskCreate() {
     </Create>
   );
 }
+ 
