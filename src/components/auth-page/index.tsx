@@ -7,7 +7,7 @@ export const AuthPage = (props: AuthPageProps) => {
     <AuthPageBase
       {...props}
       formProps={{
-        defaultValues: { email: "johndoe@test.com", password: "demodemo" },
+        defaultValues: { email: "test@gmail.com", password: "1qaz2wsx!QAZ" },
       }}
     />
   );

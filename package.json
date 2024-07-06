@@ -9,12 +9,13 @@
     "dev": "cross-env NODE_OPTIONS=--max_old_space_size=4096 refine dev",
     "build": "refine build",
     "start": "refine start",
-	"export": "next export",
-    "lint": "next lint", 
+    "export": "next export",
+    "lint": "next lint",
     "refine": "refine"
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^6.1.12",
+    "@aws-sdk/client-cognito-identity-provider": "^3.609.0",
     "@date-io/date-fns": "^3.0.0",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
