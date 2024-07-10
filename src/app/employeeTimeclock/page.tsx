@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 
 import {
   BooleanField,
+  CreateButton,
   DateField,
   DeleteButton,
   EditButton,
@@ -15,19 +16,10 @@ import {
   useDataGrid,
 } from "@refinedev/mui";
 import React from "react";
-
-interface IEmployeeTimeclock {
-  timeclockId: number;
-  employeeId: number;
-  farmWorkId: number;
-  clockInGeo: string;
-  clockOutGeo: string;
-  ClockIn: Date;
-  ClockOut: Date;
-  Hours: number;
-  updatedBy: string;
-  updatedOn: Date;
-}
+import IEmployeeTimeclock from "./types";
+import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
+import { green, red } from "@mui/material/colors";
+import { Typography } from "@mui/material";
 
 export default function EmployeeTimeclockList() {
   const { dataGridProps } = useDataGrid({
@@ -49,7 +41,7 @@ export default function EmployeeTimeclockList() {
     () => [
       {
         field: "timeclockId",
-        headerName: "Id",
+        headerName: "ID #",
         type: "number",
         minWidth: 50,
       },
@@ -120,18 +112,21 @@ export default function EmployeeTimeclockList() {
       },
       {
         field: "totalHours",
-        flex: 1,
         headerName: "Total Hours",
+        type: "number",
         minWidth: 100,
       },
       {
         field: "isPaid",
-        flex: 1,
         headerName: "Is Paid",
         minWidth: 100,
         renderCell: function render({ value }) {
-          return <BooleanField value={value}/>;
-        },
+          return <BooleanField 
+            value={value}
+            trueIcon={<CheckOutlined style={{ color: green[500] }} />}
+            falseIcon={<CloseOutlined style={{ color: red[500] }} />}
+            />
+        }
       },
       {
         field: "actions",
@@ -141,7 +136,6 @@ export default function EmployeeTimeclockList() {
           return (
             <>
               <EditButton hideText recordItemId={row.timeclockId} />
-              <ShowButton hideText recordItemId={row.timeclockId} />
               <DeleteButton hideText recordItemId={row.timeclockId} />
             </>
           );
@@ -158,7 +152,18 @@ export default function EmployeeTimeclockList() {
   const getRowId: GridRowIdGetter<IEmployeeTimeclock> = (row) => row.timeclockId?.toString();
 
   return (
-    <List>
+    <List 
+      title={<Typography variant="h5">Employee Timeclock</Typography>}
+      headerButtons={({ createButtonProps }) => (  
+        <>  
+          {createButtonProps && (  
+          <CreateButton  
+          {...createButtonProps}>  
+          Clock In / Out
+          </CreateButton>  
+          )}
+        </>
+      )}>
       <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
     </List>
   );

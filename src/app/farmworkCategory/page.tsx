@@ -9,16 +9,13 @@ import {
   DateField,
   useDataGrid,
   BooleanField,
+  EmailField,
 } from "@refinedev/mui";
 import React from "react";
-
-interface IFarmWorkCategory {
-  categoryId: number,
-  categoryDesc: string,
-  isActive: number,
-  updatedBy: string,
-  updatedOn: Date
-}
+import IFarmWorkCategory from "./types";
+import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
+import { green, red } from "@mui/material/colors";
+import { TextField, Typography } from "@mui/material";
 
 export default function FarmworkCategoryList() {
   const { dataGridProps } = useDataGrid({
@@ -31,7 +28,7 @@ export default function FarmworkCategoryList() {
     () => [
       {
         field: "categoryId",
-        headerName: "Id",
+        headerName: "ID #",
         type: "number",
         minWidth: 30,
       },
@@ -43,26 +40,28 @@ export default function FarmworkCategoryList() {
       },
       {
         field: "isActive",
-        flex: 1,
         headerName: "Active",
         minWidth: 50, 
         renderCell: function render({ value }) {
-          return <BooleanField value={value} />;
-        },
-      },
+          return <BooleanField 
+            value={value}
+            trueIcon={<CheckOutlined style={{ color: green[500] }} />}
+            falseIcon={<CloseOutlined style={{ color: red[500] }} />}
+            />
+        }
+      }, 
       {
         field: "updatedBy",
-        flex: 1,
         headerName: "Updated By",
-        minWidth: 200,
+        minWidth: 150,
+        type: "email",
       },
       {
         field: "updatedOn",
-        flex: 1,
         headerName: "Updated On",
-        minWidth: 150,
+        minWidth: 150, 
         renderCell: function render({ value }) {
-          return <DateField value={value} format="YYYY/MM/DD hh:mm:ss"/>;
+          return <DateField value={value} format="MM/DD/YYYY hh:mm:ss"/>;
         },
       },
       {
@@ -73,7 +72,6 @@ export default function FarmworkCategoryList() {
           return (
             <>
               <EditButton hideText recordItemId={row.categoryId} />
-              <ShowButton hideText recordItemId={row.categoryId} />
               <DeleteButton hideText recordItemId={row.categoryId} />
             </>
           );
@@ -90,12 +88,13 @@ export default function FarmworkCategoryList() {
   const getRowId: GridRowIdGetter<IFarmWorkCategory> = (row) => row.categoryId?.toString();
 
   return (
-    <List>
+    <List 
+      title={<Typography variant="h5">Farmwork Category</Typography>}>
       <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
     </List>
   );
 }
-
+ 
 // Removed this
 // If needed copy the below line between <EditButton> and <DeleteButton>
 // <ShowButton hideText recordItemId={row.roleId} />

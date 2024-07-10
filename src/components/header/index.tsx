@@ -14,9 +14,7 @@ import { HamburgerMenu, RefineThemedLayoutV2HeaderProps } from "@refinedev/mui";
 import React, { useContext } from "react";
 
 type IUser = {
-  id: number;
-  name: string;
-  avatar: string;
+  email: string;
 };
 
 export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
@@ -51,14 +49,14 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
               {mode === "dark" ? <LightModeOutlined /> : <DarkModeOutlined />}
             </IconButton>
 
-            {(user?.avatar || user?.name) && (
+            {user?.email && (
               <Stack
                 direction="row"
                 gap="16px"
                 alignItems="center"
                 justifyContent="center"
               >
-                {user?.name && (
+                {user?.email && (
                   <Typography
                     sx={{
                       display: {
@@ -68,10 +66,9 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
                     }}
                     variant="subtitle2"
                   >
-                    {user?.name}
+                    {user?.email}
                   </Typography>
                 )}
-                <Avatar src={user?.avatar} alt={user?.name} />
               </Stack>
             )}
           </Stack>

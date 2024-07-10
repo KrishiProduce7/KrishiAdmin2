@@ -9,17 +9,12 @@ import {
   DateField,
   useDataGrid,
   BooleanField,
+  EmailField,
 } from "@refinedev/mui";
 import React from "react";
+import IEmployeeRole from "./types";
+import { TextField, Typography } from "@mui/material";
 
-interface IEmployeeRole
-{
-  roleId: number;
-  roleName: string;
-  RoleDescription: string;
-  updatedBy: string;
-  updatedOn: string;
-}
 export default function EmployeeRoleList() {
   const { dataGridProps } = useDataGrid({
     pagination: {
@@ -31,7 +26,7 @@ export default function EmployeeRoleList() {
     () => [
       {
         field: "roleId",
-        headerName: "Id",
+        headerName: "ID #",
         type: "number",
         minWidth: 50,
       },
@@ -49,17 +44,16 @@ export default function EmployeeRoleList() {
       },
       {
         field: "updatedBy",
-        flex: 1,
         headerName: "Updated By",
-        minWidth: 200,
+        minWidth: 150,
+        type: "email",
       },
       {
         field: "updatedOn",
-        flex: 1,
         headerName: "Updated On",
-        minWidth: 200,
+        minWidth: 150,
         renderCell: function render({ value }) {
-          return <DateField value={value} format="YYYY/MM/DD hh:mm:ss"/>;
+          return <DateField value={value} format="MM/DD/YYYY hh:mm:ss"/>;
         },
       },
       {
@@ -70,7 +64,6 @@ export default function EmployeeRoleList() {
           return (
             <>
               <EditButton hideText recordItemId={row.roleId} />
-              <ShowButton hideText recordItemId={row.roleId} />
             </>
           );
         },
@@ -86,7 +79,8 @@ export default function EmployeeRoleList() {
   const getRowId: GridRowIdGetter<IEmployeeRole> = (row) => row.roleId?.toString();
 
   return (
-    <List>
+    <List
+      title={<Typography variant="h5">Employee Role</Typography>}>
       <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
     </List>
   );

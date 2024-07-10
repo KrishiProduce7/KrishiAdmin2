@@ -26,7 +26,9 @@ export default function FarmWorkShow() {
   });
 
   return (
-    <Show isLoading={isLoading}>
+    <Show 
+      title={<Typography variant="h5">Show Farmwork</Typography>}
+      isLoading={isLoading}>
       <Stack gap={1}>
         <Typography variant="body1" fontWeight="bold">
           {"ID"}

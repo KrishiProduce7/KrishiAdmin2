@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, TextField } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { Create } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 
@@ -13,7 +13,9 @@ export default function CoopCreate() {
   } = useForm({});
 
   return (
-    <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
+    <Create 
+      title={<Typography variant="h5">Create Coop</Typography>}
+      isLoading={formLoading} saveButtonProps={saveButtonProps}>
       <Box
         component="form"
         sx={{ display: "flex", flexDirection: "column" }}
@@ -56,8 +58,8 @@ export default function CoopCreate() {
           margin="normal"  
           fullWidth
           InputLabelProps={{ shrink: true }}
-          type="text"
-          label={"Chickens Count"}
+          type="number"
+          label={"Chickens Count #"} 
           name="chickensCount"
           required  
         />

@@ -6,8 +6,9 @@ import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { USStates } from "../us-states";
+import { createFilterOptions } from "@mui/material";
 
 export default function EmployeeCreate() {
   const { 
@@ -23,6 +24,11 @@ export default function EmployeeCreate() {
     resource: "employeeRole",
   });
 
+  const filterOptions = createFilterOptions({
+    matchFrom: "start",
+    stringify: (option: any) => option.roleDesc,
+  });
+  
   return (
     <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
       <Box
@@ -87,35 +93,34 @@ export default function EmployeeCreate() {
           control={control}
           name="dob"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 {...field}
                 label="Date of Birth"
-                onChange={(value) => {
-                  field.onChange(value);
+                value={field.value || null}
+                onChange={(newValue) => field.onChange(newValue)}
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.dob}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"Date of Birth"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.dob} 
-                    helperText={(errors as any)?.dob?.message}
-                    InputLabelProps={{shrink: true}}
-                    required
-                  />
-                )}
-                inputFormat="MM/dd/yyyy"
               />
             </LocalizationProvider>
           )}
         />
         <TextField
-          {...register("street")}
+          {...register("street", {
+            required: "This field is required",
+          })}
           error={!!(errors as any)?.street}
           helperText={(errors as any)?.street?.message}
           margin="normal"
@@ -144,7 +149,7 @@ export default function EmployeeCreate() {
           control={control}
           name="state"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <Autocomplete
@@ -205,29 +210,26 @@ export default function EmployeeCreate() {
           control={control}
           name="startDate"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 {...field}
                 label="Start Date"
-                onChange={(value) => {
-                  field.onChange(value);
+                value={field.value || null}
+                onChange={(newValue) => field.onChange(newValue)}
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.startDate}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"Start Date"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.startDate} 
-                    helperText={(errors as any)?.startDate?.message}
-                    InputLabelProps={{ shrink: true }}
-                    required
-                  />
-                )}
-                inputFormat="MM/dd/yyyy"
               />
             </LocalizationProvider>
           )}
@@ -236,7 +238,7 @@ export default function EmployeeCreate() {
           control={control}
           name="roleId"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <Autocomplete
@@ -244,9 +246,11 @@ export default function EmployeeCreate() {
               {...field}
               onChange={(_, value) => {
                 field.onChange(value.roleId);
-              }} 
+              }}
+              onInputChange={(_, value) => {}}
+              filterOptions={filterOptions}              
               getOptionLabel={(item) => {
-                return (
+                return ( 
                   roleAutocompleteProps?.options?.find((p) => {
                     const itemId =
                       typeof item === "object"

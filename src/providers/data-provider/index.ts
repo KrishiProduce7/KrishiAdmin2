@@ -8,21 +8,8 @@ import Cookies from "js-cookie";
 type MethodTypes = "get" | "delete" | "head" | "options";
 type MethodTypesWithBody = "post" | "put" | "patch";
 
-const API_URL = "https://xigc25n7ga.execute-api.us-east-2.amazonaws.com/Krishi";
-
-// function convertKeysToLowercase<T>(obj: T): T {
-//   if (Array.isArray(obj)) {
-//       return obj.map(item => convertKeysToLowercase(item)) as unknown as T;
-//   } else if (obj !== null && typeof obj === 'object') {
-//       return Object.keys(obj).reduce((acc, key) => {
-//           const newKey = key.charAt(0).toLowerCase() + key.slice(1);
-//           (acc as any)[newKey] = convertKeysToLowercase((obj as any)[key]);
-//           return acc;
-//       }, {} as T);
-//   }
-//   return obj;
-// }
-   
+export const API_URL = "https://xigc25n7ga.execute-api.us-east-2.amazonaws.com/Krishi";
+  
 const farmWorkDataProvider = (
   apiUrl: string,
   httpClient: AxiosInstance = axiosInstance,
@@ -30,44 +17,13 @@ const farmWorkDataProvider = (
   Required<DataProvider>,
   "createMany" | "updateMany" | "deleteMany" | "getMany"
 > => ({
-  getList: async ({ resource, pagination, filters, sorters, meta }) => {
+  getList: async ({ resource, /* pagination, filters, sorters, */ meta }) => {
     const idName = meta?.idName;
     const url = `${apiUrl}/${resource}?${idName}=0`;
-
-    const { current = 1, pageSize = 10, mode = "client" } = pagination ?? {};
 
     const { headers: headersFromMeta, method } = meta ?? {};
     const requestMethod = (method as MethodTypes) ?? "get";
 
-    /*
-    const queryFilters = generateFilter(filters);
-
-    const query: {
-      _start?: number;
-      _end?: number;
-      _sort?: string;
-      _order?: string;   
-    } = {};
-
-
-    if (mode === "server") {
-      query._start = (current - 1) * pageSize;
-      query._end = current * pageSize;
-    }
-
-    const generatedSort = generateSort(sorters);
-    if (generatedSort) {
-      const { _sort, _order } = generatedSort;
-      query._sort = _sort.join(",");
-      query._order = _order.join(",");
-    }
-
-    const combinedQuery = { ...query, ...queryFilters };
-      
-    const urlWithQuery = Object.keys(combinedQuery).length
-      ? `${url}?${stringify(combinedQuery)}`
-      : url;
-    */
     const urlWithQuery = url;
      
     const { data, headers } = await httpClient[requestMethod](urlWithQuery, {
@@ -75,8 +31,6 @@ const farmWorkDataProvider = (
     });
 
     const total = +headers["x-total-count"];
-
-    //console.log(data);
 
     return {
       data,
@@ -87,21 +41,22 @@ const farmWorkDataProvider = (
   create: async ({ resource, variables, meta }) => {
     const url = `${apiUrl}/${resource}`;
 
-    const auth = Cookies.get("auth") ?? "";
-    const user = JSON.parse(auth);
+    const user = JSON.parse(Cookies.get("auth") ?? "");
 
     let params = {
       ...variables,
     };
 
+    console.log(user?.email);
+
     if (meta?.includeUserEmail && user?.email) {
       params = {
-        ...params,
+        ...params, 
         userEmail: user.email
       }
     }
-
-    //console.log(params);
+   
+    console.log(params); 
     
     const { headers, method } = meta ?? {};
     const requestMethod = (method as MethodTypesWithBody) ?? "post";
@@ -123,8 +78,7 @@ const farmWorkDataProvider = (
     const { headers, method } = meta ?? {};
     const requestMethod = (method as MethodTypesWithBody) ?? "patch";
 
-    const auth = Cookies.get("auth") ?? "";
-    const user = JSON.parse(auth);
+    const user = JSON.parse(Cookies.get("auth") ?? "");
 
     let params = {
       ...variables,
@@ -135,7 +89,10 @@ const farmWorkDataProvider = (
         ...params,
         userEmail: user.email
       }
-    }
+    }   
+
+    console.log(url);
+    console.log(params); 
 
     const { data } = await httpClient[requestMethod](url, {}, {
       headers,
@@ -155,7 +112,6 @@ const farmWorkDataProvider = (
     const requestMethod = (method as MethodTypes) ?? "get";
 
     const { data } = await httpClient[requestMethod](url, { headers });
-    //console.log(data);
 
     if (data?.length > 0) {
       return {
@@ -170,8 +126,7 @@ const farmWorkDataProvider = (
 
   deleteOne: async ({ resource, id, variables, meta }) => {
     const idName = meta?.idName;
-    const auth = Cookies.get("auth") ?? "";
-    const user = JSON.parse(auth);
+    const user = JSON.parse(Cookies.get("auth") ?? "");
 
     const url = `${apiUrl}/${resource}?${idName}=${id}&userEmail=${user.email}`;
 
@@ -252,7 +207,4 @@ const farmWorkDataProvider = (
   },
 });
 
-// import dataProviderSimpleRest from "@refinedev/simple-rest";
-
-//const API_URL = "https://api.fake-rest.refine.dev";
 export const dataProvider = farmWorkDataProvider(API_URL);

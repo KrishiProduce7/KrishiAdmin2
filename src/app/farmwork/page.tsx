@@ -11,17 +11,13 @@ import {
   ShowButton,
   useDataGrid,
   BooleanField,
+  EmailField,
 } from "@refinedev/mui";
 import React from "react";
-
-interface IFarmWork {
-  farmWorkId: number;
-  farmWorkDesc: string;
-  categoryId: number;
-  isActive: number;
-  updatedBy: string;
-  updatedOn: Date;
-}
+import IFarmWork from "./types"
+import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
+import { green, red } from "@mui/material/colors";
+import { TextField, Typography } from "@mui/material";
 
 export default function FarmWorkList() {
   const { dataGridProps } = useDataGrid({
@@ -39,13 +35,12 @@ export default function FarmWorkList() {
     () => [
       {
         field: "farmWorkId",
-        headerName: "Id",
+        headerName: "ID #",
         type: "number",
         minWidth: 50,
       },
       {
-        field: "categoryId",
-        flex: 1,
+        field: "category",
         headerName: "Category",
         minWidth: 100,
         valueGetter: ({ row }) => {
@@ -65,33 +60,31 @@ export default function FarmWorkList() {
         flex: 1,
         headerName: "Description",
         minWidth: 150,
-        renderCell: function render({ value }) {
-          if (!value) return "-";
-          return <MarkdownField value={value?.slice(0, 80) + "..." || ""} />;
-        },
       },
       {
         field: "isActive",
-        flex: 1,
         headerName: "Active",
         minWidth: 50, 
         renderCell: function render({ value }) {
-          return <BooleanField value={value} />;
-        },
-      },
+          return <BooleanField 
+            value={value}
+            trueIcon={<CheckOutlined style={{ color: green[500] }} />}
+            falseIcon={<CloseOutlined style={{ color: red[500] }} />}
+            />
+        }
+      }, 
       {
         field: "updatedBy",
-        flex: 1,
         headerName: "Updated By",
-        minWidth: 200,
+        minWidth: 150,
+        type: "email",
       },
       {
         field: "updatedOn",
-        flex: 1,
         headerName: "Updated On",
         minWidth: 150, 
         renderCell: function render({ value }) {
-          return <DateField value={value} format="YYYY/MM/DD hh:mm:ss"/>;
+          return <DateField value={value} format="MM/DD/YYYY hh:mm:ss"/>;
         },
       },
       {
@@ -102,7 +95,6 @@ export default function FarmWorkList() {
           return (
             <>
               <EditButton hideText recordItemId={row.farmWorkId} />
-              <ShowButton hideText recordItemId={row.farmWorkId} />  
               <DeleteButton hideText recordItemId={row.farmWorkId} />
             </>
           );
@@ -119,7 +111,8 @@ export default function FarmWorkList() {
   const getRowId: GridRowIdGetter<IFarmWork> = (row) => row.farmWorkId.toString();
 
   return (
-    <List>
+    <List
+      title={<Typography variant="h5">Farmwork</Typography>}>
       <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
     </List>
   );

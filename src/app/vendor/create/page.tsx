@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, TextField } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { Create } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 
@@ -12,8 +12,8 @@ export default function VendorCreate() {
     formState: { errors },
   } = useForm({});
 
-  return (
-    <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
+  return (   
+    <Create title={<Typography variant="h5">Create Vendor</Typography>} isLoading={formLoading} saveButtonProps={saveButtonProps}>
       <Box
         component="form"
         sx={{ display: "flex", flexDirection: "column" }}
@@ -65,14 +65,19 @@ export default function VendorCreate() {
           {...register("contactEmail", {
             required: "This field is required",
           })}
+          id="contactEmail"
           error={!!(errors as any)?.contactEmail}
           helperText={(errors as any)?.contactEmail?.message}
           margin="normal"  
           fullWidth
           InputLabelProps={{ shrink: true }}
-          type="text"
+          type="email" 
+          autoComplete="email"
           label={"Contact Email"}
           name="contactEmail"
+          inputProps={{
+            type: "email",
+          }}
           required  
         />
         <TextField

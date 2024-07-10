@@ -9,16 +9,11 @@ import {
   ShowButton,
   DateField,
   useDataGrid,
+  EmailField,
 } from "@refinedev/mui";
 import React from "react";
-
-interface IFarmExpense {
-  expenseId: number,
-  expenseDate: Date,
-  itemName: string,
-  totalQty: number,
-  totalAmount: number,
-}
+import IFarmExpense from "./types";
+import { TextField } from "@mui/material";
 
 export default function FarmExpenseList() {
   const { dataGridProps } = useDataGrid({
@@ -35,7 +30,7 @@ export default function FarmExpenseList() {
     () => [
       {
         field: "expenseId",
-        headerName: "Id",
+        headerName: "ID #",
         type: "number",
         minWidth: 30,
       },
@@ -73,29 +68,28 @@ export default function FarmExpenseList() {
       },
       {
         field: "totalQty",
-        flex: 1,
         headerName: "Total Quantity",
+        type: "number",
         minWidth: 100, 
       },      
       {
         field: "totalAmount",
-        flex: 1,
         headerName: "Total Amount",
+        type: "number",
         minWidth: 100, 
       },            
       {
         field: "updatedBy",
-        flex: 1,
         headerName: "Updated By",
-        minWidth: 200,
+        minWidth: 150,
+        type: "email",
       },
       {
         field: "updatedOn",
-        flex: 1,
         headerName: "Updated On",
         minWidth: 150,
         renderCell: function render({ value }) {
-          return <DateField value={value} format="YYYY/MM/DD hh:mm:ss"/>;
+          return <DateField value={value} format="MM/DD/YYYY hh:mm:ss"/>;
         },
       },
       {
@@ -106,7 +100,6 @@ export default function FarmExpenseList() {
           return (
             <>
               <EditButton hideText recordItemId={row.expenseId} />
-              <ShowButton hideText recordItemId={row.expenseId} />
               <DeleteButton hideText recordItemId={row.expenseId} />
             </>
           );

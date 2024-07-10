@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, TextField, Switch } from "@mui/material";
+import { Box, TextField, Switch, Typography } from "@mui/material";
 import { Edit } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 
@@ -12,7 +12,9 @@ export default function FarmworkCategoryEdit() {
   } = useForm({});
  
   return (
-    <Edit saveButtonProps={saveButtonProps}>
+    <Edit 
+      saveButtonProps={saveButtonProps}
+      title={<Typography variant="h5">Edit Farmwork Category</Typography>}>
       <Box
         component="form"
         sx={{ display: "flex", flexDirection: "column" }}

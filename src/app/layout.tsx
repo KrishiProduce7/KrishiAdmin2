@@ -6,10 +6,24 @@ import routerProvider from "@refinedev/nextjs-router";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
 import React, { Suspense } from "react";
-
+import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
 import { ColorModeContextProvider } from "@contexts/color-mode";
 import { authProvider } from "@providers/auth-provider";
 import { dataProvider } from "@providers/data-provider";
+import { accessControlProvider } from "@providers/access-control-provider";
+import { Dashboard } from "@mui/icons-material";
+import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined';
+import AgricultureOutlinedIcon from '@mui/icons-material/AgricultureOutlined';
+import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
+import StoreMallDirectoryOutlinedIcon from '@mui/icons-material/StoreMallDirectoryOutlined';
+import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
+import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
+import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
+import RequestQuoteOutlinedIcon from '@mui/icons-material/RequestQuoteOutlined';
+import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
+import EggOutlinedIcon from '@mui/icons-material/EggOutlined';
 
 export const metadata: Metadata = {
   title: "FarmWorks",
@@ -41,17 +55,28 @@ export default function RootLayout({
                     dataProvider={dataProvider}
                     notificationProvider={notificationProvider}
                     authProvider={authProvider}
+                    accessControlProvider={accessControlProvider}
                     resources={[   
+                      {
+                        name: "admin",
+                        meta: {
+                          label: "Admin",
+                          icon: <Dashboard />,
+                        }
+                      },
                       {
                         name: "farmworkCategory",    
                         list: "/farmworkCategory",
                         create: "/farmworkCategory/create",
                         edit: "/farmworkCategory/edit/:id",
                         show: "/farmworkCategory/show/:id",
-                        meta: { 
+                        meta: {
                           canDelete: true,
                           idName: "categoryId",
                           includeUserEmail: true,
+                          parent: "admin",
+                          label: "Farmwork Category",
+                          icon: <LabelOutlinedIcon />,
                         },
                       }, 
                       {
@@ -64,6 +89,9 @@ export default function RootLayout({
                           canDelete: true,
                           idName: "farmWorkId",
                           includeUserEmail: true,
+                          parent: "admin",
+                          label: "Farmwork",
+                          icon: <AgricultureOutlinedIcon />,
                         },
                       },
                       {
@@ -76,42 +104,9 @@ export default function RootLayout({
                           canDelete: false,
                           idName: "roleId",
                           includeUserEmail: true,
-                        },
-                      },
-                      {
-                        name: "employee",
-                        list: "/employee",
-                        create: "/employee/create",
-                        edit: "/employee/edit/:id",
-                        show: "/employee/show/:id",
-                        meta: {
-                          canDelete: true,
-                          idName: "employeeId",
-                          includeUserEmail: true,
-                        },
-                      },
-                      {
-                        name: "employeeWage",
-                        list: "/employeeWage",
-                        create: "/employeeWage/create",
-                        edit: "/employeeWage/edit/:id",
-                        show: "/employeeWage/show/:id",
-                        meta: {
-                          canDelete: true,
-                          idName: "wageId",
-                          includeUserEmail: true,
-                        },
-                      },
-                      {
-                        name: "employeeTimeclock",
-                        list: "/employeeTimeclock",
-                        create: "/employeeTimeclock/create",
-                        edit: "/employeeTimeclock/edit/:id",
-                        show: "/employeeTimeclock/show/:id",
-                        meta: {
-                          canDelete: false,
-                          idName: "timeclockId",
-                          includeUserEmail: false,
+                          parent: "admin",
+                          label: "Employee Role",
+                          icon: <BadgeOutlinedIcon />,
                         },
                       },
                       {
@@ -124,6 +119,9 @@ export default function RootLayout({
                           canDelete: false,
                           idName: "coopId",
                           includeUserEmail: true,
+                          parent: "admin",
+                          label: "Coop",
+                          icon: <ApartmentOutlinedIcon />,
                         },
                       },
                       {
@@ -136,30 +134,9 @@ export default function RootLayout({
                           canDelete: true,
                           idName: "vendorId",
                           includeUserEmail: true,
-                        },
-                      },
-                      {
-                        name: "farmExpense",
-                        list: "/farmExpense",
-                        create: "/farmExpense/create",
-                        edit: "/farmExpense/edit/:id",
-                        show: "/farmExpense/show/:id",
-                        meta: {
-                          canDelete: true,
-                          idName: "expenseId",
-                          includeUserEmail: true,
-                        },
-                      },
-                      {
-                        name: "poultryActivity",
-                        list: "/poultryActivity",
-                        create: "/poultryActivity/create",
-                        edit: "/poultryActivity/edit/:id",
-                        show: "/poultryActivity/show/:id",
-                        meta: {
-                          canDelete: true,
-                          idName: "activityId",
-                          includeUserEmail: true,
+                          parent: "admin",
+                          label: "Vendor",
+                          icon: <StoreMallDirectoryOutlinedIcon />,
                         },
                       },
                       {
@@ -172,6 +149,61 @@ export default function RootLayout({
                           canDelete: true,
                           idName: "taskId",
                           includeUserEmail: true,
+                          parent: "admin",
+                          label: "Employee Task",
+                          icon: <AssignmentTurnedInOutlinedIcon />,
+                        },
+                      },
+                      {
+                        name: "finance",
+                        meta: {
+                          label: "Finance",
+                          icon: <MonetizationOnOutlinedIcon />
+                        }
+                      },
+                      {
+                        name: "employee",
+                        list: "/employee",
+                        create: "/employee/create",
+                        edit: "/employee/edit/:id",
+                        show: "/employee/show/:id",
+                        meta: {
+                          canDelete: true,
+                          idName: "employeeId",
+                          includeUserEmail: true,
+                          parent: "finance",
+                          label: "Employee",
+                          icon: <PeopleAltOutlinedIcon />
+                        },
+                      },
+                      {
+                        name: "employeeWage",
+                        list: "/employeeWage",
+                        create: "/employeeWage/create",
+                        edit: "/employeeWage/edit/:id",
+                        show: "/employeeWage/show/:id",
+                        meta: {
+                          canDelete: true,
+                          idName: "wageId",
+                          includeUserEmail: true,
+                          parent: "finance",
+                          label: "Employee Wage",
+                          icon: <AttachMoneyOutlinedIcon />,
+                        },
+                      },
+                      {
+                        name: "farmExpense",
+                        list: "/farmExpense",
+                        create: "/farmExpense/create",
+                        edit: "/farmExpense/edit/:id",
+                        show: "/farmExpense/show/:id",
+                        meta: {
+                          canDelete: true,
+                          idName: "expenseId",
+                          includeUserEmail: true,
+                          parent: "finance",
+                          label: "Farm Expense",
+                          icon: <ReceiptLongOutlinedIcon />,
                         },
                       },
                       {
@@ -184,6 +216,46 @@ export default function RootLayout({
                           canDelete: true,
                           idName: "payrollId",
                           includeUserEmail: true,
+                          parent: "finance",
+                          label: "Farm Payroll",
+                          icon: <RequestQuoteOutlinedIcon />,
+                        },
+                      },
+                      {
+                        name: "employeeManagement",
+                        meta: {
+                          label: "Labor",
+                          icon: <PeopleAltOutlinedIcon />,
+                        }
+                      },
+                      {
+                        name: "employeeTimeclock",
+                        list: "/employeeTimeclock",
+                        create: "/employeeTimeclock/create",
+                        edit: "/employeeTimeclock/edit/:id",
+                        show: "/employeeTimeclock/show/:id",
+                        meta: {
+                          canDelete: false,
+                          idName: "timeclockId",
+                          includeUserEmail: false,
+                          parent: "employeeManagement",
+                          label: "Employee Timeclock",
+                          icon: <TimerOutlinedIcon />
+                        },
+                      },
+                      {
+                        name: "poultryActivity",
+                        list: "/poultryActivity",
+                        create: "/poultryActivity/create",
+                        edit: "/poultryActivity/edit/:id",
+                        show: "/poultryActivity/show/:id",
+                        meta: {
+                          canDelete: true,
+                          idName: "activityId",
+                          includeUserEmail: true,
+                          parent: "employeeManagement",
+                          label: "Poultry Activity",
+                          icon: <EggOutlinedIcon />
                         },
                       },
                     ]}

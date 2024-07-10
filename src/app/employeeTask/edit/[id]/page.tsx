@@ -1,13 +1,13 @@
 "use client";
 
-import { Box, TextField, Switch, Autocomplete } from "@mui/material";
+import { Box, TextField, Switch, Autocomplete, Typography } from "@mui/material";
 import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { Controller } from "react-hook-form";
 import { DateTimePicker } from "@mui/x-date-pickers";
+import { createFilterOptions } from "@mui/material";
 
 export default function EmployeeTaskEdit() {
   const {
@@ -27,8 +27,18 @@ export default function EmployeeTaskEdit() {
     resource: "employee",
   });
 
+  const filterOptionsEmployee = createFilterOptions({
+    matchFrom: "start",
+    stringify: (option: any) => option.firstName + " " + option.lastName,
+  });
+
+  const filterOptionsFarmwork = createFilterOptions({
+    matchFrom: "start",
+    stringify: (option: any) => option.farmWorkDesc,
+  });
+
   return (
-    <Edit saveButtonProps={saveButtonProps}>
+    <Edit title={<Typography variant="h5">Edit Employee Task</Typography>} saveButtonProps={saveButtonProps}>
       <Box
         component="form"
         sx={{ display: "flex", flexDirection: "column" }}
@@ -38,7 +48,7 @@ export default function EmployeeTaskEdit() {
           control={control}
           name="employeeId"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <Autocomplete 
@@ -47,6 +57,8 @@ export default function EmployeeTaskEdit() {
               onChange={(_, value) => {
                 field.onChange(value.employeeId);
               }} 
+              onInputChange={(_, value) => {}}
+              filterOptions={filterOptionsEmployee}              
               getOptionLabel={(item) => {
                 return (
                   employeeAutocompleteProps?.options?.find((p) => {
@@ -93,7 +105,7 @@ export default function EmployeeTaskEdit() {
           control={control}
           name="farmWorkId"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <Autocomplete
@@ -102,6 +114,8 @@ export default function EmployeeTaskEdit() {
               onChange={(_, value) => {
                 field.onChange(value.farmWorkId);
               }} 
+              onInputChange={(_, value) => {}}
+              filterOptions={filterOptionsFarmwork}              
               getOptionLabel={(item) => {
                 return (
                   farmworkAutocompleteProps.options?.find((p) => {
@@ -154,29 +168,26 @@ export default function EmployeeTaskEdit() {
           control={control}
           name="assignedStartDateTime"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DateTimePicker
                 {...field}
                 label="Assigned Start DateTime"
-                onChange={(value) => {
-                  field.onChange(value);
+                value={field.value || null}
+                onChange={(newValue) => field.onChange(newValue)}
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.assignedStartDateTime}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"Assigned Start DateTime"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.assignedStartDateTime} 
-                    helperText={(errors as any)?.assignedStartDateTime?.message}
-                    InputLabelProps={{shrink: true}}
-                    required
-                  />
-                )}
-                inputFormat="yyyy/MM/dd hh:mm:ss" 
               />
             </LocalizationProvider>
           )}
@@ -185,29 +196,27 @@ export default function EmployeeTaskEdit() {
           control={control}
           name="assignedEndDateTime"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DateTimePicker
                 {...field}
                 label="Assigned End DateTime"
-                onChange={(value) => {
-                  field.onChange(value);
+                value={field.value || null}
+                onChange={(newValue) => field.onChange(newValue)}
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.assignedEndDateTime}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"Assigned End DateTime"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.assignedEndDateTime} 
-                    helperText={(errors as any)?.assignedEndDateTime?.message}
-                    InputLabelProps={{shrink: true}}
-                    required
-                  />
-                )}
-                inputFormat="yyyy/MM/dd hh:mm:ss" 
               />
             </LocalizationProvider>
           )}
@@ -216,29 +225,27 @@ export default function EmployeeTaskEdit() {
           control={control}
           name="actualStartDateTime"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DateTimePicker
                 {...field}
                 label="Actual Start DateTime"
-                onChange={(value) => {
-                  field.onChange(value);
+                value={field.value || null}
+                onChange={(newValue) => field.onChange(newValue)}
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.actualStartDateTime}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"Actual Start DateTime"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.actualStartDateTime} 
-                    helperText={(errors as any)?.actualStartDateTime?.message}
-                    InputLabelProps={{shrink: true}}
-                    required
-                  />
-                )}
-                inputFormat="yyyy/MM/dd hh:mm:ss" 
               />
             </LocalizationProvider>
           )}
@@ -247,29 +254,27 @@ export default function EmployeeTaskEdit() {
           control={control}
           name="actualEndDateTime"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DateTimePicker
                 {...field}
                 label="Actual End DateTime"
-                onChange={(value) => {
-                  field.onChange(value);
+                value={field.value || null}
+                onChange={(newValue) => field.onChange(newValue)}
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.actualEndDateTime}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"Actual End DateTime"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.actualEndDateTime} 
-                    helperText={(errors as any)?.actualEndDateTime?.message}
-                    InputLabelProps={{shrink: true}}
-                    required
-                  />
-                )}
-                inputFormat="yyyy/MM/dd hh:mm:ss" 
               />
             </LocalizationProvider>
           )}
@@ -292,16 +297,12 @@ export default function EmployeeTaskEdit() {
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="number"
-          label={"Percent Complete"}
+          label={"Percent Complete #"}
           name="taskPercentComplete"
           required 
         />
         <TextField
-          {...register("taskNotes", {
-            required: "This field is required",
-            min: 0,
-            max: 100
-          })}
+          {...register("taskNotes")}
           error={!!(errors as any)?.taskNotes}
           helperText={(errors as any)?.taskNotes?.message}
           margin="normal"

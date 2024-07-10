@@ -7,7 +7,8 @@ import {
   MarkdownField,
   Show,
   TextFieldComponent as TextField,
-  BooleanField
+  BooleanField,
+  EmailField
 } from "@refinedev/mui";
 
 export default function FarmWorkShow() {

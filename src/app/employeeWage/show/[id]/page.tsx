@@ -34,7 +34,7 @@ export default function EmployeeWageShow() {
   });
 
   return (
-    <Show isLoading={isLoading}>
+    <Show title={<Typography variant="h5">Show Employee Wage</Typography>} isLoading={isLoading}>
       <Stack gap={1}>
         <Typography variant="body1" fontWeight="bold">
           {"ID"}

@@ -1,10 +1,11 @@
 "use client";
 
-import { Autocomplete, Box, Select, TextField } from "@mui/material";
+import { Autocomplete, Box, Select, TextField, Typography } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
+import { createFilterOptions } from "@mui/material";
 
 export default function FarmWorkEdit() {
   const {
@@ -23,8 +24,15 @@ export default function FarmWorkEdit() {
     defaultValue: farmWorkData?.categoryId, 
   });
 
+  const filterOptions = createFilterOptions({
+    matchFrom: "start",
+    stringify: (option: any) => option.categoryDesc,
+  });
+
   return (
-    <Edit isLoading={formLoading} saveButtonProps={saveButtonProps}>
+    <Edit 
+      title={<Typography variant="h5">Edit Farmwork</Typography>}
+      isLoading={formLoading} saveButtonProps={saveButtonProps}>
       <Box
         component="form"
         sx={{ display: "flex", flexDirection: "column" }}
@@ -34,7 +42,7 @@ export default function FarmWorkEdit() {
           control={control}
           name="categoryId"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <Autocomplete
@@ -43,6 +51,8 @@ export default function FarmWorkEdit() {
               onChange={(_, value) => {
                 field.onChange(value.categoryId); 
               }}
+              onInputChange={(_, value) => {}}
+              filterOptions={filterOptions}              
               getOptionLabel={(item) => {
                 return (
                   categoryAutocompleteProps?.options?.find((p) => {

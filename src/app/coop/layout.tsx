@@ -14,7 +14,7 @@ export default async function Layout({ children }: React.PropsWithChildren) {
   return <ThemedLayoutV2 Header={Header}>{children}</ThemedLayoutV2>;
 }
 
-async function getData() {
+async function getData() {    
   const { authenticated, redirectTo } = await authProviderServer.check();
 
   return {

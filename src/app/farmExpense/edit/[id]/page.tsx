@@ -1,12 +1,13 @@
 "use client";
 
-import { Box, TextField, Autocomplete } from "@mui/material";
+import { Box, TextField, Autocomplete, Typography } from "@mui/material";
 import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { Controller } from "react-hook-form";
+import { createFilterOptions } from "@mui/material";
 
 export default function FarmExpenseEdit() {
   const {
@@ -22,8 +23,13 @@ export default function FarmExpenseEdit() {
     resource: "vendor",
   });
  
+  const filterOptions = createFilterOptions({
+    matchFrom: "start",
+    stringify: (option: any) => option.categoryDesc,
+  });
+
   return (
-    <Edit saveButtonProps={saveButtonProps}>
+    <Edit title={<Typography variant="h5">Edit Farm Expense</Typography>} saveButtonProps={saveButtonProps}>
       <Box
         component="form"
         sx={{ display: "flex", flexDirection: "column" }}
@@ -33,7 +39,7 @@ export default function FarmExpenseEdit() {
           control={control}
           name="vendorId"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <Autocomplete
@@ -42,6 +48,8 @@ export default function FarmExpenseEdit() {
               onChange={(_, value) => {
                 field.onChange(value.vendorId);
               }} 
+              onInputChange={(_, value) => {}}
+              filterOptions={filterOptions}              
               getOptionLabel={(item) => {
                 return (
                   vendorAutocompleteProps?.options?.find((p) => {
@@ -81,29 +89,26 @@ export default function FarmExpenseEdit() {
           control={control}
           name="expenseDate"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 {...field}
-                label="Expense Date"
-                onChange={(value) => {
-                  field.onChange(value);
+                label="Start Date"
+                value={field.value || null}
+                onChange={(newValue) => field.onChange(newValue)}
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.expenseDate}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"Expense Date"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.expenseDate} 
-                    helperText={(errors as any)?.expenseDate?.message}
-                    InputLabelProps={{ shrink: true }}
-                    required
-                  />
-                )}
-                inputFormat="MM/dd/yyyy"
               />
             </LocalizationProvider>
           )}

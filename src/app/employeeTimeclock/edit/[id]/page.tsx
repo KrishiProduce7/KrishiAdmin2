@@ -7,7 +7,7 @@ import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 
 
 export default function EmployeeTimeclockEdit() {
@@ -34,7 +34,9 @@ export default function EmployeeTimeclockEdit() {
   const clockOutGeo = "51.5088, 0.4278";
 
   return (
-    <Edit isLoading={formLoading} saveButtonProps={saveButtonProps}>
+    <Edit 
+      title={<Typography variant="h5">Edit Clock In / Out</Typography>}
+      isLoading={formLoading} saveButtonProps={saveButtonProps}>
       <Box
         component="form"
         sx={{ display: "flex", flexDirection: "column" }}
@@ -44,7 +46,7 @@ export default function EmployeeTimeclockEdit() {
           control={control}
           name="clockIn"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -54,19 +56,11 @@ export default function EmployeeTimeclockEdit() {
                 onChange={(value) => {
                   field.onChange(value);
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"Clock In"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.clockIn} 
-                    helperText={(errors as any)?.clockIn?.message}
-                    InputLabelProps={{ shrink: true }}
-                    required
-                  />
-                )}
-                inputFormat="yyyy/MM/dd hh:mm:ss" 
+                slotProps={{
+                  textField: {
+                    helperText: 'MM/DD/YYYY',
+                  },
+                }}
               />
             </LocalizationProvider>
           )}
@@ -75,7 +69,7 @@ export default function EmployeeTimeclockEdit() {
           control={control}
           name="clockOut"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -85,19 +79,11 @@ export default function EmployeeTimeclockEdit() {
                 onChange={(value) => {
                   field.onChange(value);
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"Clock Out"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.clockOut} 
-                    helperText={(errors as any)?.clockOut?.message}
-                    InputLabelProps={{ shrink: true }}
-                    required
-                  />
-                )}
-                inputFormat="yyyy/MM/dd hh:mm:ss"
+                slotProps={{
+                  textField: {
+                    helperText: 'MM/DD/YYYY',
+                  },
+                }}
               />
             </LocalizationProvider>
           )}

@@ -1,14 +1,14 @@
 "use client";
 
 import { Autocomplete, Box, Select, TextField } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
 import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { USStates } from "@app/employee/us-states";
+import { createFilterOptions } from "@mui/material";
 
 export default function EmployeeEdit() {
   const {
@@ -22,6 +22,11 @@ export default function EmployeeEdit() {
 
   const { autocompleteProps: roleAutocompleteProps } = useAutocomplete({
     resource: "employeeRole",
+  });
+
+  const filterOptions = createFilterOptions({
+    matchFrom: "start",
+    stringify: (option: any) => option.roleDesc,
   });
 
   return (
@@ -87,27 +92,27 @@ export default function EmployeeEdit() {
           control={control}
           name="dob"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 {...field}
-                onChange={(value) => {
-                  field.onChange(value);
+                label="Date of Birth"
+                value={field.value || null}
+                onChange={(newValue) => field.onChange(newValue)}
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal" 
+                      variant="outlined"
+                      error={!!errors.startDate}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Date of Birth"
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.dob} 
-                    helperText={(errors as any)?.dob?.message}
-                    required
-                  />
-                )}
-                inputFormat="MM/dd/yyyy"
               />
             </LocalizationProvider>
           )}
@@ -142,7 +147,7 @@ export default function EmployeeEdit() {
           control={control}
           name="state"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <Autocomplete
@@ -151,6 +156,8 @@ export default function EmployeeEdit() {
               onChange={(_, value) => {
                 field.onChange(value?.value);
               }}
+              onInputChange={(_, value) => {}}
+              filterOptions={filterOptions}              
               isOptionEqualToValue={(option, value) => {
                 const optionId = option?.value?.toString();
                 const valueId = 
@@ -201,64 +208,62 @@ export default function EmployeeEdit() {
           control={control}
           name="startDate"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 {...field}
-                onChange={(value) => {
-                  field.onChange(value);
+                label="Start Date"
+                value={field.value || null}
+                onChange={(newValue) => field.onChange(newValue)}
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params} 
+                      margin="normal"
+                      variant="outlined"
+                      InputLabelProps={{ shrink: true }}
+                      required 
+                    />
+                  )
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"StartDate"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.startDate} 
-                    helperText={(errors as any)?.startDate?.message}
-                    required
-                  />
-                )}
-                inputFormat="MM/dd/yyyy"
               />
             </LocalizationProvider>
           )}
         />
-        <Controller
+        {/* <Controller
           control={control}
           name="endDate"
-          // eslint-disable-next-line
+          rules={{ required: "This field is required" }}
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 {...field}
                 label="End Date"
-                onChange={(value) => {
-                  field.onChange(value);
+                value={field.value || null}
+                onChange={(newValue) => field.onChange(newValue)}
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.endDate}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"End Date"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.endDate} 
-                    helperText={(errors as any)?.endDate?.message}
-                  />
-                )}
-                inputFormat="MM/dd/yyyy"
               />
             </LocalizationProvider>
           )}
-        />
+        /> */}
         <Controller
           control={control}
           name="roleId"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <Autocomplete
@@ -267,6 +272,8 @@ export default function EmployeeEdit() {
               onChange={(_, value) => {
                 field.onChange(value.roleId);
               }} 
+              onInputChange={(_, value) => {}}
+              filterOptions={filterOptions}              
               getOptionLabel={(item) => {
                 return (
                   roleAutocompleteProps?.options?.find((p) => {

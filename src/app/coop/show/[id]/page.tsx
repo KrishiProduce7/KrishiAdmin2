@@ -2,7 +2,7 @@
 
 import { Stack, Typography } from "@mui/material";
 import { useShow } from "@refinedev/core";
-import { Show, TextFieldComponent as TextField, DateField, BooleanField } from "@refinedev/mui";
+import { Show, TextFieldComponent as TextField, DateField, BooleanField, EmailField } from "@refinedev/mui";
 
 export default function CoopShow() {
   const { queryResult } = useShow({}); 
@@ -12,10 +12,12 @@ export default function CoopShow() {
   const record = data?.data;
   
   return (
-    <Show isLoading={isLoading}>
+    <Show 
+      title={<Typography variant="h5">Show Coop</Typography>}
+      isLoading={isLoading}>
       <Stack gap={1}>
         <Typography variant="body1" fontWeight="bold">
-          {"Id"}
+          {"ID #"}
         </Typography>
         <TextField value={record?.coopId} />
 
@@ -25,8 +27,8 @@ export default function CoopShow() {
         <TextField value={record?.name} />
 
         <Typography variant="body1" fontWeight="bold">
-          {"Chickens Count"}
-        </Typography>
+          {"Chickens Count #"}
+        </Typography> 
         <TextField value={record?.chickensCount} />
 
         <Typography variant="body1" fontWeight="bold">

@@ -9,15 +9,11 @@ import {
   DateField,
   useDataGrid,
   BooleanField,
+  EmailField,
 } from "@refinedev/mui";
 import React from "react";
-
-interface ICoop {
-  coopId: number,
-  name: string,
-  location: string,
-  chickensCount: number,
-}
+import ICoop from "./types";
+import { TextField, Typography } from "@mui/material";
 
 export default function CoopList() {
   const { dataGridProps } = useDataGrid({
@@ -30,7 +26,7 @@ export default function CoopList() {
     () => [
       {
         field: "coopId",
-        headerName: "Id",
+        headerName: "ID #",
         type: "number",
         minWidth: 30,
       },
@@ -46,25 +42,24 @@ export default function CoopList() {
         headerName: "Location",
         minWidth: 150, 
       },
-      {
+      { 
         field: "chickensCount",
-        headerName: "Chickens Count",
+        headerName: "Chickens Count #",
         type: "number",
         minWidth: 200, 
       },
       {
         field: "updatedBy",
-        flex: 1,
         headerName: "Updated By",
-        minWidth: 200,
+        minWidth: 150,
+        type: "email",
       },
       {
         field: "updatedOn",
-        flex: 1,
         headerName: "Updated On",
         minWidth: 150,
         renderCell: function render({ value }) {
-          return <DateField value={value} format="YYYY/MM/DD hh:mm:ss"/>;
+          return <DateField value={value} format="MM/DD/YYYY hh:mm:ss"/>;
         },
       },
       {
@@ -75,7 +70,6 @@ export default function CoopList() {
           return (
             <>
               <EditButton hideText recordItemId={row.coopId} />
-              <ShowButton hideText recordItemId={row.coopId} />
             </>
           );
         },
@@ -91,7 +85,7 @@ export default function CoopList() {
   const getRowId: GridRowIdGetter<ICoop> = (row) => row.coopId?.toString();
 
   return (
-    <List>
+    <List title={<Typography variant="h5">Coop</Typography>}>
       <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
     </List>
   );

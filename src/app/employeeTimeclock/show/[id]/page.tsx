@@ -34,7 +34,9 @@ export default function EmployeeTimeclockShow() {
   });
 
   return (
-    <Show isLoading={isLoading}>
+    <Show 
+      title={<Typography variant="h5">Show Employee Timeclock</Typography>}
+      isLoading={isLoading}>
       <Stack gap={1}>
         <Typography variant="body1" fontWeight="bold">
           {"ID"}

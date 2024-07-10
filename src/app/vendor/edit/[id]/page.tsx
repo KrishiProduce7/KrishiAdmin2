@@ -1,8 +1,9 @@
 "use client";
 
-import { Box, TextField, Switch } from "@mui/material";
+import { Box, TextField, Switch, Typography } from "@mui/material";
 import { Edit } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
+import MuiPhoneNumber from "material-ui-phone-number";
 
 export default function CoopEdit() {
   const {
@@ -11,8 +12,8 @@ export default function CoopEdit() {
     formState: { errors },
   } = useForm({});
  
-  return (
-    <Edit saveButtonProps={saveButtonProps}>
+  return ( 
+    <Edit title={<Typography variant="h5">Edit Vendor</Typography>} saveButtonProps={saveButtonProps}>
       <Box
         component="form"
         sx={{ display: "flex", flexDirection: "column" }}
@@ -69,7 +70,7 @@ export default function CoopEdit() {
           margin="normal"  
           fullWidth
           InputLabelProps={{ shrink: true }}
-          type="text"
+          type="email" 
           label={"Contact Email"}
           name="contactEmail"
           required  

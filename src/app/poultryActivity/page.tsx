@@ -10,33 +10,11 @@ import {
   DateField,
   useDataGrid,
   BooleanField,
+  EmailField,
 } from "@refinedev/mui";
 import React from "react";
-
-interface IPoultryActivity {
-  activityId: number,
-  coopId: number,
-  employeeId: number,
-  day: Date,
-  feedBagsUsed: number,
-  mediumEggsPicked: number,
-  largeEggsPicked: number,
-  xLargeEggsPicked: number,
-  eggsWashed: number,
-  eggsBroken: number,
-  nestboxEggs: number,
-  floorEggs: number,
-  cleanEggs: number,
-  dirtyEggs: number,
-  mediumEggsPacked: number,
-  largeEggsPacked: number,
-  xLargeEggsPacked: number,
-  manureBags: number,
-  chickensDead: number,
-  deathReason: string,
-  updatedBy: string,
-  updatedOn: Date
-}
+import IPoultryActivity from "./types";
+import { TextField } from "@mui/material";
 
 export default function PoultryActivityList() {
   const { dataGridProps } = useDataGrid({
@@ -57,7 +35,7 @@ export default function PoultryActivityList() {
     () => [
       {
         field: "activityId",
-        headerName: "Id",
+        headerName: "ID #",
         type: "number",
         minWidth: 30,
       },
@@ -203,17 +181,16 @@ export default function PoultryActivityList() {
       },
       {
         field: "updatedBy",
-        flex: 1,
         headerName: "Updated By",
-        minWidth: 200,
+        minWidth: 150,
+        type: "email",
       },
       {
         field: "updatedOn",
-        flex: 1,
         headerName: "Updated On",
         minWidth: 150,
         renderCell: function render({ value }) {
-          return <DateField value={value} format="YYYY/MM/DD hh:mm:ss"/>;
+          return <DateField value={value} format="MM/DD/YYYY hh:mm:ss"/>;
         },
       },
       {
@@ -224,7 +201,6 @@ export default function PoultryActivityList() {
           return (
             <>
               <EditButton hideText recordItemId={row.activityId} />
-              <ShowButton hideText recordItemId={row.activityId} />
               <DeleteButton hideText recordItemId={row.activityId} />
             </>
           );

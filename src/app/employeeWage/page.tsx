@@ -7,26 +7,19 @@ import {
   DateField,
   DeleteButton,
   EditButton,
+  EmailField,
   List,
   MarkdownField,
   ShowButton,
   useDataGrid,
 } from "@refinedev/mui";
 import React from "react";
+import IEmployeeWage from "./types";
+import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
+import { green, red } from "@mui/material/colors";
+import { TextField, Typography } from "@mui/material";
 
-interface IEmployeeWage {
-  wageId: number;
-  employeeId: number;
-  farmWorkId: number;
-  startDate: Date;
-  endDate: Date;
-  wage: number;
-  wageUom: string;
-  updatedBy: string;
-  updatedOn: Date;
-}
-
-export default function EmployeeList() {
+export default function EmployeeWageList() {
   const { dataGridProps } = useDataGrid({
     syncWithLocation: true,
     pagination: {
@@ -46,7 +39,7 @@ export default function EmployeeList() {
     () => [
       {
         field: "wageId",
-        headerName: "Id",
+        headerName: "ID #",
         type: "number",
         minWidth: 50,
       },
@@ -117,26 +110,28 @@ export default function EmployeeList() {
       },
       {
         field: "isActive",
-        flex: 1,
         headerName: "Active",
         minWidth: 50, 
         renderCell: function render({ value }) {
-          return <BooleanField value={value} />;
-        },
-      },
+          return <BooleanField 
+            value={value}
+            trueIcon={<CheckOutlined style={{ color: green[500] }} />}
+            falseIcon={<CloseOutlined style={{ color: red[500] }} />}
+            />
+        }
+      }, 
       {
         field: "updatedBy",
-        flex: 1,
         headerName: "Updated By",
-        minWidth: 200,
+        minWidth: 150,
+        type: "email",
       },
       { 
         field: "updatedOn",
-        flex: 1,
         headerName: "Updated On",
         minWidth: 150,
         renderCell: function render({ value }) {
-          return <DateField value={value} format="YYYY/MM/DD hh:mm:ss"/>;
+          return <DateField value={value} format="MM/DD/YYYY hh:mm:ss"/>;
         },
       },
       {
@@ -147,7 +142,6 @@ export default function EmployeeList() {
           return (
             <>
               <EditButton hideText recordItemId={row.wageId} />
-              <ShowButton hideText recordItemId={row.wageId} />
               <DeleteButton hideText recordItemId={row.wageId} />
             </>
           );
@@ -164,7 +158,7 @@ export default function EmployeeList() {
   const getRowId: GridRowIdGetter<IEmployeeWage> = (row) => row.wageId.toString();
 
   return (
-    <List>
+    <List title={<Typography variant="h5">Employee Wage</Typography>}>
       <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
     </List>
   );

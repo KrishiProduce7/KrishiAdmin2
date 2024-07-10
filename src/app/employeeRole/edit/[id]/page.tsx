@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, TextField, Switch } from "@mui/material";
+import { Box, TextField, Switch, Typography } from "@mui/material";
 import { Edit } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 
@@ -12,7 +12,9 @@ export default function EmployeeRoleEdit() {
   } = useForm({});
  
   return (
-    <Edit saveButtonProps={saveButtonProps}>
+    <Edit  
+      title={<Typography variant="h5">Edit Employee Role</Typography>}
+      saveButtonProps={saveButtonProps}>
       <Box
         component="form"
         sx={{ display: "flex", flexDirection: "column" }}

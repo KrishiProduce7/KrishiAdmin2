@@ -1,12 +1,16 @@
 "use client";
 
-import { Autocomplete, Box, FormControlLabel, Switch, TextField } from "@mui/material";
+import { Autocomplete, Box, FormControlLabel, Switch, TextField, Typography } from "@mui/material";
 import { Create, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { createFilterOptions } from "@mui/material";
+import { useState } from "react";
+import { axiosInstance } from "@refinedev/simple-rest";
+import { useApiUrl, useCustom } from "@refinedev/core";
 
 export default function FarmPayrollCreate() {
   const {
@@ -16,14 +20,22 @@ export default function FarmPayrollCreate() {
     register,
     control,
     formState: { errors },
+    setValue,
   } = useForm({});
 
   const { autocompleteProps: employeeAutocompleteProps } = useAutocomplete({
     resource: "employee",
   });
 
+  const url = useApiUrl();
+
+  const filterOptions = createFilterOptions({
+    matchFrom: "start", 
+    stringify: (option: any) => option.firstName + " " + option.lastName,
+  });
+
   return (
-    <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
+    <Create title={<Typography variant="h5">Create Farm Payroll</Typography>} isLoading={formLoading} saveButtonProps={saveButtonProps}>
       <Box
         component="form"
         sx={{ display: "flex", flexDirection: "column" }}
@@ -33,15 +45,25 @@ export default function FarmPayrollCreate() {
           control={control}
           name="employeeId"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
           defaultValue={null as any}
           render={({ field }) => (
             <Autocomplete
               {...employeeAutocompleteProps}
               {...field}
-              onChange={(_, value) => {
+              onChange={async (_, value) => {
                 field.onChange(value.employeeId);
-              }} 
+                
+                const response = await axiosInstance.get(`${url}/farmPayroll/employee?employeeId=${value.employeeId}`);
+
+                if (response?.data.length > 0) {
+                  const data = response?.data[0]
+                  setValue('payStartDate', data?.payStartDate);
+                  setValue('payEndDate', data?.payEndDate);
+                  setValue('amountPaid', data?.totalPayroll);
+                }
+              }}
+              onInputChange={(_, value) => {}}
+              filterOptions={filterOptions}              
               getOptionLabel={(item) => {
                 return (
                   employeeAutocompleteProps?.options?.find((p) => {
@@ -89,29 +111,26 @@ export default function FarmPayrollCreate() {
           control={control}
           name="payStartDate"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
-          defaultValue={null as any}
+          defaultValue={null}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 {...field}
                 label="Pay Start Date"
-                onChange={(value) => {
-                  field.onChange(value);
+                value={field.value || null}
+                onChange={(newValue) => field.onChange(newValue)}
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.payStartDate}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"Pay Start Date"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.payStartDate} 
-                    helperText={(errors as any)?.payStartDate?.message}
-                    InputLabelProps={{shrink: true}}
-                    required
-                  />
-                )}
-                inputFormat="MM/dd/yyyy"
               />
             </LocalizationProvider>
           )}
@@ -120,29 +139,26 @@ export default function FarmPayrollCreate() {
           control={control}
           name="payEndDate"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
-          defaultValue={null as any}
+          defaultValue={null}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 {...field}
-                label="Pay Start Date"
-                onChange={(value) => {
-                  field.onChange(value);
+                label="Pay End Date"
+                value={field.value || null}
+                onChange={(newValue) => field.onChange(newValue)}
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.payEndDate}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"Pay End Date"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.payEndDate} 
-                    helperText={(errors as any)?.payEndDate?.message}
-                    InputLabelProps={{shrink: true}}
-                    required
-                  />
-                )}
-                inputFormat="MM/dd/yyyy"
               />
             </LocalizationProvider>
           )}
@@ -150,29 +166,27 @@ export default function FarmPayrollCreate() {
         <Controller
           control={control}
           name="paidOn"
-          // eslint-disable-next-line
+          rules={{ required: "This field is required" }}
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 {...field}
-                label="Paid Date"
-                onChange={(value) => {
-                  field.onChange(value);
+                label="PaidOn Date"
+                value={field.value || null}
+                onChange={(newValue) => field.onChange(newValue)}
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.paidOn}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"Paid Date"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.paidON} 
-                    helperText={(errors as any)?.paidON?.message}
-                    InputLabelProps={{shrink: true}}
-                    required
-                  />
-                )}
-                inputFormat="MM/dd/yyyy"
               />
             </LocalizationProvider>
           )}
@@ -180,7 +194,7 @@ export default function FarmPayrollCreate() {
         <TextField
           {...register("amountPaid", {
             required: "This field is required",
-          })}
+          })} 
           error={!!(errors as any)?.amountPaid}
           helperText={(errors as any)?.amountPaid?.message}
           margin="normal"

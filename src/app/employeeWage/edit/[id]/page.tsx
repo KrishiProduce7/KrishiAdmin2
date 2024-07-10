@@ -7,7 +7,7 @@ import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 
 export default function EmployeeWageEdit() {
   const {
@@ -20,7 +20,7 @@ export default function EmployeeWageEdit() {
   } = useForm({});
 
   return (
-    <Edit isLoading={formLoading} saveButtonProps={saveButtonProps}>
+    <Edit title={<Typography variant="h5">Edit Employee Wage</Typography>} isLoading={formLoading} saveButtonProps={saveButtonProps}>
       <Box
         component="form"
         sx={{ display: "flex", flexDirection: "column" }}
@@ -30,7 +30,7 @@ export default function EmployeeWageEdit() {
           control={control}
           name="startDate"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -40,18 +40,11 @@ export default function EmployeeWageEdit() {
                 onChange={(value) => {
                   field.onChange(value);
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"Start Date"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.startDate} 
-                    helperText={(errors as any)?.startDate?.message}
-                    required
-                  />
-                )}
-                inputFormat="MM/dd/yyyy"
+                slotProps={{
+                  textField: {
+                    helperText: 'MM/DD/YYYY',
+                  },
+                }}
               />
             </LocalizationProvider>
           )}

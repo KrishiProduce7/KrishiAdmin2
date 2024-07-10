@@ -10,24 +10,11 @@ import {
   DateField,
   useDataGrid,
   BooleanField,
+  EmailField,
 } from "@refinedev/mui";
 import React from "react";
-
-interface IEmployeeTask {
-  taskId: number,
-  employeeId: number,
-  farmworkId: number,
-  taskDesc: string,
-  assignedStartDateTime: Date,
-  assignedEndDateTime: Date,
-  actualStartDateTime: Date,
-  actualEndDateTime: Date
-  taskPercentComplete: number,
-  taskNotes: string
-  isActive: number,
-  updatedBy: string,
-  updatedOn: Date
-}
+import IEmployeeTask from "./types";
+import { Typography } from "@mui/material";
 
 export default function EmployeeTaskList() {
   const { dataGridProps } = useDataGrid({
@@ -48,13 +35,12 @@ export default function EmployeeTaskList() {
     () => [
       {
         field: "taskId",
-        headerName: "Id",
+        headerName: "ID #",
         type: "number",
         minWidth: 30,
       },
       {
         field: "employeeId",
-        flex: 1,
         headerName: "Employee",
         minWidth: 100,
         valueGetter: ({ row }) => {
@@ -71,89 +57,81 @@ export default function EmployeeTaskList() {
         },
       },
       {
-        field: "farmworkId",
-        flex: 1,
+        field: "farmWorkId",
         headerName: "Farm Work",
         minWidth: 100,
         valueGetter: ({ row }) => {
-          const value = row?.farmworkId;
+          const value = row?.farmWorkId;
           return value;
         },
         renderCell: function render({ value }) {
-          return employeeIsLoading ? (
+          return farmworkIsLoading ? (
             <>Loading...</>
           ) : (
-            employeeData?.data?.find((item) => item.farmworkId?.toString() === value?.toString())?.farmWorkDesc ?? ""
+            farmworkData?.data?.find((item) => item.farmWorkId?.toString() === value?.toString())?.farmWorkDesc ?? ""
           );
         },
       },
       {
         field: "taskDesc",
-        flex: 1,
         headerName: "Description",
         minWidth: 200,
       },
       {
         field: "assignedStartDateTime",
-        flex: 1,
         headerName: "Assigned Start Time",
         minWidth: 150,
         renderCell: function render({ value }) {
-          return <DateField value={value} format="YYYY/MM/DD HH:mm:ss"/>;
+          return <DateField value={value} format="MM/DD/YYYY HH:mm:ss"/>;
         },
       },
       {
         field: "assignedEndDateTime",
-        flex: 1,
         headerName: "Assigned End Time",
         minWidth: 150,
         renderCell: function render({ value }) {
-          return <DateField value={value} format="YYYY/MM/DD HH:mm:ss"/>;
+          return <DateField value={value} format="MM/DD/YYYY HH:mm:ss"/>;
         },
       },
       {
         field: "actualStartDateTime",
-        flex: 1,
         headerName: "Actual Start Time",
         minWidth: 150,
         renderCell: function render({ value }) {
-          return <DateField value={value} format="YYYY/MM/DD HH:mm:ss"/>;
+          return <DateField value={value} format="MM/DD/YYYY HH:mm:ss"/>;
         },
       },
       {
         field: "actualEndDateTime",
-        flex: 1,
         headerName: "Actual End Time",
         minWidth: 150,
         renderCell: function render({ value }) {
-          return <DateField value={value} format="YYYY/MM/DD HH:mm:ss"/>;
+          return <DateField value={value} format="MM/DD/YYYY HH:mm:ss"/>;
         },
       },
       {
         field: "taskPercentComplete",
-        headerName: "Percent Complete",
+        headerName: "Percent Complete #",
         type: "number",
-        minWidth: 200,
+        minWidth: 150,
       },
       {
         field: "taskNotes",
-        flex: 1,
         headerName: "Notes",
         minWidth: 200,
       },
       {
         field: "updatedBy",
-        flex: 1,
         headerName: "Updated By",
-        minWidth: 200,
+        minWidth: 150,
+        type: "email",
       },
-      {
+      { 
         field: "updatedOn",
-        flex: 1,
         headerName: "Updated On",
         minWidth: 150,
         renderCell: function render({ value }) {
-          return <DateField value={value} format="YYYY/MM/DD hh:mm:ss"/>;
+          return <DateField value={value} format="MM/DD/YYYY hh:mm:ss"/>;
         },
       },
       {
@@ -164,7 +142,6 @@ export default function EmployeeTaskList() {
           return (
             <>
               <EditButton hideText recordItemId={row.taskId} />
-              <ShowButton hideText recordItemId={row.taskId} />
               <DeleteButton hideText recordItemId={row.taskId} />
             </>
           );
@@ -180,11 +157,11 @@ export default function EmployeeTaskList() {
   // Custom getRowId
   const getRowId: GridRowIdGetter<IEmployeeTask> = (row) => row.taskId?.toString();
 
-  return (
-    <List>
+  return ( 
+    <List title={<Typography variant="h5">Employee Task</Typography>}>
       <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
     </List>
-  );
+  ); 
 }
 
 // Removed this

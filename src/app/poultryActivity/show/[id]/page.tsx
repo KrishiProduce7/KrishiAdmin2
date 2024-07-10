@@ -6,7 +6,8 @@ import {
   Show, 
   TextFieldComponent as TextField, 
   DateField, 
-  BooleanField 
+  BooleanField, 
+  EmailField
 } from "@refinedev/mui";
 
 export default function PoultryActivityShow() {

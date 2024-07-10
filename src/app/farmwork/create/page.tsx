@@ -1,9 +1,10 @@
 "use client";
 
-import { Autocomplete, Box, MenuItem, Select, TextField } from "@mui/material";
+import { Autocomplete, Box, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { Create, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
+import { createFilterOptions } from "@mui/material";
 
 export default function FarmWorkCreate() {
   const {
@@ -19,8 +20,15 @@ export default function FarmWorkCreate() {
     resource: "farmworkCategory",
   });
 
+  const filterOptions = createFilterOptions({
+    matchFrom: "start",
+    stringify: (option: any) => option.categoryDesc,
+  });
+ 
   return (
-    <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
+    <Create 
+      title={<Typography variant="h5">Create Farmwork</Typography>}
+      isLoading={formLoading} saveButtonProps={saveButtonProps}>
       <Box
         component="form"
         sx={{ display: "flex", flexDirection: "column" }}
@@ -30,15 +38,16 @@ export default function FarmWorkCreate() {
           control={control}
           name="categoryId"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
           defaultValue={null as any}
           render={({ field }) => (
             <Autocomplete
               {...categoryAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.categoryId);
+                field.onChange(value?.categoryId);
               }} 
+              onInputChange={(_, value) => {}}
+              filterOptions={filterOptions}
               getOptionLabel={(item) => {
                 return (
                   categoryAutocompleteProps?.options?.find((p) => {

@@ -6,7 +6,9 @@ import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { createFilterOptions } from "@mui/material";
+
 
 export default function PoultryActivityCreate() {
   const {
@@ -25,6 +27,11 @@ export default function PoultryActivityCreate() {
     resource: "employee",
   });
 
+  const filterOptions = createFilterOptions({
+    matchFrom: "start",
+    stringify: (option: any) => option.categoryDesc,
+  });
+
   return (
     <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
       <Box
@@ -36,7 +43,7 @@ export default function PoultryActivityCreate() {
           control={control}
           name="coopId"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <Autocomplete
@@ -45,6 +52,8 @@ export default function PoultryActivityCreate() {
               onChange={(_, value) => {
                 field.onChange(value.coopId);
               }} 
+              onInputChange={(_, value) => {}}
+              filterOptions={filterOptions}              
               getOptionLabel={(item) => {
                 return (
                   coopAutocompleteProps?.options?.find((p) => {
@@ -68,7 +77,7 @@ export default function PoultryActivityCreate() {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label={"Vendor"}
+                  label={"Coop"}
                   margin="normal"
                   variant="outlined" 
                   error={!!(errors as any)?.coopId} 
@@ -84,7 +93,7 @@ export default function PoultryActivityCreate() {
           control={control}
           name="employeeId"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <Autocomplete
@@ -93,6 +102,8 @@ export default function PoultryActivityCreate() {
               onChange={(_, value) => {
                 field.onChange(value.employeeId);
               }} 
+              onInputChange={(_, value) => {}}
+              filterOptions={filterOptions}                   
               getOptionLabel={(item) => {
                 return (
                   employeeAutocompleteProps?.options?.find((p) => {
@@ -140,7 +151,7 @@ export default function PoultryActivityCreate() {
           control={control}
           name="day"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -150,19 +161,11 @@ export default function PoultryActivityCreate() {
                 onChange={(value) => {
                   field.onChange(value);
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"Day"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.day} 
-                    helperText={(errors as any)?.day?.message}
-                    InputLabelProps={{shrink: true}}
-                    required
-                  />
-                )}
-                inputFormat="MM/dd/yyyy"
+                slotProps={{
+                  textField: {
+                    helperText: 'MM/DD/YYYY',
+                  },
+                }}
               />
             </LocalizationProvider>
           )}

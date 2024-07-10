@@ -1,31 +1,23 @@
 "use client";
 
+import { green, red } from "@mui/material/colors";
 import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
 import { useList } from "@refinedev/core";
+import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
 import {
   BooleanField,
   DateField,
   DeleteButton,
   EditButton,
+  EmailField,
   List,
   MarkdownField,
   ShowButton,
   useDataGrid,
 } from "@refinedev/mui";
 import React from "react";
-
-interface IEmployee {
-  employeeId: number;
-  firstName: string;
-  lastName: string;
-  mobile: string;
-  dob: Date;
-  startDate: Date;
-  endDate: Date;
-  roleId: number;
-  updatedBy: string;
-  updatedOn: Date;
-}
+import IEmployee from "./types";
+import { TextField, Tooltip } from "@mui/material";
 
 export default function EmployeeList() {
   const { dataGridProps } = useDataGrid({
@@ -43,7 +35,7 @@ export default function EmployeeList() {
     () => [
       {
         field: "employeeId",
-        headerName: "Id",
+        headerName: "ID #",
         type: "number",
         minWidth: 50,
       },
@@ -72,57 +64,6 @@ export default function EmployeeList() {
         minWidth: 100,
       },
       {
-        field: "dob",
-        flex: 1,
-        headerName: "DOB",
-        minWidth: 100,
-        renderCell: function render({ value }) {
-          return <DateField value={value} />;
-        },
-      },
-      {
-        field: "street",
-        flex: 1,
-        headerName: "Street",
-        minWidth: 100,
-      },
-      {
-        field: "city",
-        flex: 1,
-        headerName: "City",
-        minWidth: 100,
-      },
-      {
-        field: "state",
-        flex: 1,
-        headerName: "State",
-        minWidth: 100,
-      },
-      {
-        field: "zip",
-        flex: 1,
-        headerName: "Zip",
-        minWidth: 100,
-      },
-      {
-        field: "startDate",
-        flex: 1,
-        headerName: "Start Date",
-        minWidth: 100,
-        renderCell: function render({ value }) {
-          return value ? <DateField value={value} /> : <></>;
-        },
-      },
-      {
-        field: "endDate",
-        flex: 1,
-        headerName: "End Date",
-        minWidth: 100,
-        renderCell: function render({ value }) {
-          return value ? <DateField value={value}/> : <></>;
-        },
-      },
-      {
         field: "roleId",
         flex: 1,
         headerName: "Role",
@@ -135,32 +76,34 @@ export default function EmployeeList() {
           return roleIsLoading ? (
             <>Loading...</>
           ) : (
-            roleData?.data?.find((item) => item.roleId?.toString() === value?.toString())?.roleDesc ?? "" 
+              roleData?.data?.find((item) => item.roleId?.toString() === value?.toString())?.roleDesc ?? "" 
           );
         },
       },
       {
         field: "isActive",
-        flex: 1,
         headerName: "Active",
         minWidth: 50, 
         renderCell: function render({ value }) {
-          return <BooleanField value={value} />;
-        },
-      },
+          return <BooleanField 
+            value={value}
+            trueIcon={<CheckOutlined style={{ color: green[500] }} />}
+            falseIcon={<CloseOutlined style={{ color: red[500] }} />}
+            />
+        }
+      }, 
       {
         field: "updatedBy",
-        flex: 1,
         headerName: "Updated By",
-        minWidth: 200,
+        minWidth: 150,
+        type: "email",
       },
       {
         field: "updatedOn",
-        flex: 1,
         headerName: "Updated On",
         minWidth: 150,
         renderCell: function render({ value }) {
-          return <DateField value={value} format="YYYY/MM/DD hh:mm:ss"/>;
+          return <DateField value={value} format="MM/DD/YYYY hh:mm:ss"/>;
         },
       },
       {

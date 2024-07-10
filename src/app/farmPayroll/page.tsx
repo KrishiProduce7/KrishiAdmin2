@@ -10,19 +10,11 @@ import {
   DateField,
   useDataGrid,
   BooleanField,
+  EmailField,
 } from "@refinedev/mui";
 import React from "react";
-
-interface IFarmPayroll {
-  payrollId: number,
-  employeeId: number,
-  payStartDate: Date,
-  payEndDate: Date,
-  paiedOn: boolean,
-  amountPaid: number,
-  updatedBy: string,
-  updatedOn: Date
-}
+import IFarmPayroll from "./types";
+import { TextField, Typography } from "@mui/material";
 
 export default function FarmPayrollList() {
   const { dataGridProps } = useDataGrid({
@@ -39,7 +31,7 @@ export default function FarmPayrollList() {
     () => [
       {
         field: "payrollId",
-        headerName: "Id",
+        headerName: "ID #",
         type: "number",
         minWidth: 30,
       },
@@ -90,24 +82,22 @@ export default function FarmPayrollList() {
       },
       {
         field: "amountPaid",
-        flex: 1,
         headerName: "Amount Paid",
         minWidth: 150,
         type: "number",
       },      
       {
         field: "updatedBy",
-        flex: 1,
         headerName: "Updated By",
-        minWidth: 200,
+        minWidth: 150,
+        type: "email",
       },
       {
         field: "updatedOn",
-        flex: 1,
         headerName: "Updated On",
         minWidth: 150,
         renderCell: function render({ value }) {
-          return <DateField value={value} format="YYYY/MM/DD hh:mm:ss"/>;
+          return <DateField value={value} format="MM/DD/YYYY hh:mm:ss"/>;
         },
       },
       {
@@ -118,7 +108,6 @@ export default function FarmPayrollList() {
           return (
             <>
               <EditButton hideText recordItemId={row.payrollId} />
-              <ShowButton hideText recordItemId={row.payrollId} />
               <DeleteButton hideText recordItemId={row.payrollId} />
             </>
           );
@@ -135,7 +124,7 @@ export default function FarmPayrollList() {
   const getRowId: GridRowIdGetter<IFarmPayroll> = (row) => row.payrollId?.toString();
 
   return (
-    <List>
+    <List title={<Typography variant="h5">Farm Payroll</Typography>}> 
       <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
     </List>
   );

@@ -1,12 +1,13 @@
 "use client";
 
-import { Box, FormControlLabel, Switch, TextField, Autocomplete } from "@mui/material";
+import { Box, FormControlLabel, Switch, TextField, Autocomplete, Typography } from "@mui/material";
 import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { createFilterOptions } from "@mui/material";
 
 export default function FarmPayrollEdit() {
   const {
@@ -22,8 +23,13 @@ export default function FarmPayrollEdit() {
     resource: "employee",
   });
 
+  const filterOptions = createFilterOptions({
+    matchFrom: "start",
+    stringify: (option: any) => option.categoryDesc,
+  });
+
   return (
-    <Edit saveButtonProps={saveButtonProps}>
+    <Edit title={<Typography variant="h5">Edit Farm Payroll</Typography>} saveButtonProps={saveButtonProps}>
       <Box
         component="form"
         sx={{ display: "flex", flexDirection: "column" }}
@@ -33,7 +39,7 @@ export default function FarmPayrollEdit() {
           control={control}
           name="employeeId"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <Autocomplete
@@ -42,6 +48,8 @@ export default function FarmPayrollEdit() {
               onChange={(_, value) => {
                 field.onChange(value.employeeId);
               }} 
+              onInputChange={(_, value) => {}}
+              filterOptions={filterOptions}              
               getOptionLabel={(item) => {
                 return (
                   employeeAutocompleteProps?.options?.find((p) => {
@@ -88,7 +96,7 @@ export default function FarmPayrollEdit() {
           control={control}
           name="payStartDate"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -98,19 +106,11 @@ export default function FarmPayrollEdit() {
                 onChange={(value) => {
                   field.onChange(value);
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"Pay Start Date"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.payStartDate} 
-                    helperText={(errors as any)?.payStartDate?.message}
-                    InputLabelProps={{shrink: true}}
-                    required
-                  />
-                )}
-                inputFormat="MM/dd/yyyy"
+                slotProps={{
+                  textField: {
+                    helperText: 'MM/DD/YYYY',
+                  },
+                }}
               />
             </LocalizationProvider>
           )}
@@ -119,7 +119,7 @@ export default function FarmPayrollEdit() {
           control={control}
           name="payEndDate"
           rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -129,19 +129,11 @@ export default function FarmPayrollEdit() {
                 onChange={(value) => {
                   field.onChange(value);
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"Pay End Date"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.payEndDate} 
-                    helperText={(errors as any)?.payEndDate?.message}
-                    InputLabelProps={{shrink: true}}
-                    required
-                  />
-                )}
-                inputFormat="MM/dd/yyyy"
+                slotProps={{
+                  textField: {
+                    helperText: 'MM/DD/YYYY',
+                  },
+                }}
               />
             </LocalizationProvider>
           )}
@@ -149,7 +141,7 @@ export default function FarmPayrollEdit() {
 <Controller
           control={control}
           name="paidOn"
-          // eslint-disable-next-line
+          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -159,19 +151,11 @@ export default function FarmPayrollEdit() {
                 onChange={(value) => {
                   field.onChange(value);
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={"Paid Date"} 
-                    margin="normal"
-                    variant="outlined" 
-                    error={!!(errors as any)?.paidON} 
-                    helperText={(errors as any)?.paidON?.message}
-                    InputLabelProps={{shrink: true}}
-                    required
-                  />
-                )}
-                inputFormat="MM/dd/yyyy"
+                slotProps={{
+                  textField: {
+                    helperText: 'MM/DD/YYYY',
+                  },
+                }}
               />
             </LocalizationProvider>
           )}

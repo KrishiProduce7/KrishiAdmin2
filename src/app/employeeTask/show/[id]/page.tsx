@@ -6,7 +6,8 @@ import {
   Show, 
   TextFieldComponent as TextField, 
   DateField, 
-  BooleanField 
+  BooleanField, 
+  EmailField
 } from "@refinedev/mui";
 
 export default function EmployeeTaskShow() {
@@ -18,7 +19,7 @@ export default function EmployeeTaskShow() {
   
   const { data: farmworkData, isLoading: farmworkIsLoading } = useOne({
     resource: "farmwork",
-    id: record?.farmworkId || "",
+    id: record?.farmWorkId || "",
     queryOptions: {
       enabled: !!record,
     },
@@ -33,10 +34,10 @@ export default function EmployeeTaskShow() {
   });
 
   return (
-    <Show isLoading={isLoading}>
+    <Show title={<Typography variant="h5">Show Employee Task</Typography>} isLoading={isLoading}>
       <Stack gap={1}>
         <Typography variant="body1" fontWeight="bold">
-          {"Id"}
+          {"ID #"}
         </Typography>
         <TextField value={record?.taskId} />
 
@@ -76,7 +77,7 @@ export default function EmployeeTaskShow() {
         <DateField value={record?.actualEndDateTime} format="YYYY/MM/dd hh:mm:ss"/>
 
         <Typography variant="body1" fontWeight="bold">
-          {"Percent Complete"}
+          {"Percent Complete #"}
         </Typography>
         <TextField value={record?.taskPercentComplete} />
 

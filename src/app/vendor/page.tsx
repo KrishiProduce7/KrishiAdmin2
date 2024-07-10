@@ -9,8 +9,12 @@ import {
   DateField,
   useDataGrid,
   BooleanField,
+  EmailField,
 } from "@refinedev/mui";
 import React from "react";
+import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
+import { green, red } from "@mui/material/colors"; 
+import { Typography } from "@mui/material";
 
 interface IVendor {
   vendorId: number,
@@ -35,7 +39,7 @@ export default function CoopList() {
     () => [
       {
         field: "vendorId",
-        headerName: "Id",
+        headerName: "ID #",
         type: "number",
         minWidth: 30,
       },
@@ -59,38 +63,39 @@ export default function CoopList() {
       },
       {
         field: "contactEmail",
-        flex: 1,
+        type: "email",
         headerName: "Contact Email",
         minWidth: 100, 
       },
       {
-        field: "contactPhone",
-        flex: 1,
+        field: "contactPhone",  
         headerName: "Contact Phone",
         minWidth: 100, 
       },
       {
         field: "isActive",
-        flex: 1,
         headerName: "Active",
         minWidth: 50, 
         renderCell: function render({ value }) {
-          return <BooleanField value={value} />;
-        },
-      },
+          return <BooleanField 
+            value={value}
+            trueIcon={<CheckOutlined style={{ color: green[500] }} />}
+            falseIcon={<CloseOutlined style={{ color: red[500] }} />}
+            />
+        }
+      }, 
       {
         field: "updatedBy",
-        flex: 1,
         headerName: "Updated By",
-        minWidth: 200,
+        minWidth: 150,
+        type: "email",
       },
       {
         field: "updatedOn",
-        flex: 1,
         headerName: "Updated On",
         minWidth: 150,
         renderCell: function render({ value }) {
-          return <DateField value={value} format="YYYY/MM/DD hh:mm:ss"/>;
+          return <DateField value={value} format="MM/DD/YYYY hh:mm:ss"/>;
         },
       },
       {
@@ -101,7 +106,6 @@ export default function CoopList() {
           return (
             <>
               <EditButton hideText recordItemId={row.vendorId} />
-              <ShowButton hideText recordItemId={row.vendorId} />
               <DeleteButton hideText recordItemId={row.vendorId} />
             </>
           );
@@ -118,7 +122,7 @@ export default function CoopList() {
   const getRowId: GridRowIdGetter<IVendor> = (row) => row.vendorId?.toString();
 
   return (
-    <List>
+    <List title={<Typography variant="h5">Vendor</Typography>}> 
       <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
     </List>
   );

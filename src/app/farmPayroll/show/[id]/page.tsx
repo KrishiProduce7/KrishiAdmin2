@@ -2,7 +2,7 @@
 
 import { Stack, Typography } from "@mui/material";
 import { useShow, useOne } from "@refinedev/core";
-import { Show, TextFieldComponent as TextField, DateField, BooleanField } from "@refinedev/mui";
+import { Show, TextFieldComponent as TextField, DateField, BooleanField, EmailField } from "@refinedev/mui";
 
 export default function FarmPayrollShow() {
   const { queryResult } = useShow({}); 
@@ -20,10 +20,10 @@ export default function FarmPayrollShow() {
   });
 
   return (
-    <Show isLoading={isLoading}>
+    <Show title={<Typography variant="h5">Show Farm Payroll</Typography>} isLoading={isLoading}>
       <Stack gap={1}>
         <Typography variant="body1" fontWeight="bold">
-          {"Id"}
+          {"ID #"}
         </Typography>
         <TextField value={record?.payrollId} />
 
