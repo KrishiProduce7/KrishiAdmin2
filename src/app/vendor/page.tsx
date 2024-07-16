@@ -14,19 +14,8 @@ import {
 import React from "react";
 import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
 import { green, red } from "@mui/material/colors"; 
-import { Typography } from "@mui/material";
-
-interface IVendor {
-  vendorId: number,
-  vendorName: string,
-  url: string,
-  isActive: boolean,
-  contactName: string,
-  contactEmail: string,
-  contactPhone: string,
-  updatedBy: string,
-  updatedOn: Date
-}
+import { Box, Typography } from "@mui/material";
+import IVendor from "./types"
 
 export default function CoopList() {
   const { dataGridProps } = useDataGrid({
@@ -122,7 +111,7 @@ export default function CoopList() {
   const getRowId: GridRowIdGetter<IVendor> = (row) => row.vendorId?.toString();
 
   return (
-    <List title={<Typography variant="h5">Vendor</Typography>}> 
+    <List title={<Typography variant="h5">Vendor</Typography>}>
       <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
     </List>
   );

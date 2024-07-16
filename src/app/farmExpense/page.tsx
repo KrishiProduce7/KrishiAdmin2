@@ -13,7 +13,7 @@ import {
 } from "@refinedev/mui";
 import React from "react";
 import IFarmExpense from "./types";
-import { TextField } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 
 export default function FarmExpenseList() {
   const { dataGridProps } = useDataGrid({
@@ -116,7 +116,7 @@ export default function FarmExpenseList() {
   const getRowId: GridRowIdGetter<IFarmExpense> = (row) => row.expenseId?.toString();
 
   return (
-    <List>
+    <List title={<Typography variant="h5">Farm Expense</Typography>}>
       <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
     </List>
   );

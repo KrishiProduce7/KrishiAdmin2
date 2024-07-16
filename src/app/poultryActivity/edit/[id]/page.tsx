@@ -1,6 +1,6 @@
 "use client";
 
-import { Autocomplete, Box, TextField } from "@mui/material";
+import { Autocomplete, Box, TextField, Typography } from "@mui/material";
 import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -33,7 +33,9 @@ export default function PoultryActivityEdit() {
   });
 
   return (
-    <Edit saveButtonProps={saveButtonProps}>
+    <Edit 
+      title={<Typography variant="h5">Edit Poultry Activity</Typography>}
+      saveButtonProps={saveButtonProps}>
       <Box
         component="form"
         sx={{ display: "flex", flexDirection: "column" }}
@@ -151,7 +153,6 @@ export default function PoultryActivityEdit() {
           control={control}
           name="day"
           rules={{ required: "This field is required" }}
-          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -161,10 +162,17 @@ export default function PoultryActivityEdit() {
                 onChange={(value) => {
                   field.onChange(value);
                 }}
-                slotProps={{
-                  textField: {
-                    helperText: 'MM/DD/YYYY',
-                  },
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.day}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
               />
             </LocalizationProvider>

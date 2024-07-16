@@ -16,7 +16,7 @@ export default function CoopEdit() {
     <Edit title={<Typography variant="h5">Edit Vendor</Typography>} saveButtonProps={saveButtonProps}>
       <Box
         component="form"
-        sx={{ display: "flex", flexDirection: "column" }}
+        sx={{ display: "flex", flexDirection: "column"}}
         autoComplete="off"
       >
         <TextField

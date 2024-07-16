@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, InputLabel, Select, TextField } from "@mui/material";
+import { Box, InputLabel, Select, TextField, Typography } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { Edit } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
@@ -21,7 +21,7 @@ export default function EmployeeWageEdit() {
 
   return (
     <Edit title={<Typography variant="h5">Edit Employee Wage</Typography>} isLoading={formLoading} saveButtonProps={saveButtonProps}>
-      <Box
+      <Box   
         component="form"
         sx={{ display: "flex", flexDirection: "column" }}
         autoComplete="off"
@@ -30,7 +30,6 @@ export default function EmployeeWageEdit() {
           control={control}
           name="startDate"
           rules={{ required: "This field is required" }}
-          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -40,10 +39,17 @@ export default function EmployeeWageEdit() {
                 onChange={(value) => {
                   field.onChange(value);
                 }}
-                slotProps={{
-                  textField: {
-                    helperText: 'MM/DD/YYYY',
-                  },
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.startDate}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
               />
             </LocalizationProvider>

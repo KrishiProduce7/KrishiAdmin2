@@ -12,7 +12,7 @@ import {
 
 export default function EmployeeTaskShow() {
   const { queryResult } = useShow({}); 
-  
+
   const { data, isLoading } = queryResult;
      
   const record = data?.data;

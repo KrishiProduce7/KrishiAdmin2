@@ -24,6 +24,10 @@ import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import RequestQuoteOutlinedIcon from '@mui/icons-material/RequestQuoteOutlined';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import EggOutlinedIcon from '@mui/icons-material/EggOutlined';
+import SupportAgentOutlinedIcon from '@mui/icons-material/SupportAgentOutlined';
+import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import PendingActionsOutlinedIcon from '@mui/icons-material/PendingActionsOutlined';
 
 export const metadata: Metadata = {
   title: "FarmWorks",
@@ -155,6 +159,65 @@ export default function RootLayout({
                         },
                       },
                       {
+                        name: "item",
+                        list: "/item",
+                        create: "/item/create",
+                        edit: "/item/edit/:id",
+                        show: "/item/show/:id",
+                        meta: {
+                          canDelete: true,
+                          idName: "itemId",
+                          includeUserEmail: true,
+                          parent: "admin",
+                          label: "Item",
+                          icon: <DescriptionOutlinedIcon />,
+                        }
+                      },
+                      {
+                        name: "dept",
+                        meta: {
+                          hide: true,
+                          idName: "deptId",
+                        }
+                      },
+                      {
+                        name: "classs",
+                        meta: {
+                          hide: true,
+                          idName: "classId",
+                        }
+                      },
+                      {
+                        name: "customer",
+                        list: "/customer",
+                        create: "/customer/create",
+                        edit: "/customer/edit/:id",
+                        show: "/customer/show/:id",
+                        meta: {
+                          canDelete: true,
+                          idName: "customerId",
+                          includeUserEmail: true,
+                          parent: "admin",
+                          label: "Customer",
+                          icon: <SupportAgentOutlinedIcon />,
+                        }
+                      },
+                      {
+                        name: "farmSales",
+                        list: "/farmSale",
+                        create: "/farmSale/create",
+                        edit: "/farmSale/edit/:id",
+                        show: "/farmSale/show/:id",
+                        meta: {
+                          canDelete: true,
+                          idName: "saleId",
+                          includeUserEmail: true,
+                          parent: "admin",
+                          label: "Farm Sale",
+                          icon: <TrendingUpOutlinedIcon />, 
+                        }
+                      },
+                      {
                         name: "finance",
                         meta: {
                           label: "Finance",
@@ -224,9 +287,19 @@ export default function RootLayout({
                       {
                         name: "employeeManagement",
                         meta: {
-                          label: "Labor",
+                          label: "Employee",
                           icon: <PeopleAltOutlinedIcon />,
                         }
+                      },
+                      {
+                        name: "employeeSchedule",
+                        list: "/employeeSchedule",
+                        meta: {
+                          canDelete: false,
+                          parent: "employeeManagement",
+                          label: "Schedule",
+                          icon: <PendingActionsOutlinedIcon />
+                        },
                       },
                       {
                         name: "employeeTimeclock",
@@ -239,7 +312,7 @@ export default function RootLayout({
                           idName: "timeclockId",
                           includeUserEmail: false,
                           parent: "employeeManagement",
-                          label: "Employee Timeclock",
+                          label: "Timeclock",
                           icon: <TimerOutlinedIcon />
                         },
                       },

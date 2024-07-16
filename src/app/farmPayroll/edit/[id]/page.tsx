@@ -96,7 +96,6 @@ export default function FarmPayrollEdit() {
           control={control}
           name="payStartDate"
           rules={{ required: "This field is required" }}
-          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -106,10 +105,17 @@ export default function FarmPayrollEdit() {
                 onChange={(value) => {
                   field.onChange(value);
                 }}
-                slotProps={{
-                  textField: {
-                    helperText: 'MM/DD/YYYY',
-                  },
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.payStartDate}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
               />
             </LocalizationProvider>
@@ -119,7 +125,6 @@ export default function FarmPayrollEdit() {
           control={control}
           name="payEndDate"
           rules={{ required: "This field is required" }}
-          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -129,19 +134,25 @@ export default function FarmPayrollEdit() {
                 onChange={(value) => {
                   field.onChange(value);
                 }}
-                slotProps={{
-                  textField: {
-                    helperText: 'MM/DD/YYYY',
-                  },
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.payEndDate}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
               />
             </LocalizationProvider>
           )}
         />
-<Controller
+        <Controller
           control={control}
           name="paidOn"
-          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -151,10 +162,17 @@ export default function FarmPayrollEdit() {
                 onChange={(value) => {
                   field.onChange(value);
                 }}
-                slotProps={{
-                  textField: {
-                    helperText: 'MM/DD/YYYY',
-                  },
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.paidOn}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
               />
             </LocalizationProvider>

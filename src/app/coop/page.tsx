@@ -13,7 +13,7 @@ import {
 } from "@refinedev/mui";
 import React from "react";
 import ICoop from "./types";
-import { TextField, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 
 export default function CoopList() {
   const { dataGridProps } = useDataGrid({

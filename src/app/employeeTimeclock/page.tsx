@@ -34,7 +34,7 @@ export default function EmployeeTimeclockList() {
   });
  
   const { data: farmworkData, isLoading: farmworkIsLoading, isError: errorFarmWorkData } = useList({
-    resource: "farmwork",
+    resource: "employeeTask",
   });
 
   const columns = React.useMemo<GridColDef[]>(
@@ -64,19 +64,19 @@ export default function EmployeeTimeclockList() {
         },
       },
       {
-        field: "farmWorkId",
+        field: "taskId",
         flex: 1,
-        headerName: "Farm Work",
+        headerName: "Employee Task",
         minWidth: 100,
         valueGetter: ({ row }) => {
-          const value = row?.farmWorkId;
+          const value = row?.taskId;
           return value;
         },
         renderCell: function render({ value }) {
           return farmworkIsLoading ? (
             <>Loading...</>
           ) : (
-            farmworkData?.data?.find((item) => item.farmWorkId.toString() === value.toString())?.farmWorkDesc ?? ""
+            farmworkData?.data?.find((item) => item.taskId?.toString() === value?.toString())?.taskDesc ?? ""
           );
         },
       },

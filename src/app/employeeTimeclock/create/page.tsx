@@ -3,7 +3,7 @@
 import { Autocomplete, Box, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { Create, SaveButton, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
-import { useOne } from "@refinedev/core";
+import { useCreate, useOne } from "@refinedev/core";
 import { Controller } from "react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -11,6 +11,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { createFilterOptions } from "@mui/material";
 import { useEffect, useRef } from "react";
 import { useGetIdentity } from "@refinedev/core";
+import IEmployee from "@app/employee/types";
 
 interface IGeoLocation
 {
@@ -30,9 +31,9 @@ export default function EmployeeTimeclockCreate() {
     setError,
   } = useForm({});
 
-  const { data: user } = useGetIdentity();
+  const { data: user } = useGetIdentity<IEmployee>();
 
-  const onFinishHandler = (data) => {
+  const onFinishHandler = (data : any) => {
     const adapterDate = new AdapterDateFns();
     console.log(user);
 
@@ -40,14 +41,14 @@ export default function EmployeeTimeclockCreate() {
       ...data,
       employeeId: user?.employeeId, 
       clockInGeo: `${geoLocation.current.latitude},${geoLocation.current.longitude}`,
-      clockIn: adapterDate.date(new Date()), // Correct usage to get the current date
-      clockOutGeo: ``,
-      clockOut: ``,
-      totalHours: 0,
+      //      clockIn: adapterDate.date(new Date()), // Correct usage to get the current date
+      // clockOutGeo: ``,
+      // clockOut: ``,
+      // totalHours: 0,
     });
   };
 
-  const geoLocation = useRef({
+  const geoLocation = useRef<IGeoLocation>({
     latitude: 0,
     longitude: 0,
   });
@@ -68,13 +69,13 @@ export default function EmployeeTimeclockCreate() {
     getLocation();
   }, []);
 
-  const { autocompleteProps: farmworkAutocompleteProps } = useAutocomplete({
-    resource: "farmwork",
+  const { autocompleteProps: taskAutocompleteProps } = useAutocomplete({
+    resource: "employeeTask",
   });
  
-  const filterOptionsFarmwork = createFilterOptions({
+  const filterOptionsTask = createFilterOptions({
     matchFrom: "start",
-    stringify: (option: any) => option.farmWorkDesc,
+    stringify: (option: any) => option.taskDesc,
   });
 
   // saveButtonProps={{ ...saveButtonProps, children: 'Clock In', }}>
@@ -90,47 +91,47 @@ export default function EmployeeTimeclockCreate() {
       >
         <Controller
           control={control}
-          name="farmWorkId"
+          name="taskId"
           rules={{ required: "This field is required" }}
           
           defaultValue={null as any}
           render={({ field }) => (   
             <Autocomplete
-              {...farmworkAutocompleteProps}
+              {...taskAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.farmWorkId);
+                field.onChange(value.taskId);
               }} 
               onInputChange={(_, value) => {}}
-              filterOptions={filterOptionsFarmwork}              
+              filterOptions={filterOptionsTask}              
               getOptionLabel={(item) => {
                 return (
-                  farmworkAutocompleteProps?.options?.find((p) => {
+                  taskAutocompleteProps?.options?.find((p) => {
                     const itemId =
                       typeof item === "object"
-                        ? item?.farmWorkId?.toString()
+                        ? item?.taskId?.toString()
                         : item?.toString();
-                    const pId = p?.farmWorkId?.toString();
+                    const pId = p?.taskId?.toString();
                     return itemId === pId;
-                  })?.farmWorkDesc ?? ""
+                  })?.taskDesc ?? ""
                 );
               }}
               isOptionEqualToValue={(option, value) => {
-                const optionId = option?.farmWorkId?.toString();
+                const optionId = option?.taskId?.toString();
                 const valueId =
                   typeof value === "object"
-                    ? value?.farmWorkId?.toString()
+                    ? value?.taskId?.toString()
                     : value?.toString();
                 return value === undefined || optionId === valueId;
               }}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label={"Farm Work"}
+                  label={"Employee Task"}
                   margin="normal"
                   variant="outlined" 
-                  error={!!(errors as any)?.farmWorkId} 
-                  helperText={(errors as any)?.farmWorkId?.message}
+                  error={!!(errors as any)?.taskId} 
+                  helperText={(errors as any)?.taskId?.message}
                   InputLabelProps={{ shrink: true }}
                   required
                 />

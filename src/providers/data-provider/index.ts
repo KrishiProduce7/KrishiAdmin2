@@ -56,7 +56,7 @@ const farmWorkDataProvider = (
       }
     }
    
-    console.log(params); 
+    console.log(params);  
     
     const { headers, method } = meta ?? {};
     const requestMethod = (method as MethodTypesWithBody) ?? "post";

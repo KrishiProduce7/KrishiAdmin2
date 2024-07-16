@@ -14,7 +14,7 @@ import {
 } from "@refinedev/mui";
 import React from "react";
 import IPoultryActivity from "./types";
-import { TextField } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 
 export default function PoultryActivityList() {
   const { dataGridProps } = useDataGrid({
@@ -36,7 +36,7 @@ export default function PoultryActivityList() {
       {
         field: "activityId",
         headerName: "ID #",
-        type: "number",
+        type: "number", 
         minWidth: 30,
       },
       {
@@ -76,100 +76,99 @@ export default function PoultryActivityList() {
       },
       {
         field: "day",
-        flex: 1,
         headerName: "Day",
-        minWidth: 150,
+        minWidth: 100,
         renderCell: function render({ value }) {
           return <DateField value={value}/>;
         },
       },
       {
         field: "feedBagsUsed",
-        headerName: "Feed Bags Used",
+        headerName: "Feed Bags Used #",
         type: "number",
         minWidth: 150,
       },
       {
         field: "mediumEggsPicked",
-        headerName: "Medium Eggs Picked",
+        headerName: "Medium Eggs Picked #",
         type: "number",
         minWidth: 200,
       },
       {
         field: "largeEggsPicked",
-        headerName: "Large Eggs Picked",
+        headerName: "Large Eggs Picked #",
         type: "number",
         minWidth: 150,
       },
       {
         field: "xLargeEggsPicked",
-        headerName: "Extra Large Eggs Picked",
+        headerName: "Extra Large Eggs Picked #",
         type: "number",
         minWidth: 150,
       },
       {
         field: "eggsWashed",
-        headerName: "Eggs Washed",
+        headerName: "Eggs Washed #",
         type: "number",
         minWidth: 150,
       },
       {
         field: "eggsBroken",
-        headerName: "Eggs Broken",
+        headerName: "Eggs Broken #",
         type: "number",
         minWidth: 150,
       },
       {
         field: "nestboxEggs",
-        headerName: "Nestbox Eggs",
+        headerName: "Nestbox Eggs #",
         type: "number",
         minWidth: 150,
       },
       {
         field: "floorEggs",
-        headerName: "Floor Eggs",
+        headerName: "Floor Eggs #",
         type: "number",
         minWidth: 150,
       },
       {
         field: "cleanEggs",
-        headerName: "Clean Eggs",
+        headerName: "Clean Eggs #",
         type: "number",
         minWidth: 150,
       },
       {
         field: "dirtyEggs",
-        headerName: "Dirty Eggs",
+        headerName: "Dirty Eggs #",
         type: "number",
         minWidth: 150,
       },
       {
         field: "mediumEggsPacked",
-        headerName: "Medium Eggs Packed",
+        headerName: "Medium Eggs Packed #",
         type: "number",
         minWidth: 150,
       },        
       {
         field: "largeEggsPacked",
-        headerName: "Large Eggs Packed",
+        headerName: "Large Eggs Packed #",
         type: "number",
         minWidth: 150,
       },     
       {
         field: "xLargeEggsPacked",
-        headerName: "Extra Large Eggs Packed",
+        headerName: "Extra Large Eggs Packed #",
         type: "number",
         minWidth: 150,
       },
       {
         field: "manureBags",
-        headerName: "Manure Bags",
+        headerName: "Manure Bags #",
         type: "number",
         minWidth: 150,
       },
       {
         field: "chickensDead",
-        headerName: "Chickens Dead",
+        headerName: "Chickens Dead #",
         type: "number",
         minWidth: 150,
       },
@@ -191,7 +190,7 @@ export default function PoultryActivityList() {
         minWidth: 150,
         renderCell: function render({ value }) {
           return <DateField value={value} format="MM/DD/YYYY hh:mm:ss"/>;
-        },
+        }, 
       },
       {
         field: "actions",
@@ -215,9 +214,9 @@ export default function PoultryActivityList() {
 
   // Custom getRowId
   const getRowId: GridRowIdGetter<IPoultryActivity> = (row) => row.activityId?.toString();
-
+   
   return (
-    <List>
+    <List title={<Typography variant="h5">Poultry Activity</Typography>}>
       <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
     </List>
   );

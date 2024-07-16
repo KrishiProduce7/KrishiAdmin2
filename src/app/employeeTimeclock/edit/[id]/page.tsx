@@ -1,6 +1,6 @@
 "use client";
 
-import { Autocomplete, Box, Select, TextField } from "@mui/material";
+import { Autocomplete, Box, Select, TextField, Typography } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
@@ -46,7 +46,6 @@ export default function EmployeeTimeclockEdit() {
           control={control}
           name="clockIn"
           rules={{ required: "This field is required" }}
-          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -56,10 +55,17 @@ export default function EmployeeTimeclockEdit() {
                 onChange={(value) => {
                   field.onChange(value);
                 }}
-                slotProps={{
-                  textField: {
-                    helperText: 'MM/DD/YYYY',
-                  },
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.clockIn}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
               />
             </LocalizationProvider>
@@ -69,7 +75,6 @@ export default function EmployeeTimeclockEdit() {
           control={control}
           name="clockOut"
           rules={{ required: "This field is required" }}
-          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -79,10 +84,17 @@ export default function EmployeeTimeclockEdit() {
                 onChange={(value) => {
                   field.onChange(value);
                 }}
-                slotProps={{
-                  textField: {
-                    helperText: 'MM/DD/YYYY',
-                  },
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.clockOut}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
               />
             </LocalizationProvider>

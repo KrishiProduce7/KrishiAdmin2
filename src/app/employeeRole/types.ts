@@ -4,5 +4,5 @@ export default interface IEmployeeRole
   roleName: string;
   RoleDescription: string;
   updatedBy: string;
-  updatedOn: string;
+  updatedOn: Date;
 }

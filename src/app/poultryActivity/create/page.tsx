@@ -1,6 +1,6 @@
 "use client";
 
-import { Autocomplete, Box, MenuItem, Select, TextField } from "@mui/material";
+import { Autocomplete, Box, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { Create, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
@@ -8,13 +8,15 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { createFilterOptions } from "@mui/material";
-
+import { useGetIdentity } from "@refinedev/core";
+import IEmployee from "@app/employee/types";
 
 export default function PoultryActivityCreate() {
   const {
     saveButtonProps,
     refineCore: { formLoading, onFinish },
     register,
+    handleSubmit,
     control,
     formState: { errors },
   } = useForm({});
@@ -23,17 +25,28 @@ export default function PoultryActivityCreate() {
     resource: "coop",
   });
 
-  const { autocompleteProps: employeeAutocompleteProps } = useAutocomplete({
-    resource: "employee",
-  });
-
   const filterOptions = createFilterOptions({
     matchFrom: "start",
-    stringify: (option: any) => option.categoryDesc,
+    stringify: (option: any) => option.name, 
   });
 
+  const { data: user } = useGetIdentity<IEmployee>();
+
+  const onFinishHandler = (data : any) => {
+    const adapterDate = new AdapterDateFns();
+    console.log(user);
+
+    onFinish({ 
+      ...data,
+      employeeId: user?.employeeId,
+    });
+  };
+
   return (
-    <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
+    <Create 
+      title={<Typography variant="h5">Create Poultry Activity</Typography>}
+      isLoading={formLoading} 
+      saveButtonProps={{ ...saveButtonProps, onClick: handleSubmit(onFinishHandler) }}>
       <Box
         component="form"
         sx={{ display: "flex", flexDirection: "column" }}
@@ -91,67 +104,8 @@ export default function PoultryActivityCreate() {
         />
         <Controller
           control={control}
-          name="employeeId"
-          rules={{ required: "This field is required" }}
-          
-          defaultValue={null as any}
-          render={({ field }) => (
-            <Autocomplete
-              {...employeeAutocompleteProps}
-              {...field}
-              onChange={(_, value) => {
-                field.onChange(value.employeeId);
-              }} 
-              onInputChange={(_, value) => {}}
-              filterOptions={filterOptions}                   
-              getOptionLabel={(item) => {
-                return (
-                  employeeAutocompleteProps?.options?.find((p) => {
-                    const itemId =
-                      typeof item === "object"
-                        ? item?.employeeId?.toString()
-                        : item?.toString();
-                    const pId = p?.employeeId?.toString();
-                    return itemId === pId;
-                  })?.firstName + " " + 
-                  employeeAutocompleteProps?.options?.find((p) => {
-                    const itemId =
-                      typeof item === "object"
-                        ? item?.employeeId?.toString()
-                        : item?.toString();
-                    const pId = p?.employeeId?.toString();
-                    return itemId === pId;
-                  })?.lastName
-                );
-              }}
-              isOptionEqualToValue={(option, value) => {
-                const optionId = option?.employeeId?.toString();
-                const valueId =
-                  typeof value === "object"
-                    ? value?.employeeId?.toString()
-                    : value?.toString();
-                return value === undefined || optionId === valueId;
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label={"Employee"}
-                  margin="normal"
-                  variant="outlined" 
-                  error={!!(errors as any)?.employeeId} 
-                  helperText={(errors as any)?.employeeId?.message}
-                  InputLabelProps={{shrink: true}}
-                  required
-                />
-              )}
-            />
-          )}
-        />
-        <Controller
-          control={control}
           name="day"
           rules={{ required: "This field is required" }}
-          
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -161,10 +115,17 @@ export default function PoultryActivityCreate() {
                 onChange={(value) => {
                   field.onChange(value);
                 }}
-                slotProps={{
-                  textField: {
-                    helperText: 'MM/DD/YYYY',
-                  },
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.day}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
                 }}
               />
             </LocalizationProvider>
@@ -172,7 +133,10 @@ export default function PoultryActivityCreate() {
         />
         <TextField
           {...register("feedBagsUsed", {
-            min: 0
+            min: {
+              value: 0, 
+              message: "This field should be above 0"
+            },
           })}
           error={!!(errors as any)?.feedBagsUsed}
           helperText={(errors as any)?.feedBagsUsed?.message}
@@ -180,12 +144,15 @@ export default function PoultryActivityCreate() {
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="number"
-          label={"Feed Bags Used"}
+          label={"Feed Bags Used #"}
           name="feedBagsUsed"
         />
         <TextField
           {...register("mediumEggsPicked", {
-            min: 0
+            min: {
+              value: 0, 
+              message: "This field should be above 0"
+            },
           })}
           error={!!(errors as any)?.mediumEggsPicked}
           helperText={(errors as any)?.mediumEggsPicked?.message}
@@ -193,12 +160,15 @@ export default function PoultryActivityCreate() {
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="number"
-          label={"Medium Eggs Picked"}
+          label={"Medium Eggs Picked #"}
           name="mediumEggsPicked"
         />
         <TextField
           {...register("largeEggsPicked", {
-            min: 0
+            min: {
+              value: 0, 
+              message: "This field should be above 0"
+            },
           })}
           error={!!(errors as any)?.largeEggsPicked}
           helperText={(errors as any)?.largeEggsPicked?.message}
@@ -206,12 +176,15 @@ export default function PoultryActivityCreate() {
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="number"
-          label={"Large Eggs Picked"}
+          label={"Large Eggs Picked #"}
           name="largeEggsPicked"
         />
         <TextField
           {...register("xLargeEggsPicked", {
-            min: 0
+            min: {
+              value: 0, 
+              message: "This field should be above 0"
+            },
           })}
           error={!!(errors as any)?.xLargeEggsPicked}
           helperText={(errors as any)?.xLargeEggsPicked?.message}
@@ -219,12 +192,15 @@ export default function PoultryActivityCreate() {
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="number"
-          label={"Extra Large Eggs Picked"}
+          label={"Extra Large Eggs Picked #"}
           name="xLargeEggsPicked"
         />
         <TextField
           {...register("eggsWashed", {
-            min: 0
+            min: {
+              value: 0, 
+              message: "This field should be above 0"
+            },
           })}
           error={!!(errors as any)?.eggsWashed}
           helperText={(errors as any)?.eggsWashed?.message}
@@ -232,12 +208,15 @@ export default function PoultryActivityCreate() {
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="number"
-          label={"Eggs Washed"}
+          label={"Eggs Washed #"}
           name="eggsWashed"
         />
         <TextField
           {...register("eggsBroken", {
-            min: 0
+            min: {
+              value: 0, 
+              message: "This field should be above 0"
+            },
           })}
           error={!!(errors as any)?.eggsBroken}
           helperText={(errors as any)?.eggsBroken?.message}
@@ -245,12 +224,15 @@ export default function PoultryActivityCreate() {
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="number"
-          label={"Eggs Broken"}
+          label={"Eggs Broken #"}
           name="eggsBroken"
         />
         <TextField
           {...register("nestboxEggs", {
-            min: 0
+            min: {
+              value: 0, 
+              message: "This field should be above 0"
+            },
           })}
           error={!!(errors as any)?.nestboxEggs}
           helperText={(errors as any)?.nestboxEggs?.message}
@@ -258,12 +240,15 @@ export default function PoultryActivityCreate() {
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="number"
-          label={"Nest Box Eggs"}
+          label={"Nest Box Eggs #"}
           name="nestboxEggs"
         />
         <TextField
           {...register("floorEggs", {
-            min: 0
+            min: {
+              value: 0, 
+              message: "This field should be above 0"
+            },
           })}
           error={!!(errors as any)?.floorEggs}
           helperText={(errors as any)?.floorEggs?.message}
@@ -271,12 +256,15 @@ export default function PoultryActivityCreate() {
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="number"
-          label={"Floor Eggs"}
+          label={"Floor Eggs #"}
           name="floorEggs"
         />
         <TextField
           {...register("cleanEggs", {
-            min: 0
+            min: {
+              value: 0, 
+              message: "This field should be above 0"
+            },
           })}
           error={!!(errors as any)?.cleanEggs}
           helperText={(errors as any)?.cleanEggs?.message}
@@ -284,12 +272,15 @@ export default function PoultryActivityCreate() {
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="number"
-          label={"Clean Eggs"}
+          label={"Clean Eggs #"}
           name="cleanEggs"
         />
         <TextField
           {...register("dirtyEggs", {
-            min: 0
+            min: {
+              value: 0, 
+              message: "This field should be above 0"
+            },
           })}
           error={!!(errors as any)?.dirtyEggs}
           helperText={(errors as any)?.dirtyEggs?.message}
@@ -297,12 +288,15 @@ export default function PoultryActivityCreate() {
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="number"
-          label={"Dirty Eggs"}
+          label={"Dirty Eggs #"}
           name="dirtyEggs"
         />
         <TextField
           {...register("mediumEggsPacked", {
-            min: 0
+            min: {
+              value: 0, 
+              message: "This field should be above 0"
+            },
           })}
           error={!!(errors as any)?.mediumEggsPacked}
           helperText={(errors as any)?.mediumEggsPacked?.message}
@@ -310,12 +304,15 @@ export default function PoultryActivityCreate() {
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="number"
-          label={"Medium Eggs Packed"}
+          label={"Medium Eggs Packed #"}
           name="mediumEggsPacked"
         />
         <TextField
           {...register("largeEggsPacked", {
-            min: 0
+            min: {
+              value: 0, 
+              message: "This field should be above 0"
+            },
           })}
           error={!!(errors as any)?.largeEggsPacked}
           helperText={(errors as any)?.largeEggsPacked?.message}
@@ -323,12 +320,15 @@ export default function PoultryActivityCreate() {
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="number"
-          label={"Large Eggs Packed"}
+          label={"Large Eggs Packed #"}
           name="largeEggsPacked"
         />
         <TextField
           {...register("xLargeEggsPacked", {
-            min: 0
+            min: {
+              value: 0, 
+              message: "This field should be above 0"
+            },
           })}
           error={!!(errors as any)?.xLargeEggsPacked}
           helperText={(errors as any)?.xLargeEggsPacked?.message}
@@ -336,12 +336,15 @@ export default function PoultryActivityCreate() {
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="number"
-          label={"Extra Large Eggs Packed"}
+          label={"Extra Large Eggs Packed #"}
           name="xLargeEggsPacked"
         />
         <TextField
           {...register("manureBags", {
-            min: 0
+            min: {
+              value: 0, 
+              message: "This field should be above 0"
+            },
           })}
           error={!!(errors as any)?.manureBags}
           helperText={(errors as any)?.manureBags?.message}
@@ -349,12 +352,15 @@ export default function PoultryActivityCreate() {
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="number"
-          label={"Manure Bags"}
+          label={"Manure Bags #"}
           name="manureBags"
         />
         <TextField
           {...register("chickensDead", {
-              min: 0
+            min: {
+              value: 0, 
+              message: "This field should be above 0"
+            },
           })}
           error={!!(errors as any)?.chickensDead}
           helperText={(errors as any)?.chickensDead?.message}
@@ -362,7 +368,7 @@ export default function PoultryActivityCreate() {
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="number"
-          label={"Chickens Dead"}
+          label={"Chickens Dead #"}
           name="chickensDead"
         />
         <TextField

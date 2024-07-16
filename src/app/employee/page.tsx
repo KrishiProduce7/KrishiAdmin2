@@ -17,7 +17,7 @@ import {
 } from "@refinedev/mui";
 import React from "react";
 import IEmployee from "./types";
-import { TextField, Tooltip } from "@mui/material";
+import { Box, TextField, Tooltip, Typography } from "@mui/material";
 
 export default function EmployeeList() {
   const { dataGridProps } = useDataGrid({
@@ -130,7 +130,7 @@ export default function EmployeeList() {
   const getRowId: GridRowIdGetter<IEmployee> = (row) => row.employeeId.toString();
 
   return (
-    <List>
+    <List title={<Typography variant="h5">Employee</Typography>}>
       <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
     </List>
   );

@@ -8,7 +8,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { createFilterOptions } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { axiosInstance } from "@refinedev/simple-rest";
 import { useApiUrl, useCustom } from "@refinedev/core";
 
@@ -34,6 +34,13 @@ export default function FarmPayrollCreate() {
     stringify: (option: any) => option.firstName + " " + option.lastName,
   });
 
+  // Get location when the component mounts
+  useEffect(() => {
+    const adapterDate = new AdapterDateFns();
+    const today = adapterDate.date(new Date());
+    setValue('paidOn', today);
+  }, [setValue]);
+     
   return (
     <Create title={<Typography variant="h5">Create Farm Payroll</Typography>} isLoading={formLoading} saveButtonProps={saveButtonProps}>
       <Box

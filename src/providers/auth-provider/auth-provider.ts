@@ -8,30 +8,27 @@ import {
   AuthFlowType,
   CognitoIdentityProviderClient, 
   InitiateAuthCommand ,
-  ForgotPasswordCommand
+  ForgotPasswordCommand,
+  AdminCreateUserCommand,
+  MessageActionType
 } from "@aws-sdk/client-cognito-identity-provider"; // ES Modules import
 import { useCustom, useApiUrl } from "@refinedev/core";
 import IEmployee from "@app/employee/types";
 import { axiosInstance } from "@refinedev/simple-rest";
 import { API_URL } from "@providers/data-provider";
-// const mockUsers = [
-//   {
-//     name: "Benny Rodriguez",
-//     email: "bennyrodrig91@gmail.com",
-//     roles: ["admin"],
-//     avatar: "https://i.pravatar.cc/150?img=1",
-//   },
-//   {
-//     name: "Jane Doe",
-//     email: "janedoe@mail.com",
-//     roles: ["editor"],
-//     avatar: "https://i.pravatar.cc/150?img=1",
-//   },
-// ];
 
 const config = {
   region: 'us-east-2', // Replace with your desired AWS region
 };
+
+// 
+// const client = new CognitoIdentityProviderClient({
+//   region: process.env.AWS_REGION, // Or specify your region directly
+//   credentials: {
+//     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+//     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+//   }
+// });
 
 interface AuthParams {
   email: string;
@@ -42,6 +39,12 @@ interface AuthParams {
 
 interface AuthForgotParams {
   email: string;
+}
+
+interface AuthRegisterParams {
+  name: string;
+  email: string;
+  mobile: string;
 }
 
 const client = new CognitoIdentityProviderClient(config);
@@ -84,103 +87,9 @@ export const authProvider: AuthProvider = {
       let employee = data[0];
 
       // get screenAccess data
-      url = `${API_URL}/screenAccess?roleId=${employee?.roleId}`;
-
-      const accessData = {
-        admin: {
-          list: 1,
-        },
-        farmworkCategory: {
-          edit: 0,
-          create: 0,
-          delete: 0,
-          list: 1,
-          show: 1,
-        },
-        farmwork: {
-          edit: 1,
-          create: 1,
-          delete: 1,
-          list: 1,
-          show: 1,
-        },
-        employeeRole: {
-          edit: 1,
-          create: 1,
-          delete: 1,
-          list: 1,
-          show: 1,
-        },
-        coop: {
-          edit: 1,
-          create: 1,
-          delete: 1,
-          list: 1,
-          show: 1,
-        },
-        vendor: {
-          edit: 1,
-          create: 1,
-          delete: 1,
-          list: 1,
-          show: 1,
-        },
-        employeeTask: {
-          edit: 1,
-          create: 1,
-          delete: 1,
-          list: 1,
-          show: 1,
-        },
-        finance: {
-          list: 1,
-        },
-        employee: {
-          edit: 1,
-          create: 1,
-          delete: 1,
-          list: 1,
-          show: 1,
-        },
-        employeeWage: {
-          edit: 1,
-          create: 1,
-          delete: 1,
-          list: 1,
-          show: 1,
-        },     
-        farmExpense: {
-          edit: 1,
-          create: 1,
-          delete: 1,
-          list: 1,
-          show: 1,
-        },  
-        farmPayroll: {
-          edit: 1,
-          create: 1,
-          delete: 1,
-          list: 1,
-          show: 1,
-        },
-        employeeManagement: {
-          list: 1,
-        },
-        employeeTimeclock: {
-          edit: 1,
-          create: 1,
-          delete: 1,
-          list: 1,
-          show: 1,
-        },
-        poultryActivity: {
-          edit: 1,
-          create: 1,
-          delete: 1,
-          list: 1,
-          show: 1,
-        },
-      }
+      url = `${API_URL}/screenAccess?roleId=${employee?.roleId}`;     
+      const resp = await axiosInstance.get(url);
+      const { data: accessData } = resp;
 
       employee = {
         ...employee,
@@ -205,6 +114,50 @@ export const authProvider: AuthProvider = {
           name: "LoginError",
           message: "Invalid username or password",
         },
+      };
+    }
+  },
+  register: async({name, mobile, email} : AuthRegisterParams) => {
+    const input = {
+      DesiredDeliveryMediums: [
+        "EMAIL"
+      ],
+      MessageAction: MessageActionType.RESEND,
+      UserAttributes: [
+        {
+          Name: "name",
+          Value: name,
+        },
+        {
+          Name: "phone_number",
+          Value: mobile,
+        },
+        {
+          "Name": "email",
+          "Value": email,
+        }
+      ],
+      UserPoolId: "us-east-2_IrMWwzXSQ",
+      Username: "testuser"
+    };
+
+    console.log(input);
+
+    const command = new AdminCreateUserCommand(input);
+
+    try{
+      const response = await client.send(command);
+  
+      console.log(response);
+
+      return {
+        success: true,
+      }
+    } catch (error) {
+      console.log(error);
+
+      return {
+        success: false,
       };
     }
   },

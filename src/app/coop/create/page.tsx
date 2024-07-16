@@ -16,54 +16,48 @@ export default function CoopCreate() {
     <Create 
       title={<Typography variant="h5">Create Coop</Typography>}
       isLoading={formLoading} saveButtonProps={saveButtonProps}>
-      <Box
-        component="form"
-        sx={{ display: "flex", flexDirection: "column" }}
-        autoComplete="off"
-      >
-        <TextField
-          {...register("name", {
-            required: "This field is required",
-          })}
-          error={!!(errors as any)?.name}
-          helperText={(errors as any)?.name?.message}
-          margin="normal"  
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label={"Name"}
-          name="name"
-          required  
-        />
-        <TextField
-          {...register("location", {
-            required: "This field is required",
-          })}
-          error={!!(errors as any)?.location}
-          helperText={(errors as any)?.location?.message}
-          margin="normal"  
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label={"Location"}
-          name="location"
-          required  
-        />
-        <TextField
-          {...register("chickensCount", {
-            required: "This field is required",
-          })}
-          error={!!(errors as any)?.chickensCount}
-          helperText={(errors as any)?.chickensCount?.message}
-          margin="normal"  
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="number"
-          label={"Chickens Count #"} 
-          name="chickensCount"
-          required  
-        />
-      </Box>
+      <TextField
+        {...register("name", {
+          required: "This field is required",
+        })}
+        error={!!(errors as any)?.name}
+        helperText={(errors as any)?.name?.message}
+        margin="normal"  
+        fullWidth
+        InputLabelProps={{ shrink: true }}
+        type="text"
+        label={"Name"}
+        name="name"
+        required  
+      />
+      <TextField
+        {...register("location", {
+          required: "This field is required",
+        })}
+        error={!!(errors as any)?.location}
+        helperText={(errors as any)?.location?.message}
+        margin="normal"  
+        fullWidth
+        InputLabelProps={{ shrink: true }}
+        type="text"
+        label={"Location"}
+        name="location"
+        required  
+      />
+      <TextField
+        {...register("chickensCount", {
+          required: "This field is required",
+        })}
+        error={!!(errors as any)?.chickensCount}
+        helperText={(errors as any)?.chickensCount?.message}
+        margin="normal"  
+        fullWidth
+        InputLabelProps={{ shrink: true }}
+        type="number"
+        label={"Chickens Count #"} 
+        name="chickensCount"
+        required  
+      />
     </Create>
   );
 }
