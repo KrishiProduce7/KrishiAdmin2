@@ -4,7 +4,7 @@ import { Autocomplete, Box, TextField, Typography } from "@mui/material";
 import { Create, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { Controller } from "react-hook-form";
 import { createFilterOptions } from "@mui/material";
@@ -53,7 +53,7 @@ export default function FarmSaleCreate() {
               {...customerAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.customerId);
+                field.onChange(value?.customerId);
               }} 
               onInputChange={(_, value) => {}}
               filterOptions={filterOptionsCustomer}              
@@ -66,7 +66,7 @@ export default function FarmSaleCreate() {
                         : item?.toString();
                     const pId = p?.customerId?.toString();
                     return itemId === pId;
-                  })?.vendorName ?? ""
+                  })?.customerName ?? ""
                 );
               }}
               isOptionEqualToValue={(option, value) => {
@@ -99,7 +99,7 @@ export default function FarmSaleCreate() {
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <MobileDatePicker
                 {...field}
                 label="Sale Date"
                 value={field.value || null}
@@ -130,7 +130,7 @@ export default function FarmSaleCreate() {
               {...itemAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.itemId);
+                field.onChange(value?.itemId);
               }} 
               onInputChange={(_, value) => {}}
               filterOptions={filterOptionsItem}              
@@ -143,7 +143,7 @@ export default function FarmSaleCreate() {
                         : item?.toString();
                     const pId = p?.itemId?.toString();
                     return itemId === pId;
-                  })?.vendorName ?? ""
+                  })?.itemName ?? ""
                 );
               }}
               isOptionEqualToValue={(option, value) => {

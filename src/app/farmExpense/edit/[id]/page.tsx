@@ -1,10 +1,10 @@
 "use client";
 
-import { Box, TextField, Autocomplete, Typography } from "@mui/material";
+import { Box, TextField, Autocomplete, Typography, MenuItem, Select, InputLabel } from "@mui/material";
 import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { Controller } from "react-hook-form";
 import { createFilterOptions } from "@mui/material";
@@ -35,18 +35,37 @@ export default function FarmExpenseEdit() {
         sx={{ display: "flex", flexDirection: "column" }}
         autoComplete="off"
       >
+        <InputLabel shrink>Expense Type</InputLabel>
+        <Controller
+          name="expenseType"
+          rules={{ required: "This field is required" }}
+          control={control}
+          defaultValue={"Farm"}
+          render={({ field }) => {
+            return (
+              <Select
+                {...field}
+                value={field?.value || "Farm"}
+                label={"Expense Type"}
+              >
+                <MenuItem value="Farm">Farm</MenuItem>
+                <MenuItem value="Poultry">Poultry</MenuItem>
+                <MenuItem value="Payroll">Payroll</MenuItem>
+              </Select>
+            );
+          }}
+        />
         <Controller
           control={control}
           name="vendorId"
           rules={{ required: "This field is required" }}
-          
           defaultValue={null as any}
           render={({ field }) => (
             <Autocomplete
               {...vendorAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.vendorId);
+                field.onChange(value?.vendorId);
               }} 
               onInputChange={(_, value) => {}}
               filterOptions={filterOptions}              
@@ -92,7 +111,7 @@ export default function FarmExpenseEdit() {
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <MobileDatePicker
                 {...field}
                 label="Start Date"
                 value={field.value || null}

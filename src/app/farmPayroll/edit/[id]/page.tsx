@@ -5,7 +5,7 @@ import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { createFilterOptions } from "@mui/material";
 
@@ -46,7 +46,7 @@ export default function FarmPayrollEdit() {
               {...employeeAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.employeeId);
+                field.onChange(value?.employeeId);
               }} 
               onInputChange={(_, value) => {}}
               filterOptions={filterOptions}              
@@ -99,7 +99,7 @@ export default function FarmPayrollEdit() {
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <MobileDatePicker
                 {...field}
                 label="Pay Start Date"
                 onChange={(value) => {
@@ -128,7 +128,7 @@ export default function FarmPayrollEdit() {
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <MobileDatePicker
                 {...field}
                 label="Pay Start Date"
                 onChange={(value) => {
@@ -156,7 +156,7 @@ export default function FarmPayrollEdit() {
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <MobileDatePicker
                 {...field}
                 label="Paid Date"
                 onChange={(value) => {

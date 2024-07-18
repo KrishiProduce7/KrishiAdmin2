@@ -66,6 +66,7 @@ export default function FarmSaleList() {
       },
       {
         field: "saleQty",
+        flex: 1,
         headerName: "Sale Quantity #",
         type: "number",
         minWidth: 100, 
@@ -114,7 +115,7 @@ export default function FarmSaleList() {
   const getRowId: GridRowIdGetter<IFarmSale> = (row) => row.saleId?.toString();
 
   return (
-    <List title={<Typography variant="h5">Farm Sale</Typography>}>
+    <List title={<Typography variant="h5">Farm Sales</Typography>}>
       <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
     </List>
   );

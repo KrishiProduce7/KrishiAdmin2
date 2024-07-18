@@ -5,7 +5,7 @@ import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { USStates } from "@app/employee/us-states";
 import { createFilterOptions } from "@mui/material";
@@ -96,7 +96,7 @@ export default function EmployeeEdit() {
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <MobileDatePicker
                 {...field}
                 label="Date of Birth"
                 value={field.value || null}
@@ -211,7 +211,7 @@ export default function EmployeeEdit() {
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <MobileDatePicker
                 {...field}
                 label="Start Date"
                 value={field.value || null}
@@ -238,7 +238,7 @@ export default function EmployeeEdit() {
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <MobileDatePicker
                 {...field}
                 label="End Date"
                 value={field.value || null}
@@ -270,7 +270,7 @@ export default function EmployeeEdit() {
               {...roleAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.roleId);
+                field.onChange(value?.roleId);
               }} 
               onInputChange={(_, value) => {}}
               filterOptions={filterOptions}              

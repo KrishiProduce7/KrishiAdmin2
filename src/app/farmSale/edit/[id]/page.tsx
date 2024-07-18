@@ -4,7 +4,7 @@ import { Box, TextField, Autocomplete, Typography } from "@mui/material";
 import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { Controller } from "react-hook-form";
 import { createFilterOptions } from "@mui/material";
@@ -54,7 +54,7 @@ export default function FarmExpenseEdit() {
               {...customerAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.customerId);
+                field.onChange(value?.customerId);
               }} 
               onInputChange={(_, value) => {}}
               filterOptions={filterOptionsCustomer}              
@@ -100,7 +100,7 @@ export default function FarmExpenseEdit() {
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <MobileDatePicker
                 {...field}
                 label="Sale Date"
                 value={field.value || null}
@@ -131,7 +131,7 @@ export default function FarmExpenseEdit() {
               {...itemAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.itemId);
+                field.onChange(value?.itemId);
               }} 
               onInputChange={(_, value) => {}}
               filterOptions={filterOptionsItem}              

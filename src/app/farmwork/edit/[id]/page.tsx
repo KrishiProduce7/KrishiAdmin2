@@ -49,7 +49,7 @@ export default function FarmWorkEdit() {
               {...categoryAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.categoryId); 
+                field.onChange(value?.categoryId); 
               }}
               onInputChange={(_, value) => {}}
               filterOptions={filterOptions}              

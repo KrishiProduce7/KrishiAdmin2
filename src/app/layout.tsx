@@ -11,7 +11,7 @@ import { ColorModeContextProvider } from "@contexts/color-mode";
 import { authProvider } from "@providers/auth-provider";
 import { dataProvider } from "@providers/data-provider";
 import { accessControlProvider } from "@providers/access-control-provider";
-import { Dashboard } from "@mui/icons-material";
+import { AdminPanelSettingsOutlined, Dashboard } from "@mui/icons-material";
 import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined';
 import AgricultureOutlinedIcon from '@mui/icons-material/AgricultureOutlined';
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
@@ -44,7 +44,8 @@ export default function RootLayout({
 }>) {
   const cookieStore = cookies();
   const theme = cookieStore.get("theme");
-  const defaultMode = theme?.value === "dark" ? "dark" : "light";
+  // const defaultMode = theme?.value === "dark" ? "dark" : "light";
+  const defaultMode = theme?.value === "light";
 
   return (
     <html lang="en">
@@ -60,12 +61,20 @@ export default function RootLayout({
                     notificationProvider={notificationProvider}
                     authProvider={authProvider}
                     accessControlProvider={accessControlProvider}
-                    resources={[   
+                    resources={[
+                      {
+                        name: "dashboard",
+                        list: "/dashboard",
+                        meta: {
+                          label: "Dashboard",
+                          icon: <Dashboard />,
+                        },
+                      },
                       {
                         name: "admin",
                         meta: {
                           label: "Admin",
-                          icon: <Dashboard />,
+                          icon: <AdminPanelSettingsOutlined />,
                         }
                       },
                       {
@@ -213,7 +222,7 @@ export default function RootLayout({
                           idName: "saleId",
                           includeUserEmail: true,
                           parent: "admin",
-                          label: "Farm Sale",
+                          label: "Farm Sales",
                           icon: <TrendingUpOutlinedIcon />, 
                         }
                       },

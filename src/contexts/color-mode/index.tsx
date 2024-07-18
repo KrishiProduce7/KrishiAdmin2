@@ -40,13 +40,15 @@ export const ColorModeContextProvider: React.FC<
 
   useEffect(() => {
     if (isMounted) {
-      const theme = Cookies.get("theme") || (systemTheme ? "dark" : "light");
+      // const theme = Cookies.get("theme") || (systemTheme ? "dark" : "light");
+      const theme = "light";
       setMode(theme);
     }
   }, [isMounted, systemTheme]);
 
   const toggleTheme = () => {
-    const nextTheme = mode === "light" ? "dark" : "light";
+    // const nextTheme = mode === "light" ? "dark" : "light";
+    const nextTheme = "light";
 
     setMode(nextTheme);
     Cookies.set("theme", nextTheme);

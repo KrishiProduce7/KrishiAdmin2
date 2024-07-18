@@ -6,7 +6,7 @@ import { useForm } from "@refinedev/react-hook-form";
 import { useCreate, useOne } from "@refinedev/core";
 import { Controller } from "react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { createFilterOptions } from "@mui/material";
 import { useEffect, useRef } from "react";
@@ -100,7 +100,7 @@ export default function EmployeeTimeclockCreate() {
               {...taskAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.taskId);
+                field.onChange(value?.taskId);
               }} 
               onInputChange={(_, value) => {}}
               filterOptions={filterOptionsTask}              

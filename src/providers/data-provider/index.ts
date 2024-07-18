@@ -19,6 +19,14 @@ const farmWorkDataProvider = (
 > => ({
   getList: async ({ resource, /* pagination, filters, sorters, */ meta }) => {
     const idName = meta?.idName;
+
+    if (idName === undefined) {
+      return {
+        data: [],
+        total: 0,
+      };
+    }
+
     const url = `${apiUrl}/${resource}?${idName}=0`;
 
     const { headers: headersFromMeta, method } = meta ?? {};
@@ -176,7 +184,7 @@ const farmWorkDataProvider = (
     }
 
     if (query) {
-      requestUrl = `${requestUrl}&${stringify(query)}`;
+      requestUrl = `${requestUrl}${stringify(query)}`;
     }
 
     let axiosResponse;

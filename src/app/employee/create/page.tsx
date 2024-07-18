@@ -5,12 +5,12 @@ import { Create, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { USStates } from "../us-states";
 import { createFilterOptions } from "@mui/material";
 import { useCreate, useRegister } from "@refinedev/core";
 import IEmployee from "../types";
+import { MobileDatePicker } from "@mui/x-date-pickers";
 
 export default function EmployeeCreate() {
   const { mutate: registerUser } = useRegister();
@@ -116,7 +116,7 @@ export default function EmployeeCreate() {
         defaultValue={null as any}
         render={({ field }) => (
           <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
+            <MobileDatePicker 
               {...field}
               label="Date of Birth"
               value={field.value || null}
@@ -233,7 +233,7 @@ export default function EmployeeCreate() {
         defaultValue={null as any}
         render={({ field }) => (
           <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
+            <MobileDatePicker 
               {...field}
               label="Start Date"
               value={field.value || null}
@@ -265,7 +265,7 @@ export default function EmployeeCreate() {
             {...roleAutocompleteProps}
             {...field}
             onChange={(_, value) => {
-              field.onChange(value.roleId);
+              field.onChange(value?.roleId);
             }}
             onInputChange={(_, value) => {}}
             filterOptions={filterOptions}              

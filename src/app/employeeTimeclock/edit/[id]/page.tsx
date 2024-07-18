@@ -6,7 +6,7 @@ import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 
 
@@ -49,7 +49,7 @@ export default function EmployeeTimeclockEdit() {
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DateTimePicker
+              <MobileDateTimePicker
                 {...field}
                 label="Clock In"
                 onChange={(value) => {
@@ -78,7 +78,7 @@ export default function EmployeeTimeclockEdit() {
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DateTimePicker
+              <MobileDateTimePicker
                 {...field}
                 label="Clock Out"
                 onChange={(value) => {

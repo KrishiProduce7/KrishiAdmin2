@@ -22,6 +22,7 @@
     "@mui/icons-material": "^5.16.0",
     "@mui/lab": "^5.0.0-alpha.85",
     "@mui/material": "^5.8.6",
+    "@mui/x-charts": "^7.10.0",
     "@mui/x-data-grid": "^6.6.0",
     "@mui/x-date-pickers": "^6.19.0",
     "@refinedev/cli": "^2.16.21",
@@ -38,7 +39,8 @@
     "material-ui-phone-number": "^3.0.0",
     "next": "^14.1.0",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "react-google-charts": "^4.0.1"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",

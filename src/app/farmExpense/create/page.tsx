@@ -1,10 +1,10 @@
 "use client";
 
-import { Autocomplete, Box, TextField, Typography } from "@mui/material";
+import { Autocomplete, Box, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { Create, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { Controller } from "react-hook-form";
 import { createFilterOptions } from "@mui/material";
@@ -34,6 +34,26 @@ export default function FarmExpenseCreate() {
         sx={{ display: "flex", flexDirection: "column" }}
         autoComplete="off"
       >
+        <InputLabel shrink>Expense Type</InputLabel>
+        <Controller
+          name="expenseType"
+          rules={{ required: "This field is required" }}
+          control={control}
+          defaultValue={"Farm"}
+          render={({ field }) => {
+            return (
+              <Select
+                {...field}
+                value={field?.value || "Farm"}
+                label={"Expense Type"}
+              >
+                <MenuItem value="Farm">Farm</MenuItem>
+                <MenuItem value="Poultry">Poultry</MenuItem>
+                <MenuItem value="Payroll">Payroll</MenuItem>
+              </Select>
+            );
+          }}
+        />
         <Controller
           control={control}
           name="vendorId"
@@ -45,8 +65,8 @@ export default function FarmExpenseCreate() {
               {...vendorAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.vendorId);
-              }} 
+                field.onChange(value?.vendorId);
+              }}
               onInputChange={(_, value) => {}}
               filterOptions={filterOptions}              
               getOptionLabel={(item) => {
@@ -91,9 +111,9 @@ export default function FarmExpenseCreate() {
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <MobileDatePicker 
                 {...field}
-                label="Start Date"
+                label="Expense Date"
                 value={field.value || null}
                 onChange={(newValue) => field.onChange(newValue)}
                 slots={{

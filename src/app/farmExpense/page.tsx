@@ -35,6 +35,11 @@ export default function FarmExpenseList() {
         minWidth: 30,
       },
       {
+        field: "expenseType",
+        headerName: "Type",
+        minWidth: 50,
+      },
+      {
         field: "vendorId",
         flex: 1,
         headerName: "Vendor",

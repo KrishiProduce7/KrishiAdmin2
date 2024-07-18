@@ -5,7 +5,7 @@ import { Create, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { createFilterOptions } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -58,7 +58,7 @@ export default function FarmPayrollCreate() {
               {...employeeAutocompleteProps}
               {...field}
               onChange={async (_, value) => {
-                field.onChange(value.employeeId);
+                field.onChange(value?.employeeId);
                 
                 const response = await axiosInstance.get(`${url}/farmPayroll/employee?employeeId=${value.employeeId}`);
 
@@ -121,7 +121,7 @@ export default function FarmPayrollCreate() {
           defaultValue={null}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <MobileDatePicker
                 {...field}
                 label="Pay Start Date"
                 value={field.value || null}
@@ -149,7 +149,7 @@ export default function FarmPayrollCreate() {
           defaultValue={null}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <MobileDatePicker
                 {...field}
                 label="Pay End Date"
                 value={field.value || null}
@@ -177,7 +177,7 @@ export default function FarmPayrollCreate() {
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <MobileDatePicker
                 {...field}
                 label="PaidOn Date"
                 value={field.value || null}

@@ -5,7 +5,7 @@ import { Create, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { createFilterOptions } from "@mui/material";
 import { useGetIdentity } from "@refinedev/core";
@@ -63,7 +63,7 @@ export default function PoultryActivityCreate() {
               {...coopAutocompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.coopId);
+                field.onChange(value?.coopId);
               }} 
               onInputChange={(_, value) => {}}
               filterOptions={filterOptions}              
@@ -109,7 +109,7 @@ export default function PoultryActivityCreate() {
           defaultValue={null as any}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <MobileDatePicker
                 {...field}
                 label="Day"
                 onChange={(value) => {

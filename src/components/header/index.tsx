@@ -1,8 +1,8 @@
 "use client";
 
 import { ColorModeContext } from "@contexts/color-mode";
-import DarkModeOutlined from "@mui/icons-material/DarkModeOutlined";
-import LightModeOutlined from "@mui/icons-material/LightModeOutlined";
+// import DarkModeOutlined from "@mui/icons-material/DarkModeOutlined";
+// import LightModeOutlined from "@mui/icons-material/LightModeOutlined";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
@@ -40,14 +40,14 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
             justifyContent="flex-end"
             alignItems="center"
           >
-            <IconButton
+            {/* <IconButton
               color="inherit"
               onClick={() => {
                 setMode();
               }}
             >
               {mode === "dark" ? <LightModeOutlined /> : <DarkModeOutlined />}
-            </IconButton>
+            </IconButton> */}
 
             {user?.email && (
               <Stack

@@ -91,7 +91,7 @@ export default function ItemEdit() {
               {...deptAutocompleteProps}
               {...field}
               onChange={async (_, value) => {
-                field.onChange(value.deptId);
+                field.onChange(value?.deptId);
                 setValue('classId', 0);
 
                 const response = await axiosInstance.get(`${url}/classs/dept?deptId=${value.deptId}`);
@@ -147,7 +147,7 @@ export default function ItemEdit() {
             <Autocomplete 
               {...field}
               onChange={(_, value) => {
-                field.onChange(value.classId);
+                field.onChange(value?.classId);
               }}
               options={classAutocompleteProps}
               onInputChange={(_, value) => {}}
