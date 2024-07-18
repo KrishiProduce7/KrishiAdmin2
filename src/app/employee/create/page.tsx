@@ -8,7 +8,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { USStates } from "../us-states";
 import { createFilterOptions } from "@mui/material";
-import { useCreate, useRegister } from "@refinedev/core";
+import { CanAccess, useCreate, useRegister } from "@refinedev/core";
 import IEmployee from "../types";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 
@@ -55,255 +55,257 @@ export default function EmployeeCreate() {
   });
   
   return (
-    <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
-      <TextField
-        {...register("firstName", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.firstName}
-        helperText={(errors as any)?.firstName?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        type="text"
-        label={"First Name"}
-        name="firstName"
-        required
-      />
-      <TextField
-        {...register("lastName", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.lastName}
-        helperText={(errors as any)?.lastName?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        type="text"
-        label={"Last Name"}
-        name="lastName"
-        required
-      />
-      <TextField
-        {...register("email", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.email}
-        helperText={(errors as any)?.email?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        type="text"
-        label={"Email"}
-        name="email"
-        required
-      />
-      <TextField
-        {...register("mobile")}
-        error={!!(errors as any)?.mobile}
-        helperText={(errors as any)?.mobile?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        type="text"
-        label={"Mobile"}
-        name="mobile"
-      />
-      <Controller
-        control={control}
-        name="dob"
-        rules={{ required: "This field is required" }}
-        defaultValue={null as any}
-        render={({ field }) => (
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <MobileDatePicker 
-              {...field}
-              label="Date of Birth"
-              value={field.value || null}
-              onChange={(newValue) => field.onChange(newValue)}
-              slots={{
-                textField: (params) => (
-                  <TextField
-                    {...params}
-                    margin="normal"
-                    variant="outlined"
-                    error={!!errors.dob}
-                    InputLabelProps={{ shrink: true }}
-                    required
-                  />
-                )
-              }}
-            />
-          </LocalizationProvider>
-        )}
-      />
-      <TextField
-        {...register("street", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.street}
-        helperText={(errors as any)?.street?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        type="text"
-        label={"Street"}
-        name="street"
-        required
-      />
-      <TextField
-        {...register("city", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.city}
-        helperText={(errors as any)?.city?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        type="text"
-        label={"City"}
-        name="city"
-        required
-      />
-      <Controller
-        control={control}
-        name="state"
-        rules={{ required: "This field is required" }}
-        
-        defaultValue={null as any}
-        render={({ field }) => (
-          <Autocomplete
-            {...field}
-            options={USStates}
-            onChange={(_, value) => {
-              field.onChange(value?.value);
-            }}
-            isOptionEqualToValue={(option, value) => {
-              const optionId = option?.value?.toString();
-              const valueId = 
-                typeof value === "object"   
-                  ? value?.value?.toString()
-                  : value?.toString();
-              return value === undefined || optionId === valueId;
-            }}
-            getOptionLabel={(item) => {
-              return (
-                USStates?.find((p) => {
-                  const itemId =
-                    typeof item === "object"
-                      ? item?.value?.toString()
-                      : item?.toString();
-                  const pId = p?.value?.toString();
-                  return itemId === pId;
-                })?.label ?? ""
-              );
-            }}
-            renderInput={(params) => 
-              <TextField 
-                {...params} 
-                label="Select a state" 
-                margin="normal"
-                variant="outlined"
-                error={!!(errors as any)?.state} 
-                helperText={(errors as any)?.state?.message}
-                InputLabelProps={{ shrink: true }}
-                required
-              />}
-          />
-        )}
-      />
-      <TextField
-        {...register("zip", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.zip}
-        helperText={(errors as any)?.zip?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        type="text"
-        label={"Zip"}
-        name="zip"
-        required
-      />
-      <Controller
-        control={control}
-        name="startDate"
-        rules={{ required: "This field is required" }}
-        defaultValue={null as any}
-        render={({ field }) => (
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <MobileDatePicker 
-              {...field}
-              label="Start Date"
-              value={field.value || null}
-              onChange={(newValue) => field.onChange(newValue)}
-              slots={{
-                textField: (params) => (
-                  <TextField
-                    {...params}
-                    margin="normal"
-                    variant="outlined"
-                    error={!!errors.startDate}
-                    InputLabelProps={{ shrink: true }}
-                    required
-                  />
-                )
-              }}
-            />
-          </LocalizationProvider>
-        )}
-      />
-      <Controller
-        control={control}
-        name="roleId"
-        rules={{ required: "This field is required" }}
-        
-        defaultValue={null as any}
-        render={({ field }) => (
-          <Autocomplete
-            {...roleAutocompleteProps}
-            {...field}
-            onChange={(_, value) => {
-              field.onChange(value?.roleId);
-            }}
-            onInputChange={(_, value) => {}}
-            filterOptions={filterOptions}              
-            getOptionLabel={(item) => {
-              return ( 
-                roleAutocompleteProps?.options?.find((p) => {
-                  const itemId =
-                    typeof item === "object"
-                      ? item?.roleId?.toString()
-                      : item?.toString();
-                  const pId = p?.roleId?.toString();
-                  return itemId === pId;
-                })?.roleDesc ?? ""
-              );
-            }}
-            isOptionEqualToValue={(option, value) => {
-              const optionId = option?.roleId?.toString();
-              const valueId =
-                typeof value === "object"   
-                  ? value?.roleId?.toString()
-                  : value?.toString();
-              return value === undefined || optionId === valueId;
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label={"Role"}
-                margin="normal"
-                variant="outlined" 
-                error={!!(errors as any)?.roleId} 
-                helperText={(errors as any)?.roleId?.message}
-                InputLabelProps={{shrink: true}}  
-                required
+    <CanAccess>
+      <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
+        <TextField
+          {...register("firstName", {
+            required: "This field is required",
+          })}
+          error={!!(errors as any)?.firstName}
+          helperText={(errors as any)?.firstName?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="text"
+          label={"First Name"}
+          name="firstName"
+          required
+        />
+        <TextField
+          {...register("lastName", {
+            required: "This field is required",
+          })}
+          error={!!(errors as any)?.lastName}
+          helperText={(errors as any)?.lastName?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="text"
+          label={"Last Name"}
+          name="lastName"
+          required
+        />
+        <TextField
+          {...register("email", {
+            required: "This field is required",
+          })}
+          error={!!(errors as any)?.email}
+          helperText={(errors as any)?.email?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="text"
+          label={"Email"}
+          name="email"
+          required
+        />
+        <TextField
+          {...register("mobile")}
+          error={!!(errors as any)?.mobile}
+          helperText={(errors as any)?.mobile?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="text"
+          label={"Mobile"}
+          name="mobile"
+        />
+        <Controller
+          control={control}
+          name="dob"
+          rules={{ required: "This field is required" }}
+          defaultValue={null as any}
+          render={({ field }) => (
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <MobileDatePicker 
+                {...field}
+                label="Date of Birth"
+                value={field.value || null}
+                onChange={(newValue) => field.onChange(newValue)}
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.dob}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
+                }}
               />
-            )}
-          />
-        )}
-      />
-    </Create>
+            </LocalizationProvider>
+          )}
+        />
+        <TextField
+          {...register("street", {
+            required: "This field is required",
+          })}
+          error={!!(errors as any)?.street}
+          helperText={(errors as any)?.street?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="text"
+          label={"Street"}
+          name="street"
+          required
+        />
+        <TextField
+          {...register("city", {
+            required: "This field is required",
+          })}
+          error={!!(errors as any)?.city}
+          helperText={(errors as any)?.city?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="text"
+          label={"City"}
+          name="city"
+          required
+        />
+        <Controller
+          control={control}
+          name="state"
+          rules={{ required: "This field is required" }}
+          
+          defaultValue={null as any}
+          render={({ field }) => (
+            <Autocomplete
+              {...field}
+              options={USStates}
+              onChange={(_, value) => {
+                field.onChange(value?.value);
+              }}
+              isOptionEqualToValue={(option, value) => {
+                const optionId = option?.value?.toString();
+                const valueId = 
+                  typeof value === "object"   
+                    ? value?.value?.toString()
+                    : value?.toString();
+                return value === undefined || optionId === valueId;
+              }}
+              getOptionLabel={(item) => {
+                return (
+                  USStates?.find((p) => {
+                    const itemId =
+                      typeof item === "object"
+                        ? item?.value?.toString()
+                        : item?.toString();
+                    const pId = p?.value?.toString();
+                    return itemId === pId;
+                  })?.label ?? ""
+                );
+              }}
+              renderInput={(params) => 
+                <TextField 
+                  {...params} 
+                  label="Select a state" 
+                  margin="normal"
+                  variant="outlined"
+                  error={!!(errors as any)?.state} 
+                  helperText={(errors as any)?.state?.message}
+                  InputLabelProps={{ shrink: true }}
+                  required
+                />}
+            />
+          )}
+        />
+        <TextField
+          {...register("zip", {
+            required: "This field is required",
+          })}
+          error={!!(errors as any)?.zip}
+          helperText={(errors as any)?.zip?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="text"
+          label={"Zip"}
+          name="zip"
+          required
+        />
+        <Controller
+          control={control}
+          name="startDate"
+          rules={{ required: "This field is required" }}
+          defaultValue={null as any}
+          render={({ field }) => (
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <MobileDatePicker 
+                {...field}
+                label="Start Date"
+                value={field.value || null}
+                onChange={(newValue) => field.onChange(newValue)}
+                slots={{
+                  textField: (params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      variant="outlined"
+                      error={!!errors.startDate}
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  )
+                }}
+              />
+            </LocalizationProvider>
+          )}
+        />
+        <Controller
+          control={control}
+          name="roleId"
+          rules={{ required: "This field is required" }}
+          
+          defaultValue={null as any}
+          render={({ field }) => (
+            <Autocomplete
+              {...roleAutocompleteProps}
+              {...field}
+              onChange={(_, value) => {
+                field.onChange(value?.roleId);
+              }}
+              onInputChange={(_, value) => {}}
+              filterOptions={filterOptions}              
+              getOptionLabel={(item) => {
+                return ( 
+                  roleAutocompleteProps?.options?.find((p) => {
+                    const itemId =
+                      typeof item === "object"
+                        ? item?.roleId?.toString()
+                        : item?.toString();
+                    const pId = p?.roleId?.toString();
+                    return itemId === pId;
+                  })?.roleDesc ?? ""
+                );
+              }}
+              isOptionEqualToValue={(option, value) => {
+                const optionId = option?.roleId?.toString();
+                const valueId =
+                  typeof value === "object"   
+                    ? value?.roleId?.toString()
+                    : value?.toString();
+                return value === undefined || optionId === valueId;
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label={"Role"}
+                  margin="normal"
+                  variant="outlined" 
+                  error={!!(errors as any)?.roleId} 
+                  helperText={(errors as any)?.roleId?.message}
+                  InputLabelProps={{shrink: true}}  
+                  required
+                />
+              )}
+            />
+          )}
+        />
+      </Create>
+    </CanAccess>
   );
 }

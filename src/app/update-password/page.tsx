@@ -1,15 +1,15 @@
-import { AuthPage } from "@components/auth-page";
+import { UpdatePasswordPage }  from "@components/pages/auth/components";
 import { authProviderServer } from "@providers/auth-provider";
 import { redirect } from "next/navigation";
 
-export default async function Login() {
+export default async function UpdatePassword() {
   const data = await getData();
 
   if (data.authenticated) {
     redirect(data?.redirectTo || "/");
   }
 
-  return <AuthPage type="login" title="Farm Management" registerLink={false} />;
+  return <UpdatePasswordPage title="Farm Management"/>;
 }
 
 async function getData() {

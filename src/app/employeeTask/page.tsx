@@ -1,7 +1,7 @@
 "use client";
 
 import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
-import { useList } from "@refinedev/core";
+import { CanAccess, useList } from "@refinedev/core";
 import {
   DeleteButton,
   EditButton,
@@ -157,10 +157,12 @@ export default function EmployeeTaskList() {
   // Custom getRowId
   const getRowId: GridRowIdGetter<IEmployeeTask> = (row) => row.taskId?.toString();
 
-  return ( 
-    <List title={<Typography variant="h5">Employee Task</Typography>}>
-      <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
-    </List>
+  return (
+    <CanAccess>
+      <List title={<Typography variant="h5">Employee Task</Typography>}>
+        <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
+      </List>
+    </CanAccess>
   ); 
 }
 

@@ -10,7 +10,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
-import { useCustom, useApiUrl } from "@refinedev/core";
+import { useCustom, useApiUrl, CanAccess } from "@refinedev/core";
 
 export default function EmployeeScheduleList() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
@@ -146,39 +146,41 @@ export default function EmployeeScheduleList() {
   const getRowId: GridRowIdGetter<IEmployeeSchedule> = (row) => row.taskId?.toString();
 
   return (
-    <List 
-      title={<Typography variant="h5">Employee Schedule</Typography>}
-      headerButtons={({ defaultButtons }) => (
-        <>
-          {defaultButtons}
-          <Box display="flex" flexDirection="row">
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <MobileDatePicker 
-                value={selectedDate}
-                onChange={(newValue) => setSelectedDate(newValue)}
-              />
-            </LocalizationProvider>
-            <ButtonGroup size="large" variant="outlined" aria-label="Large button group">
-              <Button onClick={handleRefresh}>
-                <RefreshIcon />
-              </Button>
-              <Button onClick={handleDecreaseDate}>
-                <ArrowCircleLeftOutlinedIcon />
-              </Button>
-              <Button onClick={handleIncreaseDate}>
-                <ArrowCircleRightOutlinedIcon />
-              </Button>
-            </ButtonGroup>
-          </Box>
-        </>
-      )}>
-      <DataGrid 
-        rows={data} // Provide the data fetched from the API
-        getRowId={getRowId} 
-        columns={columns} 
-        autoHeight
-      />
-    </List>
+    <CanAccess>
+      <List 
+        title={<Typography variant="h5">Employee Schedule</Typography>}
+        headerButtons={({ defaultButtons }) => (
+          <>
+            {defaultButtons}
+            <Box display="flex" flexDirection="row">
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <MobileDatePicker 
+                  value={selectedDate}
+                  onChange={(newValue) => setSelectedDate(newValue)}
+                />
+              </LocalizationProvider>
+              <ButtonGroup size="large" variant="outlined" aria-label="Large button group">
+                <Button onClick={handleRefresh}>
+                  <RefreshIcon />
+                </Button>
+                <Button onClick={handleDecreaseDate}>
+                  <ArrowCircleLeftOutlinedIcon />
+                </Button>
+                <Button onClick={handleIncreaseDate}>
+                  <ArrowCircleRightOutlinedIcon />
+                </Button>
+              </ButtonGroup>
+            </Box>
+          </>
+        )}>
+        <DataGrid 
+          rows={data} // Provide the data fetched from the API
+          getRowId={getRowId} 
+          columns={columns} 
+          autoHeight
+        />
+      </List>
+    </CanAccess>
   );
 }
 

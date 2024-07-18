@@ -1,7 +1,7 @@
 "use client";
 
 import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
-import { useList } from "@refinedev/core";
+import { CanAccess, useList } from "@refinedev/core";
 import dayjs from "dayjs";
 
 import {
@@ -152,19 +152,21 @@ export default function EmployeeTimeclockList() {
   const getRowId: GridRowIdGetter<IEmployeeTimeclock> = (row) => row.timeclockId?.toString();
 
   return (
-    <List 
-      title={<Typography variant="h5">Employee Timeclock</Typography>}
-      headerButtons={({ createButtonProps }) => (  
-        <>  
-          {createButtonProps && (  
-          <CreateButton  
-          {...createButtonProps}>  
-          Clock In / Out
-          </CreateButton>  
-          )}
-        </>
-      )}>
-      <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
-    </List>
+    <CanAccess>
+      <List 
+        title={<Typography variant="h5">Employee Timeclock</Typography>}
+        headerButtons={({ createButtonProps }) => (  
+          <>  
+            {createButtonProps && (  
+            <CreateButton  
+            {...createButtonProps}>  
+            Clock In / Out
+            </CreateButton>  
+            )}
+          </>
+        )}>
+        <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
+      </List>
+    </CanAccess>
   );
 }

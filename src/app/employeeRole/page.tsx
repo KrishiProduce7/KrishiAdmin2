@@ -14,6 +14,7 @@ import {
 import React from "react";
 import IEmployeeRole from "./types";
 import { TextField, Typography } from "@mui/material";
+import { CanAccess } from "@refinedev/core";
 
 export default function EmployeeRoleList() {
   const { dataGridProps } = useDataGrid({
@@ -79,10 +80,12 @@ export default function EmployeeRoleList() {
   const getRowId: GridRowIdGetter<IEmployeeRole> = (row) => row.roleId?.toString();
 
   return (
-    <List
-      title={<Typography variant="h5">Employee Role</Typography>}>
-      <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
-    </List>
+    <CanAccess>
+      <List
+        title={<Typography variant="h5">Employee Role</Typography>}>
+        <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
+      </List>
+    </CanAccess>
   );
 }
 

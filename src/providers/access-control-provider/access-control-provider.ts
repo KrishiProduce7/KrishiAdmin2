@@ -9,16 +9,17 @@ export const accessControlProvider : AccessControlProvider = {
     const user = Cookies.get("auth") ? JSON.parse(Cookies.get("auth")!) : null;
     
     // test
-    return {
-      can:true,
-    };
+    // return {
+    //   can:true,
+    // };
     
     if (!user) {
       return {
         can: false,
-        reason: "No user found",
+        reason: "Unauthorized",
       };
     }
+
     const accessData = user.roles ?? {};
 
     if (resource && resource in accessData) {
@@ -30,7 +31,7 @@ export const accessControlProvider : AccessControlProvider = {
         }
       }
     }
-    
+       
     return {
       can: false,
       reason: "Unauthorized",

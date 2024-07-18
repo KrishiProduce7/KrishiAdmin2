@@ -80,66 +80,68 @@ export default function EmployeeTimeclockCreate() {
 
   // saveButtonProps={{ ...saveButtonProps, children: 'Clock In', }}>
   return (
-    <Create 
-      title={<Typography variant="h5">Clock In</Typography>}
-      isLoading={formLoading} 
-      saveButtonProps={{ ...saveButtonProps, children: 'Clock In', onClick: handleSubmit(onFinishHandler) }}> 
-      <Box
-        component="form"
-        sx={{ display: "flex", flexDirection: "column" }}
-        autoComplete="off"
-      >
-        <Controller
-          control={control}
-          name="taskId"
-          rules={{ required: "This field is required" }}
-          
-          defaultValue={null as any}
-          render={({ field }) => (   
-            <Autocomplete
-              {...taskAutocompleteProps}
-              {...field}
-              onChange={(_, value) => {
-                field.onChange(value?.taskId);
-              }} 
-              onInputChange={(_, value) => {}}
-              filterOptions={filterOptionsTask}              
-              getOptionLabel={(item) => {
-                return (
-                  taskAutocompleteProps?.options?.find((p) => {
-                    const itemId =
-                      typeof item === "object"
-                        ? item?.taskId?.toString()
-                        : item?.toString();
-                    const pId = p?.taskId?.toString();
-                    return itemId === pId;
-                  })?.taskDesc ?? ""
-                );
-              }}
-              isOptionEqualToValue={(option, value) => {
-                const optionId = option?.taskId?.toString();
-                const valueId =
-                  typeof value === "object"
-                    ? value?.taskId?.toString()
-                    : value?.toString();
-                return value === undefined || optionId === valueId;
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label={"Employee Task"}
-                  margin="normal"
-                  variant="outlined" 
-                  error={!!(errors as any)?.taskId} 
-                  helperText={(errors as any)?.taskId?.message}
-                  InputLabelProps={{ shrink: true }}
-                  required
-                />
-              )}
-            />
-          )}
-        />
-      </Box>
-    </Create>
+    <CanAccess>
+      <Create 
+        title={<Typography variant="h5">Clock In</Typography>}
+        isLoading={formLoading} 
+        saveButtonProps={{ ...saveButtonProps, children: 'Clock In', onClick: handleSubmit(onFinishHandler) }}> 
+        <Box
+          component="form"
+          sx={{ display: "flex", flexDirection: "column" }}
+          autoComplete="off"
+        >
+          <Controller
+            control={control}
+            name="taskId"
+            rules={{ required: "This field is required" }}
+            
+            defaultValue={null as any}
+            render={({ field }) => (   
+              <Autocomplete
+                {...taskAutocompleteProps}
+                {...field}
+                onChange={(_, value) => {
+                  field.onChange(value?.taskId);
+                }} 
+                onInputChange={(_, value) => {}}
+                filterOptions={filterOptionsTask}              
+                getOptionLabel={(item) => {
+                  return (
+                    taskAutocompleteProps?.options?.find((p) => {
+                      const itemId =
+                        typeof item === "object"
+                          ? item?.taskId?.toString()
+                          : item?.toString();
+                      const pId = p?.taskId?.toString();
+                      return itemId === pId;
+                    })?.taskDesc ?? ""
+                  );
+                }}
+                isOptionEqualToValue={(option, value) => {
+                  const optionId = option?.taskId?.toString();
+                  const valueId =
+                    typeof value === "object"
+                      ? value?.taskId?.toString()
+                      : value?.toString();
+                  return value === undefined || optionId === valueId;
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label={"Employee Task"}
+                    margin="normal"
+                    variant="outlined" 
+                    error={!!(errors as any)?.taskId} 
+                    helperText={(errors as any)?.taskId?.message}
+                    InputLabelProps={{ shrink: true }}
+                    required
+                  />
+                )}
+              />
+            )}
+          />
+        </Box>
+      </Create>
+    </CanAccess>
   );
 }

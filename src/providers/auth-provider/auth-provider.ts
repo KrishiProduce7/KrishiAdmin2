@@ -2,14 +2,13 @@
 
 import { useNotification, type AuthProvider } from "@refinedev/core";
 import Cookies from "js-cookie";
-// import { initiateAuth } from "./aws-cognito"
-// import { USERPOOL_CLIENT_ID } from "./aws-exports"
 import { 
   AuthFlowType,
   CognitoIdentityProviderClient, 
   InitiateAuthCommand ,
   ForgotPasswordCommand,
   AdminCreateUserCommand,
+  ConfirmForgotPasswordCommand,
   MessageActionType
 } from "@aws-sdk/client-cognito-identity-provider"; // ES Modules import
 import { useCustom, useApiUrl } from "@refinedev/core";
@@ -29,6 +28,8 @@ const config = {
 //     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 //   }
 // });
+
+// npm run refine swizzle
 
 interface AuthParams {
   email: string;
@@ -66,10 +67,8 @@ export const authProvider: AuthProvider = {
     try{
       const response = await client.send(command);
 
-      const user = JSON.parse(response?.ChallengeParameters?.userAttributes ?? "");
-
       // get employee data
-      let url = `${API_URL}/employee/employeeEmail?email=${user.email}`;
+      let url = `${API_URL}/employee/employeeEmail?email=${email}`;
       const empData = await axiosInstance.get(url);
       const { data } = empData;
 
@@ -96,8 +95,6 @@ export const authProvider: AuthProvider = {
         roles: accessData,
       }
 
-      console.log(employee);
-
       Cookies.set("auth", JSON.stringify(employee), {
         expires: 30, // 30 days
         path: "/",
@@ -111,8 +108,8 @@ export const authProvider: AuthProvider = {
       return {
         success: false,
         error: {
-          name: "LoginError",
-          message: "Invalid username or password",
+          name: "Login Error",
+          message: error?.message,
         },
       };
     }
@@ -170,31 +167,60 @@ export const authProvider: AuthProvider = {
     const command = new ForgotPasswordCommand(input);
     try{
       const response = await client.send(command);
-
-      // open?.({
-      //   type: "success",
-      //   message: "Success",
-      //   description: "This is a success message",
-      // });
-      // { // ForgotPasswordResponse
-      //   CodeDeliveryDetails: { // CodeDeliveryDetailsType
-      //     Destination: "STRING_VALUE",
-      //     DeliveryMedium: "SMS" || "EMAIL",
-      //     AttributeName: "STRING_VALUE",
-      //   },
-      // };
-      console.log(response);
+ 
+      Cookies.set("forgot-email", email, {
+        expires: 1, // 30 days
+        path: "/",
+      });
 
       return {
         success: true,
-        redirectTo: "/",
+        redirectTo: "/update-password",
       }
     } catch (error) {
       return {
         success: false,
         error: {
           name: "Forgot Password Error",
-          message: "Invalid email",
+          message: error?.message,
+        },
+      };
+    }
+  },
+  updatePassword: async ({ resetCode, password, confirmPassword }) => {
+    const email = Cookies.get("forgot-email");
+
+    const input = { // ConfirmForgotPasswordRequest
+      ClientId: "5nvbju3q1r7kncs0unklbda92t", // required
+      Username: email,
+      ConfirmationCode: resetCode,
+      Password: password,
+    };
+
+    console.log(input);
+
+    const command = new ConfirmForgotPasswordCommand(input);
+    try{
+      const response = await client.send(command);
+      
+      console.log("11111111111111");
+      console.log(response);
+
+      return {
+        success: true,
+        redirectTo: "/login",
+        successNotification: {
+          message: "Update password successful",
+          description: "You have successfully updated password.",
+        },
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        success: false,
+        error: {
+          name: "Reset Password Error",
+          message: error?.message,
         },
       };
     }

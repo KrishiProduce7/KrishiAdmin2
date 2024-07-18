@@ -26,7 +26,7 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import { useCustom, useApiUrl } from "@refinedev/core";
+import { useCustom, useApiUrl, CanAccess } from "@refinedev/core";
 import ICustomer from "../customer/types";
 import { Chart } from "react-google-charts";
 import {
@@ -35,17 +35,12 @@ import {
   GaugeReferenceArc,
   useGaugeState,
 } from '@mui/x-charts/Gauge';
+import { Authenticated } from "@refinedev/core";
 
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
-}
-
-interface ICustomer {
-  customerId: string;
-  customerName: string;
-  totalSale: number;
 }
 
 function GaugePointer() {
@@ -246,180 +241,182 @@ export default function DashboardList() {
   const getRowId: GridRowIdGetter<ICustomer> = (row) => row.customerId?.toString();
 
   return (
-    <List resource="" title={<Typography variant="h5">Dashboard</Typography>}>
-      {/* <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight /> */}
-      <Container>
-        <Box sx={{ flexGrow: 1, padding: 2 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <Card
-                title={"Year Profit"}
-                icon={<MonetizationOnOutlinedIcon />}
-                sx={{
-                  ".MuiCardContent-root:last-child": {
-                    paddingBottom: "24px",
-                  },
-                }}
-                cardContentProps={{
-                  sx: {
-                    height: "208px",
-                  },
-                }}
-                cardHeaderProps={{
-                  action: (
-                    <TrendIcon
-                      trend={10}
-                      text={
-                        <NumberField
-                          value={yptData?.ytdProfit || 0}
-                          options={{
-                            style: "currency",
-                            currency: "USD",
-                          }}
-                        />
-                      }
-                    />
-                  ),
-                }}
-              >
-                <GaugeContainer
-                  value={yptData?.ytdProfit / yptData?.totalSale * 100.0}
-                  startAngle={-90}
-                  endAngle={90}
-                >
-                  <GaugeReferenceArc />
-                  <GaugeValueArc />
-                  <GaugePointer />
-                  <GaugeValueText />
-                </GaugeContainer>
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Card
-                icon={<ShoppingBagOutlinedIcon />}
-                title={"Top Customers"}
-                cardContentProps={{
-                  sx: {
-                    height: "208px",
-                  },
-                }}
-              >
-                <DataGrid 
-                  initialState={{
-                    pagination: {
-                      paginationModel: {
-                        pageSize: 5,
-                      },
+    <CanAccess>
+      <List resource="" title={<Typography variant="h5">Dashboard</Typography>}>
+        {/* <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight /> */}
+        <Container>
+          <Box sx={{ flexGrow: 1, padding: 2 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <Card
+                  title={"Year Profit"}
+                  icon={<MonetizationOnOutlinedIcon />}
+                  sx={{
+                    ".MuiCardContent-root:last-child": {
+                      paddingBottom: "24px",
                     },
                   }}
-                  pageSizeOptions={[5]}
-                  rows={topCustomers}
-                  getRowId={getRowId}
-                  columns={topCustomerColumns}
-                  autoHeight />
-              </Card>
+                  cardContentProps={{
+                    sx: {
+                      height: "208px",
+                    },
+                  }}
+                  cardHeaderProps={{
+                    action: (
+                      <TrendIcon
+                        trend={10}
+                        text={
+                          <NumberField
+                            value={yptData?.ytdProfit || 0}
+                            options={{
+                              style: "currency",
+                              currency: "USD",
+                            }}
+                          />
+                        }
+                      />
+                    ),
+                  }}
+                >
+                  <GaugeContainer
+                    value={yptData?.ytdProfit / yptData?.totalSale * 100.0}
+                    startAngle={-90}
+                    endAngle={90}
+                  >
+                    <GaugeReferenceArc />
+                    <GaugeValueArc />
+                    <GaugePointer />
+                    <GaugeValueText />
+                  </GaugeContainer>
+                </Card>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Card
+                  icon={<ShoppingBagOutlinedIcon />}
+                  title={"Top Customers"}
+                  cardContentProps={{
+                    sx: {
+                      height: "208px",
+                    },
+                  }}
+                >
+                  <DataGrid 
+                    initialState={{
+                      pagination: {
+                        paginationModel: {
+                          pageSize: 5,
+                        },
+                      },
+                    }}
+                    pageSizeOptions={[5]}
+                    rows={topCustomers}
+                    getRowId={getRowId}
+                    columns={topCustomerColumns}
+                    autoHeight />
+                </Card>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Card
+                  icon={<ShoppingBagOutlinedIcon />}
+                  title={"Top Items"}
+                  cardContentProps={{
+                    sx: {
+                      height: "300px",
+                    },
+                  }}
+                >
+                  <Chart
+                    chartType="PieChart"
+                    data={topItems}
+                    options={pieChartOptions} 
+                  />
+                </Card>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Card
+                  icon={<ShoppingBagOutlinedIcon />}
+                  title={"Farm Profit vs Poultry Profit By Month"}
+                  cardContentProps={{
+                    sx: {
+                      height: "300px",
+                    },
+                  }}
+                >
+                  <Chart
+                    chartType="AreaChart"
+                    width="100%"
+                    height="300px"
+                    data={monthlyProfit}
+                    options={optionsMonthlyProfitData}
+                  />
+                </Card>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Card
+                  icon={<ShoppingBagOutlinedIcon />}
+                  title={"Expense Vs Sale"}
+                  cardContentProps={{
+                    sx: {
+                      height: "300px",
+                    },
+                  }}
+                >
+                  <TabContext value={value}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                      <TabList onChange={handleChange} aria-label="Expense vs Sale">
+                        <Tab label="WTD" value="WTD" />
+                        <Tab label="MTD" value="MTD" />
+                        <Tab label="YTD" value="YTD" />
+                      </TabList>
+                    </Box>
+                    <TabPanel value="WTD">
+                      <Chart
+                        chartType="PieChart"
+                        data={dataWTD}
+                        options={pieChartOptions} 
+                      />
+                    </TabPanel>
+                    <TabPanel value="MTD">
+                      <Chart
+                        chartType="PieChart"
+                        data={dataMTD}
+                        options={pieChartOptions} 
+                      />
+                    </TabPanel>
+                    <TabPanel value="YTD">
+                      <Chart
+                        chartType="PieChart"
+                        data={dataYTD}
+                        options={pieChartOptions} 
+                      />
+                    </TabPanel>
+                  </TabContext>
+                </Card>              
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Card
+                  icon={<ShoppingBagOutlinedIcon />}
+                  title={"Expense Vs Sale By Week This Year"}
+                  cardContentProps={{
+                    sx: {
+                      height: "300px",
+                    },
+                  }}
+                >
+                  <Chart
+                    chartType="ColumnChart" 
+                    width="100%"
+                    height="300px"
+                    data={expenseVsSaleFiscalWk}
+                    options={optionsExpenseVsSaleFiscalWkData}
+                  />
+                </Card>
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <Card
-                icon={<ShoppingBagOutlinedIcon />}
-                title={"Top Items"}
-                cardContentProps={{
-                  sx: {
-                    height: "300px",
-                  },
-                }}
-              >
-                <Chart
-                  chartType="PieChart"
-                  data={topItems}
-                  options={pieChartOptions} 
-                />
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Card
-                icon={<ShoppingBagOutlinedIcon />}
-                title={"Farm Profit vs Poultry Profit By Month"}
-                cardContentProps={{
-                  sx: {
-                    height: "300px",
-                  },
-                }}
-              >
-                <Chart
-                  chartType="AreaChart"
-                  width="100%"
-                  height="300px"
-                  data={monthlyProfit}
-                  options={optionsMonthlyProfitData}
-                />
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Card
-                icon={<ShoppingBagOutlinedIcon />}
-                title={"Expense Vs Sale"}
-                cardContentProps={{
-                  sx: {
-                    height: "300px",
-                  },
-                }}
-              >
-                <TabContext value={value}>
-                  <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <TabList onChange={handleChange} aria-label="Expense vs Sale">
-                      <Tab label="WTD" value="WTD" />
-                      <Tab label="MTD" value="MTD" />
-                      <Tab label="YTD" value="YTD" />
-                    </TabList>
-                  </Box>
-                  <TabPanel value="WTD">
-                    <Chart
-                      chartType="PieChart"
-                      data={dataWTD}
-                      options={pieChartOptions} 
-                    />
-                  </TabPanel>
-                  <TabPanel value="MTD">
-                    <Chart
-                      chartType="PieChart"
-                      data={dataMTD}
-                      options={pieChartOptions} 
-                    />
-                  </TabPanel>
-                  <TabPanel value="YTD">
-                    <Chart
-                      chartType="PieChart"
-                      data={dataYTD}
-                      options={pieChartOptions} 
-                    />
-                  </TabPanel>
-                </TabContext>
-              </Card>              
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Card
-                icon={<ShoppingBagOutlinedIcon />}
-                title={"Expense Vs Sale By Week This Year"}
-                cardContentProps={{
-                  sx: {
-                    height: "300px",
-                  },
-                }}
-              >
-                <Chart
-                  chartType="ColumnChart" 
-                  width="100%"
-                  height="300px"
-                  data={expenseVsSaleFiscalWk}
-                  options={optionsExpenseVsSaleFiscalWkData}
-                />
-              </Card>
-            </Grid>
-          </Grid>
-        </Box>
-      </Container>
-    </List>
+          </Box>
+        </Container>
+      </List>
+    </CanAccess>
   );
 }
 

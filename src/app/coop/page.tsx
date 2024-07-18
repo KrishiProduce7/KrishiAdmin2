@@ -85,9 +85,11 @@ export default function CoopList() {
   const getRowId: GridRowIdGetter<ICoop> = (row) => row.coopId?.toString();
 
   return (
-    <List title={<Typography variant="h5">Coop</Typography>}>
-      <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
-    </List>
+    <CanAccess>
+      <List title={<Typography variant="h5">Coop</Typography>}>
+        <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
+      </List>
+    </CanAccess>
   );
 }
 

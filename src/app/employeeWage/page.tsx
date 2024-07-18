@@ -158,9 +158,11 @@ export default function EmployeeWageList() {
   const getRowId: GridRowIdGetter<IEmployeeWage> = (row) => row.wageId.toString();
 
   return (
-    <List title={<Typography variant="h5">Employee Wage</Typography>}>
-      <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
-    </List>
+    <CanAccess>
+      <List title={<Typography variant="h5">Employee Wage</Typography>}>
+        <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
+      </List>
+    </CanAccess>
   );
 }
 
