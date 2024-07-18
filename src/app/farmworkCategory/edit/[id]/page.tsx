@@ -12,29 +12,31 @@ export default function FarmworkCategoryEdit() {
   } = useForm({});
  
   return (
-    <Edit 
-      saveButtonProps={saveButtonProps}
-      title={<Typography variant="h5">Edit Farmwork Category</Typography>}>
-      <Box
-        component="form"
-        sx={{ display: "flex", flexDirection: "column" }}
-        autoComplete="off"
-      >
-        <TextField
-          {...register("categoryDesc", {
-            required: "This field is required",
-          })}
-          error={!!(errors as any)?.categoryDesc}
-          helperText={(errors as any)?.categoryDesc?.message}
-          margin="normal"
-          fullWidth 
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label={"Description"} 
-          name="categoryDesc"
-          required 
-        />
-      </Box>
-    </Edit>
+    <CanAccess>
+      <Edit 
+        saveButtonProps={saveButtonProps}
+        title={<Typography variant="h5">Edit Farmwork Category</Typography>}>
+        <Box
+          component="form"
+          sx={{ display: "flex", flexDirection: "column" }}
+          autoComplete="off"
+        >
+          <TextField
+            {...register("categoryDesc", {
+              required: "This field is required",
+            })}
+            error={!!(errors as any)?.categoryDesc}
+            helperText={(errors as any)?.categoryDesc?.message}
+            margin="normal"
+            fullWidth 
+            InputLabelProps={{ shrink: true }}
+            type="text"
+            label={"Description"} 
+            name="categoryDesc"
+            required 
+          />
+        </Box>
+      </Edit>
+    </CanAccess>
   );
 }

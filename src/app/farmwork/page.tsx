@@ -1,7 +1,7 @@
 "use client";
 
 import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
-import { useList } from "@refinedev/core";
+import { CanAccess, useList } from "@refinedev/core";
 import {
   DateField,
   DeleteButton,
@@ -111,10 +111,12 @@ export default function FarmWorkList() {
   const getRowId: GridRowIdGetter<IFarmWork> = (row) => row.farmWorkId.toString();
 
   return (
-    <List
-      title={<Typography variant="h5">Farmwork</Typography>}>
-      <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
-    </List>
+    <CanAccess>
+      <List
+        title={<Typography variant="h5">Farmwork</Typography>}>
+        <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
+      </List>
+    </CanAccess>
   );
 }
 

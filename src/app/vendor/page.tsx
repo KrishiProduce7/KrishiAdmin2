@@ -16,6 +16,7 @@ import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
 import { green, red } from "@mui/material/colors"; 
 import { Box, Typography } from "@mui/material";
 import IVendor from "./types"
+import { CanAccess } from "@refinedev/core";
 
 export default function CoopList() {
   const { dataGridProps } = useDataGrid({
@@ -111,9 +112,11 @@ export default function CoopList() {
   const getRowId: GridRowIdGetter<IVendor> = (row) => row.vendorId?.toString();
 
   return (
-    <List title={<Typography variant="h5">Vendor</Typography>}>
-      <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
-    </List>
+    <CanAccess>
+      <List title={<Typography variant="h5">Vendor</Typography>}>
+        <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
+      </List>
+    </CanAccess>
   );
 }
 

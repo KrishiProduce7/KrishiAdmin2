@@ -2,7 +2,7 @@
 
 import { green, red } from "@mui/material/colors";
 import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
-import { useList } from "@refinedev/core";
+import { CanAccess, useList } from "@refinedev/core";
 import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
 import {
   BooleanField,
@@ -130,9 +130,11 @@ export default function EmployeeList() {
   const getRowId: GridRowIdGetter<IEmployee> = (row) => row.employeeId.toString();
 
   return (
-    <List title={<Typography variant="h5">Employee</Typography>}>
-      <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
-    </List>
+    <CanAccess>
+      <List title={<Typography variant="h5">Employee</Typography>}>
+        <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
+      </List>
+    </CanAccess>
   );
 }
 
