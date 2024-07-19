@@ -1,16 +1,14 @@
 "use client";
 
-import { Autocomplete, Box, MenuItem, Select, TextField } from "@mui/material";
+import { Autocomplete, createFilterOptions, TextField } from "@mui/material";
+import { MobileDatePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { CanAccess, useCreate, useRegister } from "@refinedev/core";
 import { Create, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { USStates } from "../us-states";
-import { createFilterOptions } from "@mui/material";
-import { CanAccess, useCreate, useRegister } from "@refinedev/core";
-import IEmployee from "../types";
-import { MobileDatePicker } from "@mui/x-date-pickers";
 
 export default function EmployeeCreate() {
   const { mutate: registerUser } = useRegister();
@@ -23,24 +21,24 @@ export default function EmployeeCreate() {
     control,  
     formState: { errors },
   } = useForm({
-    refineCoreProps: {
-      successNotification: (data, values, resource) => {
+    // refineCoreProps: {
+    //   successNotification: (data, values, resource) => {
         
-        const regFields = {
-          name: values?.firstName + " " + values?.lastName,
-          email: values?.email,
-          mobile: values?.mobile,
-        };
+    //     const regFields = {
+    //       name: values?.firstName + " " + values?.lastName,
+    //       email: values?.email,
+    //       mobile: values?.mobile,
+    //     };
 
-        registerUser(regFields);
+    //     registerUser(regFields);
 
-        return {
-          message: `Post Successfully created with`,
-          description: "Success with no errors",
-          type: "success",
-        };
-      },
-    },
+    //     return {
+    //       message: `Post Successfully created with`,
+    //       description: "Success with no errors",
+    //       type: "success",
+    //     };
+    //   },
+    // },
   });
 
   const { mutate } = useCreate();

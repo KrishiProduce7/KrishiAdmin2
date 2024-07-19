@@ -1,22 +1,20 @@
 "use client";
 
+import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
+import { Typography } from "@mui/material";
+import { green, red } from "@mui/material/colors";
 import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
+import { CanAccess, useList } from "@refinedev/core";
 import {
+  BooleanField,
+  DateField,
   DeleteButton,
   EditButton,
   List,
-  ShowButton,
-  DateField,
   useDataGrid,
-  BooleanField,
-  EmailField,
 } from "@refinedev/mui";
 import React from "react";
-import IItem from "./types";
-import { Typography } from "@mui/material";
-import { useList } from "@refinedev/core";
-import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
-import { green, red } from "@mui/material/colors";
+import { IItem } from "./types";
 
 export default function CoopList() {
   const { dataGridProps } = useDataGrid({
@@ -129,16 +127,18 @@ export default function CoopList() {
         minWidth: 80,
       },
     ],
-    []
+    [classData?.data, classIsLoading, deptData?.data, deptIsLoading]
   );
 
   // Custom getRowId
   const getRowId: GridRowIdGetter<IItem> = (row) => row.itemId?.toString();
 
   return (
-    <List title={<Typography variant="h5">Item</Typography>}>
-      <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
-    </List>
+    <CanAccess>
+      <List title={<Typography variant="h5">Item</Typography>}>
+        <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
+      </List>
+    </CanAccess>
   );
 }
 

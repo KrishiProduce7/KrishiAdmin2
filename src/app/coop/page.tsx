@@ -1,19 +1,16 @@
 "use client";
 
+import { Typography } from "@mui/material";
 import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
+import { CanAccess } from "@refinedev/core";
 import {
-  DeleteButton,
+  DateField,
   EditButton,
   List,
-  ShowButton,
-  DateField,
-  useDataGrid,
-  BooleanField,
-  EmailField,
+  useDataGrid
 } from "@refinedev/mui";
 import React from "react";
 import ICoop from "./types";
-import { Box, TextField, Typography } from "@mui/material";
 
 export default function CoopList() {
   const { dataGridProps } = useDataGrid({

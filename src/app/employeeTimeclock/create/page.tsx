@@ -1,17 +1,13 @@
 "use client";
 
-import { Autocomplete, Box, MenuItem, Select, TextField, Typography } from "@mui/material";
-import { Create, SaveButton, useAutocomplete } from "@refinedev/mui";
-import { useForm } from "@refinedev/react-hook-form";
-import { useCreate, useOne } from "@refinedev/core";
-import { Controller } from "react-hook-form";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
-import { createFilterOptions } from "@mui/material";
-import { useEffect, useRef } from "react";
-import { useGetIdentity } from "@refinedev/core";
 import IEmployee from "@app/employee/types";
+import { Autocomplete, Box, createFilterOptions, TextField, Typography } from "@mui/material";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { CanAccess, useGetIdentity } from "@refinedev/core";
+import { Create, useAutocomplete } from "@refinedev/mui";
+import { useForm } from "@refinedev/react-hook-form";
+import { useEffect, useRef } from "react";
+import { Controller } from "react-hook-form";
 
 interface IGeoLocation
 {
@@ -35,16 +31,11 @@ export default function EmployeeTimeclockCreate() {
 
   const onFinishHandler = (data : any) => {
     const adapterDate = new AdapterDateFns();
-    console.log(user);
 
     onFinish({
       ...data,
       employeeId: user?.employeeId, 
       clockInGeo: `${geoLocation.current.latitude},${geoLocation.current.longitude}`,
-      //      clockIn: adapterDate.date(new Date()), // Correct usage to get the current date
-      // clockOutGeo: ``,
-      // clockOut: ``,
-      // totalHours: 0,
     });
   };
 

@@ -1,17 +1,16 @@
 "use client";
 
-import { Autocomplete, Box, FormControlLabel, Switch, TextField, Typography } from "@mui/material";
-import { Create, useAutocomplete } from "@refinedev/mui";
-import { useForm } from "@refinedev/react-hook-form";
-import { Controller } from "react-hook-form";
+import { Autocomplete, Box, createFilterOptions, TextField, Typography } from "@mui/material";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
-import { createFilterOptions } from "@mui/material";
-import { useEffect, useState } from "react";
+import { CanAccess, useApiUrl } from "@refinedev/core";
+import { Create, useAutocomplete } from "@refinedev/mui";
+import { useForm } from "@refinedev/react-hook-form";
 import { axiosInstance } from "@refinedev/simple-rest";
-import { useApiUrl, useCustom } from "@refinedev/core";
-
+import { useEffect } from "react";
+import { Controller } from "react-hook-form";
+    
 export default function FarmPayrollCreate() {
   const {
     saveButtonProps,

@@ -1,20 +1,17 @@
 "use client";
 
+import { Typography } from "@mui/material";
 import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
 import { CanAccess, useList } from "@refinedev/core";
 import {
+  DateField,
   DeleteButton,
   EditButton,
   List,
-  ShowButton,
-  DateField,
-  useDataGrid,
-  BooleanField,
-  EmailField,
+  useDataGrid
 } from "@refinedev/mui";
 import React from "react";
 import IPoultryActivity from "./types";
-import { TextField, Typography } from "@mui/material";
 
 export default function PoultryActivityList() {
   const { dataGridProps } = useDataGrid({

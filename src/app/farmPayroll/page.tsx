@@ -1,20 +1,17 @@
 "use client";
 
+import { Typography } from "@mui/material";
 import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
-import { useList } from "@refinedev/core";
+import { CanAccess, useList } from "@refinedev/core";
 import {
+  DateField,
   DeleteButton,
   EditButton,
   List,
-  ShowButton,
-  DateField,
-  useDataGrid,
-  BooleanField,
-  EmailField,
+  useDataGrid
 } from "@refinedev/mui";
 import React from "react";
 import IFarmPayroll from "./types";
-import { TextField, Typography } from "@mui/material";
 
 export default function FarmPayrollList() {
   const { dataGridProps } = useDataGrid({
@@ -124,9 +121,11 @@ export default function FarmPayrollList() {
   const getRowId: GridRowIdGetter<IFarmPayroll> = (row) => row.payrollId?.toString();
 
   return (
-    <List title={<Typography variant="h5">Farm Payroll</Typography>}> 
-      <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
-    </List>
+    <CanAccess>
+      <List title={<Typography variant="h5">Farm Payroll</Typography>}> 
+        <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
+      </List>
+    </CanAccess>
   );
 }
 

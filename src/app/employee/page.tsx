@@ -1,23 +1,20 @@
 "use client";
 
+import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
+import { Typography } from "@mui/material";
 import { green, red } from "@mui/material/colors";
 import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
 import { CanAccess, useList } from "@refinedev/core";
-import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
 import {
   BooleanField,
   DateField,
   DeleteButton,
   EditButton,
-  EmailField,
   List,
-  MarkdownField,
-  ShowButton,
-  useDataGrid,
+  useDataGrid
 } from "@refinedev/mui";
 import React from "react";
 import IEmployee from "./types";
-import { Box, TextField, Tooltip, Typography } from "@mui/material";
 
 export default function EmployeeList() {
   const { dataGridProps } = useDataGrid({

@@ -34,6 +34,10 @@ type UpdatePasswordProps = UpdatePasswordPageProps<
   FormPropsType
 >;
 
+interface UpdatePasswordWithCodeFormTypes extends UpdatePasswordFormTypes {
+  resetCode: string;
+}
+
 /**
  * The updatePassword type is the page used to update the password of the user.
  * @see {@link https://refine.dev/docs/api-reference/mui/components/mui-auth-page/#update-password} for more details.
@@ -51,13 +55,13 @@ export const UpdatePasswordPage: React.FC<UpdatePasswordProps> = ({
     watch,
     handleSubmit,
     formState: { errors },
-  } = useForm<BaseRecord, HttpError, UpdatePasswordFormTypes>({
-    ...useFormProps,
+  } = useForm<BaseRecord, HttpError, UpdatePasswordWithCodeFormTypes>({
+    ...useFormProps as any,
   });
-
+  
   const authProvider = useActiveAuthProvider();
   const { mutate: update, isLoading } =
-    useUpdatePassword<UpdatePasswordFormTypes>({
+    useUpdatePassword<UpdatePasswordWithCodeFormTypes>({
       v3LegacyAuthProviderCompatible: Boolean(authProvider?.isLegacy),
     });
 
@@ -110,7 +114,7 @@ export const UpdatePasswordPage: React.FC<UpdatePasswordProps> = ({
               return onSubmit(data);
             }
 
-            return update(data);
+            return update(data as UpdatePasswordWithCodeFormTypes);
           })}
         >
           <TextField
@@ -130,12 +134,12 @@ export const UpdatePasswordPage: React.FC<UpdatePasswordProps> = ({
             )}
             helperText={errors?.resetCode?.message}
             error={!!errors?.resetCode}
-            type="resetCode"
+            type="string"
             placeholder="123456"
             sx={{
               mb: "24px",
             }}
-          />
+          /> 
 
           <TextField
             {...register("password", {

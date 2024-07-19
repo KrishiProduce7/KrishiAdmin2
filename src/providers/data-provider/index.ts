@@ -29,6 +29,8 @@ const farmWorkDataProvider = (
 
     const url = `${apiUrl}/${resource}?${idName}=0`;
 
+    console.log(url);
+
     const { headers: headersFromMeta, method } = meta ?? {};
     const requestMethod = (method as MethodTypes) ?? "get";
 
@@ -39,6 +41,8 @@ const farmWorkDataProvider = (
     });
 
     const total = +headers["x-total-count"];
+
+    console.log("data", data);
 
     return {
       data,
@@ -187,6 +191,8 @@ const farmWorkDataProvider = (
       requestUrl = `${requestUrl}${stringify(query)}`;
     }
 
+    console.log(requestUrl);
+    
     let axiosResponse;
     switch (method) {
       case "put":
@@ -210,6 +216,8 @@ const farmWorkDataProvider = (
     }
 
     const { data } = axiosResponse;
+
+    console.log("data", data);
 
     return Promise.resolve({ data });
   },

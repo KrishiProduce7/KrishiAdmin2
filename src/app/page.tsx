@@ -23,7 +23,7 @@ export default function IndexPage() {
     return (
       <Suspense>
         <Authenticated key="home-page">
-          <NavigateToResource resource="employeeSchedule"/>
+          <NavigateToResource resource="employeeTimeclock"/> 
         </Authenticated>
       </Suspense>
     );

@@ -1,8 +1,8 @@
 "use client";
 
 import { Stack, Typography } from "@mui/material";
-import { useShow } from "@refinedev/core";
-import { Show, TextFieldComponent as TextField, DateField, BooleanField, EmailField } from "@refinedev/mui";
+import { CanAccess, useShow } from "@refinedev/core";
+import { DateField, Show, TextFieldComponent as TextField } from "@refinedev/mui";
 
 export default function EmployeeRoleShow() {
   const { queryResult } = useShow({}); 

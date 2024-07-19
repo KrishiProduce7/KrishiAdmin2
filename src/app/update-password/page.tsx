@@ -1,4 +1,4 @@
-import { UpdatePasswordPage }  from "@components/pages/auth/components";
+import { UpdatePasswordPage } from "@components/pages/auth/components";
 import { authProviderServer } from "@providers/auth-provider";
 import { redirect } from "next/navigation";
 

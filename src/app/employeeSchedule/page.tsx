@@ -1,20 +1,20 @@
 "use client";
 
-import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
-import { DateField, List } from "@refinedev/mui";
-import React, { useState, useEffect } from "react";
-import IEmployeeSchedule from "./types";
-import { Box, Button, ButtonGroup, TextField, Typography } from "@mui/material";
-import { MobileDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
-import RefreshIcon from '@mui/icons-material/Refresh';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
-import { useCustom, useApiUrl, CanAccess } from "@refinedev/core";
+import RefreshIcon from '@mui/icons-material/Refresh';
+import { Box, Button, ButtonGroup, Typography } from "@mui/material";
+import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
+import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
+import { CanAccess, useApiUrl, useCustom } from "@refinedev/core";
+import { DateField, List } from "@refinedev/mui";
+import React, { useEffect, useState } from "react";
+import IEmployeeSchedule from "./types";
 
 export default function EmployeeScheduleList() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<IEmployeeSchedule[]>([]);
 
   const API_URL = useApiUrl();
 
@@ -32,8 +32,8 @@ export default function EmployeeScheduleList() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await refetch();
-      if (response.data) {
-        setData(response.data.data);
+      if (response?.data) {
+        setData(response?.data?.data as IEmployeeSchedule[]);
       }
     };
     fetchData();
@@ -137,8 +137,8 @@ export default function EmployeeScheduleList() {
 
   const handleRefresh = async () => {
     const response = await refetch();
-    if (response.data) {
-      setData(response.data.data);
+    if (response?.data) {
+      setData(response?.data.data as IEmployeeSchedule[]);
     }
   };
 

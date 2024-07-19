@@ -3,12 +3,10 @@
 import { Stack, Typography } from "@mui/material";
 import { CanAccess, useOne, useShow } from "@refinedev/core";
 import {
-  DateField,
-  MarkdownField,
-  Show,
-  TextFieldComponent as TextField,
   BooleanField,
-  EmailField
+  DateField,
+  Show,
+  TextFieldComponent as TextField
 } from "@refinedev/mui";
 
 export default function FarmWorkShow() {

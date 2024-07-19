@@ -1,13 +1,13 @@
 "use client";
 
-import { Autocomplete, Box, createFilterOptions, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Autocomplete, createFilterOptions, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { CanAccess, useApiUrl } from "@refinedev/core";
 import { Create, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
-import { Controller } from "react-hook-form";
-import { useState } from "react";
 import { axiosInstance } from "@refinedev/simple-rest";
-import { useApiUrl } from "@refinedev/core";
-import IItem from "../types";
+import { useState } from "react";
+import { Controller } from "react-hook-form";
+import { IClass } from "../types";
 
 export default function ItemCreate() {
   const { 
@@ -36,7 +36,7 @@ export default function ItemCreate() {
 
   const url = useApiUrl();
 
-  const [classAutocompleteProps, setClassAutocompleteProps] = useState([{}]);
+  const [classAutocompleteProps, setClassAutocompleteProps] = useState<IClass[]>([]);
 
   return (
     <CanAccess>
@@ -73,13 +73,11 @@ export default function ItemCreate() {
                 
                 const response = await axiosInstance.get(`${url}/classs/dept?deptId=${value.deptId}`);
 
-                console.log(response);
-
                 if (response?.data.length > 0) {
                   const {data} = response;
                   setClassAutocompleteProps(data);
                 }
-              }}
+              }} 
               onInputChange={(_, value) => {}}
               filterOptions={deptFilterOptions}              
               getOptionLabel={(item) => {

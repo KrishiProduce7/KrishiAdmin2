@@ -1,20 +1,21 @@
 "use client";
 
-import { useNotification, type AuthProvider } from "@refinedev/core";
-import Cookies from "js-cookie";
-import { 
-  AuthFlowType,
-  CognitoIdentityProviderClient, 
-  InitiateAuthCommand ,
-  ForgotPasswordCommand,
+import {
   AdminCreateUserCommand,
+  AdminCreateUserCommandInput,
+  AuthFlowType,
+  CognitoIdentityProviderClient,
   ConfirmForgotPasswordCommand,
+  ConfirmForgotPasswordCommandInput,
+  ForgotPasswordCommand,
+  ForgotPasswordCommandInput,
+  InitiateAuthCommand,
   MessageActionType
 } from "@aws-sdk/client-cognito-identity-provider"; // ES Modules import
-import { useCustom, useApiUrl } from "@refinedev/core";
-import IEmployee from "@app/employee/types";
-import { axiosInstance } from "@refinedev/simple-rest";
 import { API_URL } from "@providers/data-provider";
+import { type AuthProvider } from "@refinedev/core";
+import { axiosInstance } from "@refinedev/simple-rest";
+import Cookies from "js-cookie";
 
 const config = {
   region: 'us-east-2', // Replace with your desired AWS region
@@ -104,7 +105,7 @@ export const authProvider: AuthProvider = {
         redirectTo: "/",
       };
 
-    } catch (error) {
+    } catch (error : any) {
       return {
         success: false,
         error: {
@@ -115,7 +116,7 @@ export const authProvider: AuthProvider = {
     }
   },
   register: async({name, mobile, email} : AuthRegisterParams) => {
-    const input = {
+    const input : AdminCreateUserCommandInput = {
       DesiredDeliveryMediums: [
         "EMAIL"
       ],
@@ -123,7 +124,7 @@ export const authProvider: AuthProvider = {
       UserAttributes: [
         {
           Name: "name",
-          Value: name,
+          Value: email,
         },
         {
           Name: "phone_number",
@@ -135,31 +136,24 @@ export const authProvider: AuthProvider = {
         }
       ],
       UserPoolId: "us-east-2_IrMWwzXSQ",
-      Username: "testuser"
+      Username: email,
     };
-
-    console.log(input);
 
     const command = new AdminCreateUserCommand(input);
 
     try{
       const response = await client.send(command);
-  
-      console.log(response);
-
       return {
         success: true,
       }
     } catch (error) {
-      console.log(error);
-
       return {
         success: false,
       };
     }
   },
   forgotPassword: async({email} : AuthForgotParams) => {
-    const input = { // ForgotPasswordRequest
+    const input : ForgotPasswordCommandInput = { // ForgotPasswordRequest
       ClientId: "5nvbju3q1r7kncs0unklbda92t", // required
       Username: email, // required
     };
@@ -177,7 +171,7 @@ export const authProvider: AuthProvider = {
         success: true,
         redirectTo: "/update-password",
       }
-    } catch (error) {
+    } catch (error : any) {
       return {
         success: false,
         error: {
@@ -190,21 +184,16 @@ export const authProvider: AuthProvider = {
   updatePassword: async ({ resetCode, password, confirmPassword }) => {
     const email = Cookies.get("forgot-email");
 
-    const input = { // ConfirmForgotPasswordRequest
+    const input : ConfirmForgotPasswordCommandInput= { // ConfirmForgotPasswordRequest
       ClientId: "5nvbju3q1r7kncs0unklbda92t", // required
       Username: email,
       ConfirmationCode: resetCode,
       Password: password,
     };
 
-    console.log(input);
-
     const command = new ConfirmForgotPasswordCommand(input);
     try{
       const response = await client.send(command);
-      
-      console.log("11111111111111");
-      console.log(response);
 
       return {
         success: true,
@@ -214,8 +203,7 @@ export const authProvider: AuthProvider = {
           description: "You have successfully updated password.",
         },
       };
-    } catch (error) {
-      console.log(error);
+    } catch (error : any) {
       return {
         success: false,
         error: {

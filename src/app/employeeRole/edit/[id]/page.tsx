@@ -1,6 +1,7 @@
 "use client";
 
-import { Box, TextField, Switch, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
+import { CanAccess } from "@refinedev/core";
 import { Edit } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 

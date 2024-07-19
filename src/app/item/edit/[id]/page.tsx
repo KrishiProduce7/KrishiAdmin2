@@ -1,12 +1,13 @@
 "use client";
 
-import { Box, TextField, Switch, Typography, createFilterOptions, Autocomplete, InputLabel, Select, MenuItem } from "@mui/material";
+import { IClass } from "@app/item/types";
+import { Autocomplete, Box, InputLabel, MenuItem, Select, TextField, Typography, createFilterOptions } from "@mui/material";
+import { CanAccess, useApiUrl } from "@refinedev/core";
 import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
-import { Controller } from "react-hook-form";
-import { useEffect, useState } from "react";
 import { axiosInstance } from "@refinedev/simple-rest";
-import { CanAccess, useApiUrl } from "@refinedev/core";
+import { useEffect, useState } from "react";
+import { Controller } from "react-hook-form";
 
 export default function ItemEdit() {
   const {
@@ -38,7 +39,7 @@ export default function ItemEdit() {
 
   const url = useApiUrl();
 
-  const [classAutocompleteProps, setClassAutocompleteProps] = useState([]);
+  const [classAutocompleteProps, setClassAutocompleteProps] = useState<IClass[]>([]);
 
   useEffect(() => {
     const fetchClassData = async (classId: number) => { 
@@ -155,7 +156,7 @@ export default function ItemEdit() {
                 filterOptions={classFilterOptions}              
                 getOptionLabel={(item) => {
                   return (
-                    classAutocompleteProps?.find((p) => {
+                    classAutocompleteProps?.find((p: IClass) => {
                       const itemId =
                         typeof item === "object"
                           ? item?.classId?.toString()

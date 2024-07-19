@@ -1,21 +1,20 @@
 "use client";
 
+import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
+import { Typography } from "@mui/material";
+import { green, red } from "@mui/material/colors";
 import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
+import { CanAccess } from "@refinedev/core";
 import {
+  BooleanField,
+  DateField,
   DeleteButton,
   EditButton,
   List,
-  ShowButton,
-  DateField,
-  useDataGrid,
-  BooleanField,
-  EmailField,
+  useDataGrid
 } from "@refinedev/mui";
 import React from "react";
 import IFarmWorkCategory from "./types";
-import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
-import { green, red } from "@mui/material/colors";
-import { TextField, Typography } from "@mui/material";
 
 export default function FarmworkCategoryList() {
   const { dataGridProps } = useDataGrid({
@@ -88,10 +87,12 @@ export default function FarmworkCategoryList() {
   const getRowId: GridRowIdGetter<IFarmWorkCategory> = (row) => row.categoryId?.toString();
 
   return (
-    <List 
-      title={<Typography variant="h5">Farmwork Category</Typography>}>
-      <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
-    </List>
+    <CanAccess>
+      <List 
+        title={<Typography variant="h5">Farmwork Category</Typography>}>
+        <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
+      </List>
+    </CanAccess>      
   );
 }
  

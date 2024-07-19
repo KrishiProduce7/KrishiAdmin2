@@ -1,19 +1,17 @@
 "use client";
 
+import { Typography } from "@mui/material";
 import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
 import { CanAccess, useList } from "@refinedev/core";
 import {
+  DateField,
   DeleteButton,
   EditButton,
   List,
-  ShowButton,
-  DateField,
-  useDataGrid,
-  EmailField,
+  useDataGrid
 } from "@refinedev/mui";
 import React from "react";
 import IFarmSale from "./types";
-import { Box, TextField, Typography } from "@mui/material";
 
 export default function FarmSaleList() {
   const { dataGridProps } = useDataGrid({
@@ -108,7 +106,7 @@ export default function FarmSaleList() {
         minWidth: 80,
       },
     ],
-    [customerIsLoading, customerData, itemIsLoading, itemData]
+    [customerIsLoading, customerData]
   );
 
   // Custom getRowId

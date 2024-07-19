@@ -1,41 +1,36 @@
 "use client";
 
-import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
-import {
-  DeleteButton,
-  EditButton,
-  List,
-  ShowButton,
-  DateField,
-  useDataGrid,
-  BooleanField,
-  EmailField,
-  NumberField,
-} from "@refinedev/mui";
-import React from "react";
-import { Box, Container, Grid, Paper, TextField, Typography } from "@mui/material";
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
-import { Card } from "../../components/card";
-import { TrendIcon } from "../../components/icons/trend-icon";
-import { Gauge, GaugeValueText } from '@mui/x-charts/Gauge';
-import { PieChart, pieArcLabelClasses } from '@mui/x-charts/PieChart';
-import { BarChart } from '@mui/x-charts/BarChart';
-import { axisClasses } from '@mui/x-charts/ChartsAxis';
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
-import { useCustom, useApiUrl, CanAccess } from "@refinedev/core";
-import ICustomer from "../customer/types";
-import { Chart } from "react-google-charts";
+import {
+  Box,
+  Container,
+  Grid,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
 import {
   GaugeContainer,
-  GaugeValueArc,
   GaugeReferenceArc,
+  GaugeValueArc,
   useGaugeState,
 } from '@mui/x-charts/Gauge';
-import { Authenticated } from "@refinedev/core";
+import {
+  DataGrid,
+  GridRowIdGetter,
+  type GridColDef,
+} from "@mui/x-data-grid";
+import { CanAccess, useApiUrl, useCustom } from "@refinedev/core";
+import {
+  List,
+  NumberField
+} from "@refinedev/mui";
+import React from "react";
+import { Chart, GoogleChartOptions, GoogleDataTableRow } from "react-google-charts";
+import { Card } from "../../components/card";
+import { TrendIcon } from "../../components/icons/trend-icon";
+import ICustomer from "../customer/types";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -68,13 +63,6 @@ function GaugePointer() {
 }
 
 export default function DashboardList() {
-  const { dataGridProps } = useDataGrid<ICustomer>({
-    pagination: {
-      mode: "client",
-    },
-    initialPageSize: 5,
-  });
-
   const API_URL = useApiUrl();
 
   const { data: yearProfitData } = useCustom({
@@ -102,11 +90,11 @@ export default function DashboardList() {
   });
 
   if (topCustomersData?.data?.length > 0) {
-    topCustomers = topCustomersData?.data;
+    topCustomers = topCustomersData?.data as ICustomer[];
   }
-  
-  // Top customers data
-  let topItems: [string, { v: number; f: string }][] = [["Label", "Value"]];
+
+  // Top items data
+  let topItems: GoogleDataTableRow [] = [["Label", "Value"]];
 
   const { data: topItemsData } = useCustom({
     url: `${API_URL}/dashboard/topItems`,
@@ -114,49 +102,52 @@ export default function DashboardList() {
   });
 
   if (topItemsData?.data?.length > 0) {
-    topItemsData.data.forEach((itemData: { itemName: string; totalSale: number }) => {
+    topItemsData?.data.forEach((itemData: { itemName: string; totalSale: number }) => {
       topItems.push([itemData.itemName, { v: Number(itemData.totalSale), f: `$ ${itemData.totalSale}` }]);
     });
   }
 
-  // Get Expense Vs Sale
-  let dataWTD: [string, { v: number; f: string }][] = [["Item", "Value"]],
-      dataMTD: [string, { v: number; f: string }][] = [["Item", "Value"]],
-      dataYTD: [string, { v: number; f: string }][] = [["Item", "Value"]];
+  const getRowId: GridRowIdGetter<ICustomer> = (row) => row.customerId?.toString();
   
+  // Get Expense Vs Sale
+  let dataWTD: GoogleDataTableRow[] = [["Item", { v: 0, f: "$0" }]],
+    dataMTD: GoogleDataTableRow[] = [["Item", { v: 0, f: "$0" }]],
+    dataYTD: GoogleDataTableRow[] = [["Item", { v: 0, f: "$0" }]];
+ 
   const { data: expenseVsSaleData } = useCustom({
     url: `${API_URL}/dashboard/expenseVsSale`,
     method: "get",
   });
 
   if (expenseVsSaleData?.data?.length > 0) {
-    dataWTD.push(["WTD Sale", { v: Number(expenseVsSaleData.data[0].totalWTDSale), f: `$ ${expenseVsSaleData.data[0].totalWTDSale}` }]);
-    dataWTD.push(["WTD Expense", { v: Number(expenseVsSaleData.data[0].totalWTDExpense), f: `$ ${expenseVsSaleData.data[0].totalWTDExpense}` }]);
+    dataWTD.push(["WTD Sale", { v: Number(expenseVsSaleData?.data[0].totalWTDSale), f: `$ ${expenseVsSaleData?.data[0].totalWTDSale}` }]);
+    dataWTD.push(["WTD Expense", { v: Number(expenseVsSaleData?.data[0].totalWTDExpense), f: `$ ${expenseVsSaleData?.data[0].totalWTDExpense}` }]);
 
-    dataMTD.push(["MTD Sale", { v: Number(expenseVsSaleData.data[0].totalMTDSale), f: `$ ${expenseVsSaleData.data[0].totalMTDSale}` }]);
-    dataMTD.push(["MTD Expense", { v: Number(expenseVsSaleData.data[0].totalMTDExpense), f: `$ ${expenseVsSaleData.data[0].totalMTDExpense}` }]);
+    dataMTD.push(["MTD Sale", { v: Number(expenseVsSaleData?.data[0].totalMTDSale), f: `$ ${expenseVsSaleData?.data[0].totalMTDSale}` }]);
+    dataMTD.push(["MTD Expense", { v: Number(expenseVsSaleData?.data[0].totalMTDExpense), f: `$ ${expenseVsSaleData?.data[0].totalMTDExpense}` }]);
 
-    dataYTD.push(["YTD Sale", { v: Number(expenseVsSaleData.data[0].totalYTDSale), f: `$ ${expenseVsSaleData.data[0].totalYTDSale}` }]);
-    dataYTD.push(["YTD Expense", { v: Number(expenseVsSaleData.data[0].totalYTDExpense), f: `$ ${expenseVsSaleData.data[0].totalYTDExpense}` }]);
+    dataYTD.push(["YTD Sale", { v: Number(expenseVsSaleData?.data[0].totalYTDSale), f: `$ ${expenseVsSaleData?.data[0].totalYTDSale}` }]);
+    dataYTD.push(["YTD Expense", { v: Number(expenseVsSaleData?.data[0].totalYTDExpense), f: `$ ${expenseVsSaleData?.data[0].totalYTDExpense}` }]);
   }
 
-  const pieChartOptions = {
+  const pieChartOptions: GoogleChartOptions = {
     is3D: true,
-    chartArea: {top: 30, width: '100%', height: '100%'},
+    chartArea: { top: 30, width: '100%', height: '100%' },
     sliceVisibilityThreshold: 0,
     pieSliceText: 'value',
+    backgroundColor: 'white',
   };
- 
+
   // expenseVsSaleFiscalWk Data
   const { data: expenseVsSaleFiscalWkData } = useCustom({
     url: `${API_URL}/dashboard/expenseVsSaleFiscalWk`,
     method: "get",
   });
 
-  let expenseVsSaleFiscalWk: [string, number, number][] = [['Week', 'Farm Profit', 'Poultry Profit']];
+  let expenseVsSaleFiscalWk: GoogleDataTableRow[] = [['Week', 'Farm Profit', 'Poultry Profit']];
 
   if (expenseVsSaleFiscalWkData?.data?.length > 0) {
-    expenseVsSaleFiscalWkData.data.forEach((WkData: any) => {
+    expenseVsSaleFiscalWkData?.data.forEach((WkData: any) => {
       expenseVsSaleFiscalWk.push([
         WkData.endDay,
         Number(WkData.totalFarmSale) - Number(WkData.totalFarmExpense),
@@ -164,25 +155,27 @@ export default function DashboardList() {
       ]);
     });
   }
-
-  const optionsExpenseVsSaleFiscalWkData = {
+   
+  const optionsExpenseVsSaleFiscalWkData: GoogleChartOptions = {
     title: '',
     hAxis: { title: 'Week', titleTextStyle: { color: '#333' } },
     vAxis: { minValue: 0 },
     chartArea: { width: '50%', height: '70%' },
     is3d: true,
+    backgroundColor: 'white',
   };
 
   // monthlyProfit Data
   const { data: monthlyProfitData } = useCustom({
-    url: `${API_URL}/dashboard/expenseVsSaleFiscalWk`,
+    url: `${API_URL}/dashboard/monthlyProfit`,
     method: "get",
   });
 
-  let monthlyProfit: [string, number, number][] = [['Month', 'Farm Profit', 'Poultry Profit']];
-
+  let monthlyProfit: GoogleDataTableRow[] = [];
+  monthlyProfit.push(['Month', 'Farm Profit', 'Poultry Profit']);
+ 
   if (monthlyProfitData?.data?.length > 0) {
-    monthlyProfitData.data.forEach((MtData: any) => {
+    monthlyProfitData?.data.forEach((MtData: any) => {
       monthlyProfit.push([
         MtData.endDay,
         Number(MtData.totalFarmSale) - Number(MtData.totalFarmExpense),
@@ -199,20 +192,6 @@ export default function DashboardList() {
     is3d: true,
   };
 
-  const valueFormatter = (value: number | null) => `${value}mm`;
-
-  const data = [
-    { value: 5, label: 'A' },
-    { value: 10, label: 'B' },
-    { value: 15, label: 'C' },
-    { value: 20, label: 'D' },
-  ];
-
-  const size = {
-    width: 400,
-    height: 200,
-  };
-
   const [value, setValue] = React.useState('WTD');
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -227,23 +206,19 @@ export default function DashboardList() {
         headerName: "Name",
         minWidth: 100,
       },
-      { 
+      {
         field: "totalSale",
         flex: 1,
         headerName: "Total Sale",
-        minWidth: 200, 
+        minWidth: 200,
       },
     ],
     []
   );
 
-  // Custom getRowId
-  const getRowId: GridRowIdGetter<ICustomer> = (row) => row.customerId?.toString();
-
   return (
     <CanAccess>
       <List resource="" title={<Typography variant="h5">Dashboard</Typography>}>
-        {/* <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight /> */}
         <Container>
           <Box sx={{ flexGrow: 1, padding: 2 }}>
             <Grid container spacing={2}>
@@ -286,7 +261,6 @@ export default function DashboardList() {
                     <GaugeReferenceArc />
                     <GaugeValueArc />
                     <GaugePointer />
-                    <GaugeValueText />
                   </GaugeContainer>
                 </Card>
               </Grid>
@@ -300,7 +274,7 @@ export default function DashboardList() {
                     },
                   }}
                 >
-                  <DataGrid 
+                  <DataGrid
                     initialState={{
                       pagination: {
                         paginationModel: {
@@ -312,7 +286,7 @@ export default function DashboardList() {
                     rows={topCustomers}
                     getRowId={getRowId}
                     columns={topCustomerColumns}
-                    autoHeight />
+                  />
                 </Card>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -328,7 +302,7 @@ export default function DashboardList() {
                   <Chart
                     chartType="PieChart"
                     data={topItems}
-                    options={pieChartOptions} 
+                    options={pieChartOptions}
                   />
                 </Card>
               </Grid>
@@ -361,37 +335,35 @@ export default function DashboardList() {
                     },
                   }}
                 >
-                  <TabContext value={value}>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                      <TabList onChange={handleChange} aria-label="Expense vs Sale">
-                        <Tab label="WTD" value="WTD" />
-                        <Tab label="MTD" value="MTD" />
-                        <Tab label="YTD" value="YTD" />
-                      </TabList>
-                    </Box>
-                    <TabPanel value="WTD">
+                  <Tabs value={value} onChange={handleChange} aria-label="Expense vs Sale">
+                    <Tab label="WTD" value="WTD" />
+                    <Tab label="MTD" value="MTD" />
+                    <Tab label="YTD" value="YTD" />
+                  </Tabs>
+                  <Box>
+                    {value === 'WTD' && (
                       <Chart
                         chartType="PieChart"
                         data={dataWTD}
-                        options={pieChartOptions} 
+                        options={pieChartOptions}
                       />
-                    </TabPanel>
-                    <TabPanel value="MTD">
+                    )}
+                    {value === 'MTD' && (
                       <Chart
                         chartType="PieChart"
                         data={dataMTD}
-                        options={pieChartOptions} 
+                        options={pieChartOptions}
                       />
-                    </TabPanel>
-                    <TabPanel value="YTD">
+                    )}
+                    {value === 'YTD' && (
                       <Chart
                         chartType="PieChart"
                         data={dataYTD}
-                        options={pieChartOptions} 
+                        options={pieChartOptions}
                       />
-                    </TabPanel>
-                  </TabContext>
-                </Card>              
+                    )}
+                  </Box>
+                </Card>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Card
@@ -404,7 +376,7 @@ export default function DashboardList() {
                   }}
                 >
                   <Chart
-                    chartType="ColumnChart" 
+                    chartType="ColumnChart"
                     width="100%"
                     height="300px"
                     data={expenseVsSaleFiscalWk}
@@ -419,8 +391,3 @@ export default function DashboardList() {
     </CanAccess>
   );
 }
-
-// Removed this
-// If needed copy the below line between <EditButton> and <DeleteButton>
-// <ShowButton hideText recordItemId={row.roleId} />
-//               <DeleteButton hideText recordItemId={row.coopId} />

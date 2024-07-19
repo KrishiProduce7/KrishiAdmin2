@@ -2,7 +2,7 @@
 
 import { Stack, Typography } from "@mui/material";
 import { CanAccess, useShow } from "@refinedev/core";
-import { Show, TextFieldComponent as TextField, DateField, BooleanField, EmailField } from "@refinedev/mui";
+import { BooleanField, DateField, Show, TextFieldComponent as TextField } from "@refinedev/mui";
 
 export default function CoopShow() {
   const { queryResult } = useShow({}); 

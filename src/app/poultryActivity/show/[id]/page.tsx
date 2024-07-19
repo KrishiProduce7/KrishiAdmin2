@@ -2,12 +2,10 @@
 
 import { Stack, Typography } from "@mui/material";
 import { CanAccess, useOne, useShow } from "@refinedev/core";
-import { 
-  Show, 
-  TextFieldComponent as TextField, 
-  DateField, 
-  BooleanField, 
-  EmailField
+import {
+  DateField,
+  Show,
+  TextFieldComponent as TextField
 } from "@refinedev/mui";
 
 export default function PoultryActivityShow() {

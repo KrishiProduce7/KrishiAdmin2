@@ -1,15 +1,14 @@
 "use client";
 
-import { Autocomplete, Box, MenuItem, Select, TextField, Typography } from "@mui/material";
+import IEmployee from "@app/employee/types";
+import { Autocomplete, Box, createFilterOptions, TextField, Typography } from "@mui/material";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { CanAccess, useGetIdentity } from "@refinedev/core";
 import { Create, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
-import { createFilterOptions } from "@mui/material";
-import { CanAccess, useGetIdentity } from "@refinedev/core";
-import IEmployee from "@app/employee/types";
 
 export default function PoultryActivityCreate() {
   const {
@@ -34,7 +33,6 @@ export default function PoultryActivityCreate() {
 
   const onFinishHandler = (data : any) => {
     const adapterDate = new AdapterDateFns();
-    console.log(user);
 
     onFinish({ 
       ...data,

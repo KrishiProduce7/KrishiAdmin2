@@ -1,14 +1,13 @@
 "use client";
 
-import { Box, FormControlLabel, Switch, TextField, Autocomplete, Typography } from "@mui/material";
+import { Autocomplete, Box, createFilterOptions, TextField, Typography } from "@mui/material";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { CanAccess } from "@refinedev/core";
 import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
-import { createFilterOptions } from "@mui/material";
-import { CanAccess } from "@refinedev/core";
 
 export default function FarmPayrollEdit() {
   const {

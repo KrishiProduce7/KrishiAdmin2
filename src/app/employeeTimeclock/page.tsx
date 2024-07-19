@@ -1,9 +1,10 @@
 "use client";
 
 import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
-import { CanAccess, useList } from "@refinedev/core";
-import dayjs from "dayjs";
-
+import { CanAccess, useApiUrl, useCustom, useGetIdentity, useList } from "@refinedev/core";
+import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
+import { Typography } from "@mui/material";
+import { green, red } from "@mui/material/colors";
 import {
   BooleanField,
   CreateButton,
@@ -11,29 +12,64 @@ import {
   DeleteButton,
   EditButton,
   List,
-  MarkdownField,
-  ShowButton,
-  useDataGrid,
+  useDataGrid
 } from "@refinedev/mui";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import IEmployeeTimeclock from "./types";
-import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
-import { green, red } from "@mui/material/colors";
-import { Typography } from "@mui/material";
+import IEmployee, { SUPER_ADMIN, EMPLOYEE_TYPE } from "@app/employee/types";
 
 export default function EmployeeTimeclockList() {
-  const { dataGridProps } = useDataGrid({
-    syncWithLocation: true,
-    pagination: {
-      mode: "client",
-    }
+  const [timeClocks, setTimeClocks] = useState<IEmployeeTimeclock[]>([]);
+  const [clockButtonLabel, setClockButtonLabel] = useState<string>('Clock In / Out');
+
+  const { data: user} = useGetIdentity<IEmployee>();
+  const API_URL = useApiUrl();
+
+  const { refetch: refetchAll } = useList({
+    resource: "employeeTimeclock",
   });
- 
-  const { data: employeeData, isLoading: employeeIsLoading, isError: errorEmployeeData  } = useList({
+
+  const { refetch: refetchForEmployee } = useCustom({
+    url: `${API_URL}/employeeTimeclock/email`,
+    method: 'get',
+    config: {
+      query: {
+        email: user?.email,
+      },
+    },
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if ( Number(user?.roleId) === SUPER_ADMIN) {
+          const response = await refetchAll();
+          if (response?.data) {
+            setTimeClocks(response?.data.data as IEmployeeTimeclock[]);
+            setClockButtonLabel("Clock In / Out");
+          }
+     
+        } else if ( Number(user?.roleId) === EMPLOYEE_TYPE) {
+          const response = await refetchForEmployee();
+          if (response?.data) {
+            setTimeClocks(response?.data.data as IEmployeeTimeclock[]);
+            setClockButtonLabel("Clock In");
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching timeclocks", error);
+      }
+    };
+
+    if (user)
+      fetchData();
+  }, [user, refetchAll, refetchForEmployee]); 
+
+  const { data: employeeData, isLoading: employeeIsLoading } = useList({
     resource: "employee",
   });
- 
-  const { data: farmworkData, isLoading: farmworkIsLoading, isError: errorFarmWorkData } = useList({
+
+  const { data: taskData, isLoading: taskIsLoading } = useList({
     resource: "employeeTask",
   });
 
@@ -50,17 +86,11 @@ export default function EmployeeTimeclockList() {
         flex: 1,
         headerName: "Employee",
         minWidth: 100,
-        valueGetter: ({ row }) => {
-          const value = row?.employeeId;
-          return value;
-        },
+        valueGetter: ({ row }) => row?.employeeId,
         renderCell: function render({ value }) {
-          return employeeIsLoading ? (
-            <>Loading...</>
-          ) : (
-            employeeData?.data?.find((item) => item.employeeId.toString() === value.toString())?.firstName + " " + 
-            employeeData?.data?.find((item) => item.employeeId.toString() === value.toString())?.lastName
-          );
+          if (employeeIsLoading) return <>Loading...</>;
+          const employee = employeeData?.data?.find((item) => item.employeeId.toString() === value.toString());
+          return employee ? `${employee.firstName} ${employee.lastName}` : "";
         },
       },
       {
@@ -68,16 +98,11 @@ export default function EmployeeTimeclockList() {
         flex: 1,
         headerName: "Employee Task",
         minWidth: 100,
-        valueGetter: ({ row }) => {
-          const value = row?.taskId;
-          return value;
-        },
+        valueGetter: ({ row }) => row?.taskId,
         renderCell: function render({ value }) {
-          return farmworkIsLoading ? (
-            <>Loading...</>
-          ) : (
-            farmworkData?.data?.find((item) => item.taskId?.toString() === value?.toString())?.taskDesc ?? ""
-          );
+          if (taskIsLoading) return <>Loading...</>;
+          const task = taskData?.data?.find((item) => item.taskId?.toString() === value?.toString());
+          return task?.taskDesc ?? "";
         },
       },
       {
@@ -121,11 +146,13 @@ export default function EmployeeTimeclockList() {
         headerName: "Is Paid",
         minWidth: 100,
         renderCell: function render({ value }) {
-          return <BooleanField 
-            value={value}
-            trueIcon={<CheckOutlined style={{ color: green[500] }} />}
-            falseIcon={<CloseOutlined style={{ color: red[500] }} />}
+          return (
+            <BooleanField 
+              value={value}
+              trueIcon={<CheckOutlined style={{ color: green[500] }} />}
+              falseIcon={<CloseOutlined style={{ color: red[500] }} />}
             />
+          );
         }
       },
       {
@@ -133,22 +160,28 @@ export default function EmployeeTimeclockList() {
         headerName: "Actions",
         sortable: false,
         renderCell: function render({ row }) {
-          return (
-            <>
-              <EditButton hideText recordItemId={row.timeclockId} />
-              <DeleteButton hideText recordItemId={row.timeclockId} />
-            </>
-          );
+          if (Number(user?.roleId) == SUPER_ADMIN) {
+            return (
+              <>
+                <EditButton hideText recordItemId={row.timeclockId} />
+                <DeleteButton hideText recordItemId={row.timeclockId} />
+              </>
+            );  
+          } else if (Number(user?.roleId) == EMPLOYEE_TYPE) {
+            return (
+              <>
+              </>
+            );
+          }
         },
         align: "center",
         headerAlign: "center",
         minWidth: 80,
       },
     ],
-    [employeeIsLoading, farmworkIsLoading, employeeData, farmworkData]
+    [employeeIsLoading, taskIsLoading, employeeData, taskData, user]
   );
 
-  // Custom getRowId
   const getRowId: GridRowIdGetter<IEmployeeTimeclock> = (row) => row.timeclockId?.toString();
 
   return (
@@ -158,14 +191,21 @@ export default function EmployeeTimeclockList() {
         headerButtons={({ createButtonProps }) => (  
           <>  
             {createButtonProps && (  
-            <CreateButton  
-            {...createButtonProps}>  
-            Clock In / Out
-            </CreateButton>  
+              <CreateButton {...createButtonProps}>  
+                {clockButtonLabel}
+              </CreateButton>  
             )}
           </>
         )}>
-        <DataGrid {...dataGridProps} getRowId={getRowId} columns={columns} autoHeight />
+        <DataGrid 
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 25,
+              },
+            },
+          }}
+          rows={timeClocks} getRowId={getRowId} columns={columns} autoHeight pageSizeOptions={[25]}/>
       </List>
     </CanAccess>
   );

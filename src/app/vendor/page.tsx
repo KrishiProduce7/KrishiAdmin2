@@ -1,22 +1,20 @@
 "use client";
 
+import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
+import { Typography } from "@mui/material";
+import { green, red } from "@mui/material/colors";
 import { DataGrid, GridRowIdGetter, type GridColDef } from "@mui/x-data-grid";
+import { CanAccess } from "@refinedev/core";
 import {
+  BooleanField,
+  DateField,
   DeleteButton,
   EditButton,
   List,
-  ShowButton,
-  DateField,
-  useDataGrid,
-  BooleanField,
-  EmailField,
+  useDataGrid
 } from "@refinedev/mui";
 import React from "react";
-import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
-import { green, red } from "@mui/material/colors"; 
-import { Box, Typography } from "@mui/material";
-import IVendor from "./types"
-import { CanAccess } from "@refinedev/core";
+import IVendor from "./types";
 
 export default function CoopList() {
   const { dataGridProps } = useDataGrid({
