@@ -31,6 +31,7 @@ import { Chart, GoogleChartOptions, GoogleDataTableRow } from "react-google-char
 import { Card } from "../../components/card";
 import { TrendIcon } from "../../components/icons/trend-icon";
 import ICustomer from "../customer/types";
+import { format } from "date-fns";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -60,6 +61,16 @@ function GaugePointer() {
       />
     </g>
   );
+}
+
+function formatNumber(value : string) {
+  // Convert the value to a number and truncate the decimals
+  // Use Intl.NumberFormat to format the number with thousand separators
+  const numberValue = Number(value);
+
+  return new Intl.NumberFormat('en-US', {
+    maximumFractionDigits: 0
+  }).format(numberValue);
 }
 
 export default function DashboardList() {
@@ -102,8 +113,8 @@ export default function DashboardList() {
   });
 
   if (topItemsData?.data?.length > 0) {
-    topItemsData?.data.forEach((itemData: { itemName: string; totalSale: number }) => {
-      topItems.push([itemData.itemName, { v: Number(itemData.totalSale), f: `$ ${itemData.totalSale}` }]);
+    topItemsData?.data.forEach((itemData: { itemName: string; totalSale: string }) => {
+      topItems.push([itemData.itemName, { v: Number(itemData.totalSale), f: '$' + formatNumber(itemData.totalSale)}]);
     });
   }
 
@@ -120,14 +131,14 @@ export default function DashboardList() {
   });
 
   if (expenseVsSaleData?.data?.length > 0) {
-    dataWTD.push(["WTD Sale", { v: Number(expenseVsSaleData?.data[0].totalWTDSale), f: `$ ${expenseVsSaleData?.data[0].totalWTDSale}` }]);
-    dataWTD.push(["WTD Expense", { v: Number(expenseVsSaleData?.data[0].totalWTDExpense), f: `$ ${expenseVsSaleData?.data[0].totalWTDExpense}` }]);
+    dataWTD.push(["WTD Sale", { v: Number(expenseVsSaleData?.data[0].totalWTDSale), f: '$' + formatNumber(expenseVsSaleData?.data[0].totalWTDSale)}]);
+    dataWTD.push(["WTD Expense", { v: Number(expenseVsSaleData?.data[0].totalWTDExpense), f: '$' + formatNumber(expenseVsSaleData?.data[0].totalWTDExpense)}]);
 
-    dataMTD.push(["MTD Sale", { v: Number(expenseVsSaleData?.data[0].totalMTDSale), f: `$ ${expenseVsSaleData?.data[0].totalMTDSale}` }]);
-    dataMTD.push(["MTD Expense", { v: Number(expenseVsSaleData?.data[0].totalMTDExpense), f: `$ ${expenseVsSaleData?.data[0].totalMTDExpense}` }]);
+    dataMTD.push(["MTD Sale", { v: Number(expenseVsSaleData?.data[0].totalMTDSale), f: '$' + formatNumber(expenseVsSaleData?.data[0].totalMTDSale)}]);
+    dataMTD.push(["MTD Expense", { v: Number(expenseVsSaleData?.data[0].totalMTDExpense), f: '$' + formatNumber(expenseVsSaleData?.data[0].totalMTDExpense)}]);
 
-    dataYTD.push(["YTD Sale", { v: Number(expenseVsSaleData?.data[0].totalYTDSale), f: `$ ${expenseVsSaleData?.data[0].totalYTDSale}` }]);
-    dataYTD.push(["YTD Expense", { v: Number(expenseVsSaleData?.data[0].totalYTDExpense), f: `$ ${expenseVsSaleData?.data[0].totalYTDExpense}` }]);
+    dataYTD.push(["YTD Sale", { v: Number(expenseVsSaleData?.data[0].totalYTDSale), f: '$' + formatNumber(expenseVsSaleData?.data[0].totalYTDSale)}]);
+    dataYTD.push(["YTD Expense", { v: Number(expenseVsSaleData?.data[0].totalYTDExpense), f: '$' + formatNumber(expenseVsSaleData?.data[0].totalYTDExpense)}]);
   }
 
   const pieChartOptions: GoogleChartOptions = {
@@ -146,12 +157,18 @@ export default function DashboardList() {
 
   let expenseVsSaleFiscalWk: GoogleDataTableRow[] = [['Week', 'Farm Profit', 'Poultry Profit']];
 
+  const options = { month: 'long' };
+
   if (expenseVsSaleFiscalWkData?.data?.length > 0) {
     expenseVsSaleFiscalWkData?.data.forEach((WkData: any) => {
       expenseVsSaleFiscalWk.push([
-        WkData.endDay,
-        Number(WkData.totalFarmSale) - Number(WkData.totalFarmExpense),
-        Number(WkData.totalPoultrySale) - Number(WkData.totalPoultryExpense),
+        { v: WkData.endDay,
+          f: format(WkData.endDay as Date, "MM/dd/yyyy"),
+        },
+        {v: Number(WkData.totalFarmSale) - Number(WkData.totalFarmExpense),
+         f: '$' + formatNumber(String(Number(WkData.totalFarmSale) - Number(WkData.totalFarmExpense)))},
+        {v: Number(WkData.totalPoultrySale) - Number(WkData.totalPoultryExpense),
+         f: '$' + formatNumber(String(Number(WkData.totalPoultrySale) - Number(WkData.totalPoultryExpense)))},
       ]);
     });
   }
@@ -177,9 +194,15 @@ export default function DashboardList() {
   if (monthlyProfitData?.data?.length > 0) {
     monthlyProfitData?.data.forEach((MtData: any) => {
       monthlyProfit.push([
-        MtData.endDay,
-        Number(MtData.totalFarmSale) - Number(MtData.totalFarmExpense),
-        Number(MtData.totalPoultrySale) - Number(MtData.totalPoultryExpense),
+        { v: MtData.endDay, 
+          f: format(MtData.endDay as Date, "MMM"),
+        },
+        { v: Number(MtData.totalFarmSale) - Number(MtData.totalFarmExpense),
+          f: '$'+formatNumber( String(Number(MtData.totalFarmSale) - Number(MtData.totalFarmExpense))),
+        },
+        { v: Number(MtData.totalPoultrySale) - Number(MtData.totalPoultryExpense),
+          f: '$'+formatNumber( String(Number(MtData.totalPoultrySale) - Number(MtData.totalPoultryExpense))),
+        },
       ]);
     });
   }
@@ -211,6 +234,7 @@ export default function DashboardList() {
         flex: 1,
         headerName: "Total Sale",
         minWidth: 200,
+        valueGetter: (params) => '$' + formatNumber(params.value as string),
       },
     ],
     []
@@ -246,6 +270,8 @@ export default function DashboardList() {
                             options={{
                               style: "currency",
                               currency: "USD",
+                              minimumFractionDigits: 0,
+                              maximumFractionDigits: 0,
                             }}
                           />
                         }
